@@ -1,94 +1,53 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <style>
-       #map {
-        height: 400px;
-        width: 100%;
-       }
-    </style>
-  </head>
-  <body>
-    <h3>My Google Maps Demo</h3>
-<!DOCTYPE html>
-<html>
-  <!-- Select an option from the style selector to see some of the
-       customizations you can apply with map styling. -->
-  <head>
-    <!-- This stylesheet contains specific styles for displaying the map
-         on this page. Replace it with your own styles as described in the
-         documentation:
-         https://developers.google.com/maps/documentation/javascript/tutorial -->
-<!--     <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css"> -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LA metro event finder</title>
 
-    <style>
-      .map-control {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
-        font-family: 'Roboto','sans-serif';
-        margin: 10px;
-        /* Hide the control initially, to prevent it from appearing
-           before the map loads. */
-        display: none;
-      }
-      /* Display the control once it is inside the map. */
-      #map .map-control { display: block; }
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-      .selector-control {
-        font-size: 14px;
-        line-height: 30px;
-        padding-left: 5px;
-        padding-right: 5px;
-      }
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i' rel='stylesheet' type='text/css'>
+</head>
 
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-        width: 96%;
-        border: 2px solid lightgrey;
-        border-radius: 15px;
-        margin-left: 30px;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 95%;
-        margin: 0;
-        padding: 0;
-      }
+<body>
+  <div class="text-center jumbotron">
+    <h1><span style="color: #4285f4">Los</span> <span style="color: #d62d20">Angeles</span> <span style="color: #ffa700">Metro</span> <span style="color: #4285f4">Event</span> <span style="color: #008744">Finder</span></h1>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="panel">
+          <div class="panel-heading">
+            Filters
+          </div>
+          <div class="panel-body">
 
-    </style>
-  </head>
-  <body>
-    
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-9">
+          <div id="style-selector-control"  class="map-control">
+            <select id="style-selector" class="selector-control">
 
-    <div id="style-selector-control"  class="map-control">
-      <select id="style-selector" class="selector-control">
+              <option value="silver" selected="selected"></option>
 
-        <option value="silver" selected="selected"></option>
+            </select>
+          </div>
 
-      </select>
+          <div id="map"></div>
+      </div>
     </div>
-    
+  </div>
+  <footer class="text-center footer">
+    <p>Powered by Google Maps &copy; TicketMaster &copy;</p>
+  </footer>
 
 
-
-    <div id="map"></div>
-
-
-
-
-
-    <script type="text/javascript" src="javascript/app.js"></script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg&callback=initMap" async defer></script>
-
-  
-
-  </body>
-</html>
-
-
-  </body>
+<script type="text/javascript" src="javascript/app.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBP3Xb01OSpLPBryCTei3tja3b8pU90oIg&callback=initMap" async defer></script>  
+</body>
 </html>
