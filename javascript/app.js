@@ -1,3 +1,95 @@
+var functions = {
+
+  populateMarkers: function(latLongArr){
+
+    latLongArr.forEach(function(line,j){
+
+      var info = [];
+      info.length = line[1].length;
+
+      var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    //for (i = 0; i < latLongArr.length; i++) { 
+    line[1].forEach(function(stations,i){
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(stations[1], stations[2]),
+        map: map,
+        icon: line[0]
+      });
+
+        $.ajax({
+          type:"GET",
+          url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" + stations[1] + "," + stations[2] + "&"+
+          "radius=5&unit=miles&sort=distance,asc&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
+          async:true,
+          dataType: "json"
+        }).done(function(json){
+
+          //console.log(stations);
+          //console.log(i + ": " + json._embedded.events[0].classifications[0].segment.name + " - " + (json._embedded.events[0].distance).toFixed(2) + "mi");
+          //console.log(json._embedded.events.length);
+
+          var nearby = ""
+
+          if(json._embedded.events.length < 10){
+
+                for(j=0;j<json._embedded.events.length;j++){
+
+                  nearby+=("<div class='stuff'>"
+                    +(j + 1)
+                +". (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
+                + json._embedded.events[j].name
+                + " - "
+                + (json._embedded.events[j].distance).toFixed(2) 
+                + "mi<br>"
+                + "<a href=" + json._embedded.events[j].url + " target='_blank'>Purchase tickets now!</a></div><hr>");
+
+              };
+
+          }
+          else{
+
+            for(j=0;j<10;j++){
+
+             // console.log(json._embedded.events[j]._embedded.venues[0].name)
+
+                  nearby+=("<div class='stuff'>"
+                    +(j + 1)
+                +". " + json._embedded.events[j]._embedded.venues[0].name
+                + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
+                + json._embedded.events[j].name
+                + " - "
+                + (json._embedded.events[j].distance).toFixed(2) 
+                + "mi<br>"
+                + "<a href=" + json._embedded.events[j].url + " target='_blank'>Purchase tickets now!</a></div><hr>");
+
+              };
+
+          }
+
+          //console.log(nearby);
+
+          info[i] = ("<div class='station'><strong>" + stations[0] + "</strong>: </div><br><hr>" + nearby);
+
+        });
+
+      //console.log(i)
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(info[i]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    });
+
+    });//end for loop
+
+  },//end populate_markers method
+
+}//end functions object
 
       var map;
       function initMap() {
@@ -20,8 +112,11 @@
         transitLayer.setMap(map);
 
           //try adding flag logic here
-        var redStations = [
-        ['Union Station',  34.055599, -118.233456],
+
+        var stations = [
+        //REDLINE
+        //https://maps.google.com/mapfiles/ms/icons/red-dot.png
+        ["",[['Union Station',  34.055599, -118.233456],
         ['Civic Center / Grand Park', 34.055442, -118.245244],
         ['Pershing Square', 34.048424, -118.251584],
         ['7th Street / Metro Center', 34.048775, -118.258615],
@@ -34,32 +129,58 @@
         ['Hollywood / Vine', 34.101153, -118.325783],
         ['Hollywood / Highland', 34.101727, -118.339255],
         ['Universal City / Studio City', 34.139095, -118.362394],
-        ['North Hollywood', 34.168839, -118.376613],
+        ['North Hollywood', 34.168839, -118.376613]]],
+        //end line
+        //BLUELINE
+        ["https://maps.google.com/mapfiles/ms/icons/blue-dot.png",[['7th Street / Metro Center Station', 34.048175, -118.258915],
+        ['Pico Station', 34.040474, -118.266393],
+        ['Grand / LATTC Station', 34.032968, -118.268942],
+        ['San Pedro Station', 34.026809, -118.255494],
+        ['Washington Station', 34.019967, -118.243069],
+        ['Vernon Station', 34.003232, -118.243293],
+        ['Slausson Station', 33.988811, -118.243360],
+        ['Florence Station', 33.974084, -118.243280],
+        ['Firestone Station', 33.959591, -118.243191],
+        ['103rd Street / Watts Towers Station', 33.942542, -118.243156],
+        ['Willowbrook / Rosa Parks Station', 33.928256, -118.238049],
+        ['Compton Station', 33.897428, -118.224295],
+        ['Artesia Station', 33.876115, -118.222503],
+        ['Del Amo Station', 33.848198, -118.211015],
+        ['Wardlow Station', 33.819733, -118.195952],
+        ['Willow Station', 33.806788, -118.189763],
+        ['Pacific Coast Highway Station', 33.789401, -118.189359],
+        ['Anaheim Street Station', 33.781793, -118.189376],
+        ['5th Street Station', 33.773358, -118.189383],
+        ['1st Street Station', 33.768862, -118.189424],
+        ['Downtown Long Beach Station', 33.768043, -118.193101],
+        ['Pacific Avenue Station', 33.772253, -118.193690]]],
+        //end line
+        //PURPLELINE
+        ["https://maps.google.com/mapfiles/ms/icons/purple-dot.png",[['Union Station',  34.055199, -118.233456],
+        ['Civic Center / Grand Park', 34.055042, -118.245244],
+        ['Pershing Square', 34.048024, -118.251584],
+        ['7th Street / Metro Center', 34.048375, -118.258615],
+        ['Westlake / MacArthur Park', 34.056820, -118.275904],
+        ['Wilshire / Vermont', 34.062139, -118.290880],
+        ['Wilshire / Normandie',34.061608, -118.300931],
+        ['Wilshire / Western', 34.062097, -118.308847]]],
+        //end line
+        //EXPOLINE
+        ["https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7C10C4FF",[['7th Street / Metro Center Station', 34.048358, -118.259254],
+        ['Pico Station', 34.040656, -118.266847],
+        ['LATTC / Ortho Institute Station', 34.029264, -118.273941],
+        ['Jefferson / USC Station', 34.021968, -118.278327],
+        ['Exposition Park / USC Station', 34.018170, -118.285671],
+        ['Exposition / Vermont Station', 34.018318, -118.291802],
+        ['Exposition / Western Station', 34.018342, -118.308914],
+        ['Exposition / Crenshaw Station', 34.022722, -118.336401]]]
+        //end line
+        ];
 
-      ];
+//add method here
+functions.populateMarkers(stations);
 
-
-      var infoRed = ['Union Station', 'Civic Center / Grand Park', 'Pershing Square', '7th Street / Metro Center', 'Westlake / MacArthur Park', 'Wilshire / Vermont', 'Vermont / Beverly', 'Vermont / Santa Monica', 'Vermont / Sunset', 'Hollywood / Western', 'Hollywood / Vine', 'Hollywood / Highland', 'Universal City / Studio City', 'North Hollywood'];
-
-      var infowindowRed = new google.maps.InfoWindow();
-
-    var markerRed, i;
-
-    for (i = 0; i < redStations.length; i++) { 
-      markerRed = new google.maps.Marker({
-        position: new google.maps.LatLng(redStations[i][1], redStations[i][2]),
-        map: map
-      });
-
-      google.maps.event.addListener(markerRed, 'click', (function(markerRed, i) {
-        return function() {
-          infowindowRed.setContent(infoRed[i]);
-          infowindowRed.open(map, marker);
-        }
-      })(markerRed, i));
-    }
-
-
+//begin red line Polyline
     var redUnionStation = new google.maps.LatLng(34.055599, -118.233456);
     var redCivicCenterGrandPark = new google.maps.LatLng(34.055442, -118.245244);
     var redPershingSquare = new google.maps.LatLng(34.048424, -118.251584);
@@ -85,50 +206,9 @@
     strokeWeight: 6
     });
     redLinePath.setMap(map);
+//end red line Polyline
 
-
-    var purpleStations = [
-        ['Union Station',  34.055199, -118.233456],
-        ['Civic Center / Grand Park', 34.055442, -118.245244],
-        ['Pershing Square', 34.048424, -118.251584],
-        ['7th Street / Metro Center', 34.048775, -118.258615],
-        ['Westlake / MacArthur Park', 34.057220, -118.275904],
-        ['Wilshire / Vermont', 34.062539, -118.290880],
-        ['Wilshire / Normandie',34.061608, -118.300931],
-        ['Wilshire / Western', 34.062097, -118.308847],
-
-      ];
-
-
-      var infoPurple = ['Union Station', 'Civic Center / Grand Park', 'Pershing Square', '7th Street / Metro Center', 'Westlake / MacArthur Park', 'Wilshire / Vermont', 'Wilshire / Normandie', 'Wilshire / Western'];
-
-      var infowindowPurple = new google.maps.InfoWindow();
-
-      var purpleIcon = 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png';
-
-      var markerPurple, j;
-
-
-      for (j = 0; j < purpleStations.length; j++) { 
-      markerPurple = new google.maps.Marker({
-        position: new google.maps.LatLng(purpleStations[j][1], purpleStations[j][2]),
-        map: map,
-        icon: purpleIcon
-      });
-
-      google.maps.event.addListener(markerPurple, 'click', (function(markerPurple, j) {
-        return function() {
-          infowindowPurple.setContent(infoPurple[j]);
-          infowindowPurple.open(map, markerPurple);
-        }
-      })(markerPurple, j));
-    }
-
-    
-
-
-
-
+//begin purple line Polyline
     var purpleUnionStation = new google.maps.LatLng(34.055199, -118.233456);
     var purpleCivicCenterGrandPark = new google.maps.LatLng(34.055042, -118.245244);
     var purplePershingSquare = new google.maps.LatLng(34.048024, -118.251584);
@@ -151,6 +231,87 @@
     });
     purpleLinePath.setMap(map);
 
+    var blue7thStreet = new google.maps.LatLng(34.048175, -118.258915);
+    var bluePico = new google.maps.LatLng(34.040474, -118.266393);
+    var blueGrandLATTC = new google.maps.LatLng(34.032968, -118.268942);
+    var blueGrandLATTCa = new google.maps.LatLng(34.033900, -118.270813);
+    var blueSanPedro = new google.maps.LatLng(34.026809, -118.255494);
+    var blueWashington = new google.maps.LatLng(34.019967, -118.243069);
+    var blueWashingtona = new google.maps.LatLng(34.020597, -118.243218);
+    var blueVernon = new google.maps.LatLng(34.003232, -118.243293);
+    var blueSlausson = new google.maps.LatLng(33.988811, -118.243360);
+    var blueFlorence = new google.maps.LatLng(33.974084, -118.243280);
+    var blueFirestone = new google.maps.LatLng(33.959591, -118.243191);
+    var blue103rdStreetWattsTowers = new google.maps.LatLng(33.942542, -118.243156);
+    var blueWillowbrookRosaParks = new google.maps.LatLng(33.928256, -118.238049);
+    var blueWillowbrookRosaParksa = new google.maps.LatLng(33.938228, -118.242809);
+    var blueCompton = new google.maps.LatLng(33.897428, -118.224295);
+    var blueComptona = new google.maps.LatLng(33.903546, -118.224864);
+    var blueArtesia = new google.maps.LatLng(33.876115, -118.222503);
+    var blueDelAmo = new google.maps.LatLng(33.848198, -118.211015);
+    var blueWardlow = new google.maps.LatLng(33.819733, -118.195952);
+    var blueWardlowa = new google.maps.LatLng(33.835637, -118.205740);
+    var blueWillow = new google.maps.LatLng(33.806788, -118.189763);
+    var blueWillowa = new google.maps.LatLng(33.805737, -118.189296);
+    var bluePacificCoastHighway = new google.maps.LatLng(33.789401, -118.189359);
+    var blueAnaheim = new google.maps.LatLng(33.781793, -118.189376);
+    var blue5thStreet = new google.maps.LatLng(33.773358, -118.189383);
+    var blue1stStreet = new google.maps.LatLng(33.768862, -118.189424);
+    var blue1stStreeta = new google.maps.LatLng(33.768101, -118.189440);
+    var blueDowntownLongBeach = new google.maps.LatLng(33.768043, -118.193101);
+    var blueDowntownLongBeacha = new google.maps.LatLng(33.768101, -118.193706);
+    var bluePacificAve = new google.maps.LatLng(33.772253, -118.193690);
+    var bluePacificAvea = new google.maps.LatLng(33.776528, -118.193690);
+    var bluePacificAveb = new google.maps.LatLng(33.776554, -118.189386);
+
+
+    var blueLinePath = new google.maps.Polyline({
+    path: [blue7thStreet, bluePico, blueGrandLATTCa, blueGrandLATTC, blueSanPedro, 
+            blueWashingtona, blueWashington, blueVernon, blueSlausson, blueFlorence, 
+            blueFirestone, blue103rdStreetWattsTowers, blueWillowbrookRosaParksa, 
+            blueWillowbrookRosaParks, blueComptona, blueCompton, blueArtesia, blueDelAmo, 
+            blueWardlowa, blueWardlow, blueWillow, blueWillowa, bluePacificCoastHighway,
+            blueAnaheim, blue5thStreet, blue1stStreet, blue1stStreeta, blueDowntownLongBeach,
+            blueDowntownLongBeacha, bluePacificAve, bluePacificAvea, bluePacificAveb],
+
+
+    strokeColor: "#6991FD",
+    strokeOpacity: 0.6,
+    strokeWeight: 6
+    });
+    blueLinePath.setMap(map);
+
+//end blue line Polyline
+
+
+//Begin expo line Polyline
+
+    var expo7thStreet = new google.maps.LatLng(34.048358, -118.259254);
+    var expoPico = new google.maps.LatLng(34.040656, -118.266847);
+    var expoLATTC = new google.maps.LatLng(34.029264, -118.273941);
+    var expoJeffersonUSC = new google.maps.LatLng(34.021968, -118.278327);
+    var expoJeffersonUSCa = new google.maps.LatLng(34.018365, -118.280676);
+    var expoExpositionUSC = new google.maps.LatLng(34.018170, -118.285671);
+    var expoExpositionVermont = new google.maps.LatLng(34.018318, -118.291802);
+    var expoExpositionWestern = new google.maps.LatLng(34.018342, -118.308914);
+    var expoExpositionWesterna = new google.maps.LatLng(34.018437, -118.315093);
+    var expoExpositionCrenshaw = new google.maps.LatLng(34.022722, -118.336401);
+   
+    
+
+
+    var expoLinePath = new google.maps.Polyline({
+    path: [expo7thStreet, expoPico, expoLATTC, expoJeffersonUSC, expoJeffersonUSCa,
+          expoExpositionUSC, expoExpositionVermont, expoExpositionWestern, expoExpositionWesterna,
+          expoExpositionCrenshaw],
+
+
+    strokeColor: "#10C4FF",
+    strokeOpacity: 0.4,
+    strokeWeight: 6
+    });
+    expoLinePath.setMap(map);
+//end expo line Polyline
 
 
         // Set the map's style to the initial value of the selector.
