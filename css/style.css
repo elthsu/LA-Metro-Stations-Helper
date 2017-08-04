@@ -4,9 +4,16 @@
 	padding:0px;
 }
 
-html, body, .container{
-	height: 90%;
+html, body {
+	height: 100%;
+	min-height: 100%;
 	background-color: #eee;
+	overflow: inherit;
+}
+
+.container {
+	height: 90%;
+	padding: 0px 5% 20px 5%;
 }
 
 .jumbotron {
@@ -20,8 +27,13 @@ html, body, .container{
 	font-family: 'Product Sans',Helvetica,sans-serif;
 }
 
+.row, .col-sm-3, .col-sm-9{
+	height: 100%;
+	min-height: 100%;
+}
+
 .panel {
-	height: 500px;
+	height: 100%;
 	border-color: #d62d20; 
 }
 
@@ -32,46 +44,55 @@ html, body, .container{
 }
 
 #map {
-height: 500px;
-width: 100%;
+	height: 100%;
+	width: 100%;
+	border: 2px solid #d62d20;
 }
 
 .map-control {
-background-color: #fff;
-border: 1px solid #ccc;
-box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
-font-family: 'Roboto','sans-serif';
-margin: 10px;
-/* Hide the control initially, to prevent it from appearing
-   before the map loads. */
-display: none;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
+	font-family: 'Roboto','sans-serif';
+	margin: 10px;
+	/* Hide the control initially, to prevent it from appearing
+	   before the map loads. */
+	display: none;
 }
 /* Display the control once it is inside the map. */
 #map .map-control { display: block; }
 
 .selector-control {
-font-size: 14px;
-line-height: 30px;
-padding-left: 5px;
-padding-right: 5px;
-}
-
-/* Always set the map height explicitly to define the size of the div
-* element that contains the map. */
-#map {
-border: 2px solid #d62d20;
+	font-size: 14px;
+	line-height: 30px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 footer {
 	height: 40px;
 	width: 100%;
-	position: fixed;
-	bottom: 0;
 	background-color: #4285f4;
 }
 
-footer p { 
+footer .container {
+	height: 100%;
+	margin-bottom: 0px;
+}
+
+footer p {
 	margin: 10px 0px;
 	color: white;
 	font-family: 'Product Sans',Helvetica,sans-serif;
 }
+
+@media screen and (max-width: 768px) {
+	.col-sm-3, .col-sm-9{
+		height: 49%;
+		min-height: 49%;
+	}
+	.col-sm-3 {
+		margin-bottom: 2%;
+	}
+}
+
