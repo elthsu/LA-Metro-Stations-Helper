@@ -101,7 +101,7 @@ var functions = {
         // Create the map with no initial style specified.
         // It therefore has default styling.
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 33.95, lng: -118.10},
+          center: {lat: 34.048775, lng: -118.258615},
           zoom: 11,
           mapTypeControl: false,
           clickableIcons: false
@@ -468,14 +468,14 @@ functions.populateMarkers(stations);
     goldLinePath.setMap(map);*/
 
 
-        // Set the map's style to the initial value of the selector.
+    // Set the map's style to the initial value of the selector.
         var styleSelector = document.getElementById('style-selector');
         map.setOptions({styles: styles[styleSelector.value]});
 
 
-      }
+         }
 
-      var styles = {
+        var styles = {
         default: null,
         silver: [
           {
