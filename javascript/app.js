@@ -1,98 +1,91 @@
-var functions = {
+    
 
-  populateMarkers: function(latLongArr){
+    var functions = {
 
-    latLongArr.forEach(function(line,j){
+        populateMarkers: function(latLongArr){
 
-      var info = [];
-      info.length = line[1].length;
+            latLongArr.forEach(function(line,j){
 
-      var infowindow = new google.maps.InfoWindow();
+                var info = [];
+                info.length = line[1].length;
+                
+                var infowindow = new google.maps.InfoWindow();
+                var marker, i;
+                
+                line[1].forEach(function(stations,i){
+                    marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(stations[1], stations[2]),
+                    map: map,
+                    icon: line[0]
+                });
 
-    var marker, i;
+                $.ajax({
+                    
+                    type:"GET",
+                    url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
+                    + stations[1] + "," + stations[2] + "&"+
+                    "radius=5&unit=miles&sort=distance,asc&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
+                    async:true,
+                    dataType: "json"
+                }).done(function(json){
 
-    //for (i = 0; i < latLongArr.length; i++) { 
-    line[1].forEach(function(stations,i){
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(stations[1], stations[2]),
-        map: map,
-        icon: line[0]
-      });
+                var nearby = "";
 
-        $.ajax({
-          type:"GET",
-          url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" + stations[1] + "," + stations[2] + "&"+
-          "radius=5&unit=miles&sort=distance,asc&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
-          async:true,
-          dataType: "json"
-        }).done(function(json){
+                    if(json._embedded.events.length < 10){
 
-          //console.log(stations);
-          //console.log(i + ": " + json._embedded.events[0].classifications[0].segment.name + " - " + (json._embedded.events[0].distance).toFixed(2) + "mi");
-          //console.log(json._embedded.events.length);
+                        for(j=0;j<json._embedded.events.length;j++){
 
-          var nearby = ""
+                            nearby+=("<div class='stuff'>"
+                            +(j + 1)
+                            +". (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
+                            + json._embedded.events[j].name
+                            + " - "
+                            + (json._embedded.events[j].distance).toFixed(2) 
+                            + "mi<br>"
+                            + "<a href=" + json._embedded.events[j].url 
+                            + " target='_blank'>Purchase tickets now!</a></div><hr>");
+                        };
+                    }
+                    
+                    else {
 
-          if(json._embedded.events.length < 10){
+                        for(j=0;j<10;j++){
 
-                for(j=0;j<json._embedded.events.length;j++){
+                            nearby+=("<div class='stuff'>"
+                            +(j + 1)
+                            +". " + json._embedded.events[j]._embedded.venues[0].name
+                            + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
+                            + json._embedded.events[j].name
+                            + " - "
+                            + (json._embedded.events[j].distance).toFixed(2) 
+                            + "mi<br>"
+                            + "<a href=" + json._embedded.events[j].url 
+                            + " target='_blank'>Purchase tickets now!</a></div><hr>");
+                        };
+                    }
 
-                  nearby+=("<div class='stuff'>"
-                    +(j + 1)
-                +". (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
-                + json._embedded.events[j].name
-                + " - "
-                + (json._embedded.events[j].distance).toFixed(2) 
-                + "mi<br>"
-                + "<a href=" + json._embedded.events[j].url + " target='_blank'>Purchase tickets now!</a></div><hr>");
+                    info[i] = ("<div class='station'><strong>" + stations[0] 
+                            + "</strong>: </div><br><hr>" + nearby);
 
-              };
+                });
 
-          }
-          else{
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                        return function() {
+                            infowindow.setContent(info[i]);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, i));
+                });
 
-            for(j=0;j<10;j++){
+            });//end for loop
 
-             // console.log(json._embedded.events[j]._embedded.venues[0].name)
+        },//end populate_markers method
 
-                  nearby+=("<div class='stuff'>"
-                    +(j + 1)
-                +". " + json._embedded.events[j]._embedded.venues[0].name
-                + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
-                + json._embedded.events[j].name
-                + " - "
-                + (json._embedded.events[j].distance).toFixed(2) 
-                + "mi<br>"
-                + "<a href=" + json._embedded.events[j].url + " target='_blank'>Purchase tickets now!</a></div><hr>");
+    }//end functions object
 
-              };
-
-          }
-
-          //console.log(nearby);
-
-          info[i] = ("<div class='station'><strong>" + stations[0] + "</strong>: </div><br><hr>" + nearby);
-
-        });
-
-      //console.log(i)
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(info[i]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    });
-
-    });//end for loop
-
-  },//end populate_markers method
-
-}//end functions object
-
-      var map;
-      function initMap() {
+    var map;
+    
+    function initMap() {
 
         function initialize() {
             var myMapOptions = { clickableIcons: false }
@@ -100,18 +93,18 @@ var functions = {
 
         // Create the map with no initial style specified.
         // It therefore has default styling.
+        
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 34.048775, lng: -118.258615},
-          zoom: 11,
-          mapTypeControl: false,
-          clickableIcons: false
+            
+            center: {lat: 34.048775, lng: -118.258615},
+            zoom: 11,
+            mapTypeControl: false,
+            clickableIcons: false
         });
 
 
         var transitLayer = new google.maps.TransitLayer();
         transitLayer.setMap(map);
-
-          //try adding flag logic here
 
         var stations = [
         //REDLINE
@@ -132,7 +125,8 @@ var functions = {
         ['North Hollywood', 34.168839, -118.376613]]],
         //end line
         //BLUELINE
-        ["https://maps.google.com/mapfiles/ms/icons/blue-dot.png",[['7th Street / Metro Center Station', 34.048175, -118.258915],
+        ["https://maps.google.com/mapfiles/ms/icons/blue-dot.png",[
+        ['7th Street / Metro Center Station', 34.048175, -118.258915],
         ['Pico Station', 34.040474, -118.266393],
         ['Grand / LATTC Station', 34.032968, -118.268942],
         ['San Pedro Station', 34.026809, -118.255494],
@@ -156,7 +150,8 @@ var functions = {
         ['Pacific Avenue Station', 33.772253, -118.193690]]],
         //end line
         //PURPLELINE
-        ["https://maps.google.com/mapfiles/ms/icons/purple-dot.png",[['Union Station',  34.055199, -118.233456],
+        ["https://maps.google.com/mapfiles/ms/icons/purple-dot.png",[
+        ['Union Station',  34.055199, -118.233456],
         ['Civic Center / Grand Park', 34.055042, -118.245244],
         ['Pershing Square', 34.048024, -118.251584],
         ['7th Street / Metro Center', 34.048375, -118.258615],
@@ -166,7 +161,8 @@ var functions = {
         ['Wilshire / Western', 34.062097, -118.308847]]],
         //end line
         //EXPOLINE
-        ["https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7C10C4FF",[['7th Street / Metro Center Station', 34.048358, -118.259254],
+        ["https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7C10C4FF",[
+        ['7th Street / Metro Center Station', 34.048358, -118.259254],
         ['Pico Station', 34.040656, -118.266847],
         ['LATTC / Ortho Institute Station', 34.029264, -118.273941],
         ['Jefferson / USC Station', 34.021968, -118.278327],
@@ -188,10 +184,10 @@ var functions = {
         //end line
         ];
 
-//add method here
-functions.populateMarkers(stations);
+    //add method here
+    functions.populateMarkers(stations);
 
-//begin red line Polyline
+    //begin red line Polyline
     var redUnionStation = new google.maps.LatLng(34.055599, -118.233456);
     var redCivicCenterGrandPark = new google.maps.LatLng(34.055442, -118.245244);
     var redPershingSquare = new google.maps.LatLng(34.048424, -118.251584);
@@ -208,15 +204,19 @@ functions.populateMarkers(stations);
     var redNorthHollywood = new google.maps.LatLng(34.168839, -118.376613);
 
     var redLinePath = new google.maps.Polyline({
-    path: [redUnionStation, redCivicCenterGrandPark, redPershingSquare, red7thStreet, 
-            redWestlakeMacArthurPark, redWilshireVermont, redVermontBeverly, redVermontSantaMonica, redVermontSunset, redHollywoodWestern, redHollywoodVine, redHollywoodHighland, redUniversalCityStudioCity, redNorthHollywood],
+        path: [redUnionStation, redCivicCenterGrandPark, redPershingSquare, red7thStreet, 
+            redWestlakeMacArthurPark, redWilshireVermont, redVermontBeverly, 
+            redVermontSantaMonica, redVermontSunset, redHollywoodWestern, 
+            redHollywoodVine, redHollywoodHighland, redUniversalCityStudioCity, redNorthHollywood],
 
 
-    strokeColor: "red",
-    strokeOpacity: 0.6,
-    strokeWeight: 6
+        strokeColor: "red",
+        strokeOpacity: 0.6,
+        strokeWeight: 6
     });
+    
     redLinePath.setMap(map);
+
 //end red line Polyline
 
     var purpleUnionStation = new google.maps.LatLng(34.055199, -118.233456);
@@ -232,13 +232,16 @@ functions.populateMarkers(stations);
 
 
     var purpleLinePath = new google.maps.Polyline({
-    path: [purpleUnionStation, purpleCivicCenterGrandPark, purplePershingSquare, purple7thStreet, purpleWestlakeMacArthurPark, purpleWilshireVermont, purpleWilshireNormandie, purpleWilshireWestern],
+        path: [purpleUnionStation, purpleCivicCenterGrandPark, purplePershingSquare, 
+        purple7thStreet, purpleWestlakeMacArthurPark, purpleWilshireVermont, purpleWilshireNormandie, 
+        purpleWilshireWestern],
 
 
-    strokeColor: "#8E67FD",
-    strokeOpacity: 0.8,
-    strokeWeight: 6
+        strokeColor: "#8E67FD",
+        strokeOpacity: 0.8,
+        strokeWeight: 6
     });
+    
     purpleLinePath.setMap(map);
 
     var blue7thStreet = new google.maps.LatLng(34.048175, -118.258915);
@@ -276,7 +279,7 @@ functions.populateMarkers(stations);
 
 
     var blueLinePath = new google.maps.Polyline({
-    path: [blue7thStreet, bluePico, blueGrandLATTCa, blueGrandLATTC, blueSanPedro, 
+        path: [blue7thStreet, bluePico, blueGrandLATTCa, blueGrandLATTC, blueSanPedro, 
             blueWashingtona, blueWashington, blueVernon, blueSlausson, blueFlorence, 
             blueFirestone, blue103rdStreetWattsTowers, blueWillowbrookRosaParksa, 
             blueWillowbrookRosaParks, blueComptona, blueCompton, blueArtesia, blueDelAmo, 
@@ -285,10 +288,11 @@ functions.populateMarkers(stations);
             blueDowntownLongBeacha, bluePacificAve, bluePacificAvea, bluePacificAveb],
 
 
-    strokeColor: "#6991FD",
-    strokeOpacity: 0.6,
-    strokeWeight: 6
+        strokeColor: "#6991FD",
+        strokeOpacity: 0.6,
+        strokeWeight: 6
     });
+    
     blueLinePath.setMap(map);
 
     var expo7thStreet = new google.maps.LatLng(34.048358, -118.259254);
@@ -319,18 +323,20 @@ functions.populateMarkers(stations);
 
 
     var expoLinePath = new google.maps.Polyline({
-    path: [expo7thStreet, expoPico, expoLATTC, expoJeffersonUSC, expoJeffersonUSCa,
-          expoExpositionUSC, expoExpositionVermont, expoExpositionWestern, expoExpositionWesterna,
-          expoExpositionCrenshaw, expoFarmdale, expoExpositionLaBrea, expoLaCienegaJefferson,
-          expoCulverCity, expoPalms, expoPalmsa, expoPalmsb, expoWestwoodRanchoPark, expoExpositionSepulveda,
-          expoExpositionBundy, expoExpositionBundya, expo26thStreetBergamot, expo17thStreetSMC, expoDowntownSantaMonica
-          ],
+        path: [expo7thStreet, expoPico, expoLATTC, expoJeffersonUSC, expoJeffersonUSCa,
+              expoExpositionUSC, expoExpositionVermont, expoExpositionWestern, expoExpositionWesterna,
+              expoExpositionCrenshaw, expoFarmdale, expoExpositionLaBrea, expoLaCienegaJefferson,
+              expoCulverCity, expoPalms, expoPalmsa, expoPalmsb, expoWestwoodRanchoPark, 
+              expoExpositionSepulveda, expoExpositionBundy, 
+              expoExpositionBundya, expo26thStreetBergamot, expo17thStreetSMC, expoDowntownSantaMonica
+              ],
 
 
-    strokeColor: "#10C4FF",
-    strokeOpacity: 0.4,
-    strokeWeight: 6
+        strokeColor: "#10C4FF",
+        strokeOpacity: 0.4,
+        strokeWeight: 6
     });
+    
     expoLinePath.setMap(map);
 
 
@@ -383,13 +389,16 @@ functions.populateMarkers(stations);
 
 
     // Set the map's style to the initial value of the selector.
-        var styleSelector = document.getElementById('style-selector');
+    var styleSelector = document.getElementById('style-selector');
         map.setOptions({styles: styles[styleSelector.value]});
 
 
-         }
+    
+    // Closes initMap function (do not remove)
 
-        var styles = {
+    }
+
+    var styles = {
         default: null,
         silver: [
           {
