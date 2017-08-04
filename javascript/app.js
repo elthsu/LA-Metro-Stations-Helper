@@ -1,112 +1,90 @@
-    
+//App Functions
+var functions = {
 
-    var functions = {
+    populateMarkers: function(latLongArr){
 
-        populateMarkers: function(latLongArr){
+        latLongArr.forEach(function(line,j){
 
-            latLongArr.forEach(function(line,j){
-
-                var info = [];
-                info.length = line[1].length;
-                
-                var infowindow = new google.maps.InfoWindow();
-                var marker, i;
-                
-                line[1].forEach(function(stations,i){
-                    marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(stations[1], stations[2]),
-                    map: map,
-                    icon: line[0]
-                });
-
-                $.ajax({
-                    
-                    type:"GET",
-                    url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
-                    + stations[1] + "," + stations[2] + "&"+
-                    "radius=5&unit=miles&sort=distance,asc&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
-                    async:true,
-                    dataType: "json"
-                }).done(function(json){
-
-                var nearby = "";
-
-                    if(json._embedded.events.length < 10){
-
-                        for(j=0;j<json._embedded.events.length;j++){
-
-                            nearby+=("<div class='stuff'>"
-                            +(j + 1)
-                            +". (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
-                            + json._embedded.events[j].name
-                            + " - "
-                            + (json._embedded.events[j].distance).toFixed(2) 
-                            + "mi<br>"
-                            + "<a href=" + json._embedded.events[j].url 
-                            + " target='_blank'>Purchase tickets now!</a></div><hr>");
-                        };
-                    }
-                    
-                    else {
-
-                        for(j=0;j<10;j++){
-
-                            nearby+=("<div class='stuff'>"
-                            +(j + 1)
-                            +". " + json._embedded.events[j]._embedded.venues[0].name
-                            + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
-                            + json._embedded.events[j].name
-                            + " - "
-                            + (json._embedded.events[j].distance).toFixed(2) 
-                            + "mi<br>"
-                            + "<a href=" + json._embedded.events[j].url 
-                            + " target='_blank'>Purchase tickets now!</a></div><hr>");
-                        };
-                    }
-
-                    info[i] = ("<div class='station'><strong>" + stations[0] 
-                            + "</strong>: </div><br><hr>" + nearby);
-
-                });
-
-                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                        return function() {
-                            infowindow.setContent(info[i]);
-                            infowindow.open(map, marker);
-                        }
-                    })(marker, i));
-                });
-
-            });//end for loop
-
-        },//end populate_markers method
-
-    }//end functions object
-
-    var map;
-    
-    function initMap() {
-
-        function initialize() {
-            var myMapOptions = { clickableIcons: false }
-        }
-
-        // Create the map with no initial style specified.
-        // It therefore has default styling.
-        
-        map = new google.maps.Map(document.getElementById('map'), {
+            var info = [];
+            info.length = line[1].length;
             
-            center: {lat: 34.048775, lng: -118.258615},
-            zoom: 11,
-            mapTypeControl: false,
-            clickableIcons: false
-        });
+            var infowindow = new google.maps.InfoWindow();
+            var marker, i;
+            
+            line[1].forEach(function(stations,i){
+                marker = new google.maps.Marker({
+                position: new google.maps.LatLng(stations[1], stations[2]),
+                map: map,
+                icon: line[0]
+            });
 
+            $.ajax({
+                
+                type:"GET",
+                url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
+                + stations[1] + "," + stations[2] + "&"+
+                "radius=5&unit=miles&sort=distance,asc&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
+                async:true,
+                dataType: "json"
+            }).done(function(json){
 
-        var transitLayer = new google.maps.TransitLayer();
-        transitLayer.setMap(map);
+            var nearby = "";
+            var j=0;
 
-        var stations = [
+            while(j<json._embedded.events.length && j<10){
+                nearby+=("<div class='stuff'>"
+                +(j + 1)
+                +". " + json._embedded.events[j]._embedded.venues[0].name
+                + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
+                + json._embedded.events[j].name
+                + " - "
+                + (json._embedded.events[j].distance).toFixed(2) 
+                + "mi<br>"
+                + "<img src=" + json._embedded.events[j].images[0].url + " alt='event_img' width='115'>"
+                + "<a href=" + json._embedded.events[j].url 
+                + " target='_blank'>Purchase tickets now!</a></div><hr>");
+                j++;
+            }
+
+            info[i] = ("<div class='station'><strong>" + stations[0] 
+                        + "</strong>: </div><br><hr>" + nearby);
+
+            });
+
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        infowindow.setContent(info[i]);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            });
+
+        });//end for loop
+
+    },//end populate_markers method
+
+}//end functions object
+
+var map;
+
+function initMap() {
+
+    function initialize() {
+        var myMapOptions = { clickableIcons: false }
+    }
+
+    // Create the map with no initial style specified.
+    // It therefore has default styling.
+    
+    map = new google.maps.Map(document.getElementById('map'), {
+        
+        center: {lat: 34.048775, lng: -118.258615},
+        zoom: 11,
+        mapTypeControl: false,
+        clickableIcons: false
+    });
+
+    var stations = [
         //REDLINE
         //https://maps.google.com/mapfiles/ms/icons/red-dot.png
         ["",[['Union Station',  34.055599, -118.233456],
@@ -214,10 +192,10 @@
         strokeOpacity: 0.6,
         strokeWeight: 6
     });
-    
+
     redLinePath.setMap(map);
 
-//end red line Polyline
+    //end red line Polyline
 
     var purpleUnionStation = new google.maps.LatLng(34.055199, -118.233456);
     var purpleCivicCenterGrandPark = new google.maps.LatLng(34.055042, -118.245244);
@@ -241,7 +219,7 @@
         strokeOpacity: 0.8,
         strokeWeight: 6
     });
-    
+
     purpleLinePath.setMap(map);
 
     var blue7thStreet = new google.maps.LatLng(34.048175, -118.258915);
@@ -292,7 +270,7 @@
         strokeOpacity: 0.6,
         strokeWeight: 6
     });
-    
+
     blueLinePath.setMap(map);
 
     var expo7thStreet = new google.maps.LatLng(34.048358, -118.259254);
@@ -319,7 +297,7 @@
     var expo26thStreetBergamot = new google.maps.LatLng(34.028001, -118.469102);
     var expo17thStreetSMC = new google.maps.LatLng(34.023156, -118.480391);
     var expoDowntownSantaMonica = new google.maps.LatLng(34.014019, -118.491398);
-    
+
 
 
     var expoLinePath = new google.maps.Polyline({
@@ -336,268 +314,218 @@
         strokeOpacity: 0.4,
         strokeWeight: 6
     });
-    
+
     expoLinePath.setMap(map);
 
+// Set the map's style to the initial value of the selector.
+var styleSelector = document.getElementById('style-selector');
+    map.setOptions({styles: styles[styleSelector.value]});
 
 
-    /*var goldStations = [
-       
-        ['Union Station', 34.058946, -118.233065],
+// Closes initMap function (do not remove)
 
-      ];
+}
 
+var styles = {
+    default: null,
+    silver: [
+      {
+        elementType: 'geometry',
+        stylers: [{color: '#f5f5f5'}]
+      },
+      {
+        elementType: 'labels.icon',
+        stylers: [{visibility: 'off'}]
+      },
+      {
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#616161'}]
+      },
+      {
+        elementType: 'labels.text.stroke',
+        stylers: [{color: '#f5f5f5'}]
+      },
+      {
+        featureType: 'administrative.land_parcel',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#bdbdbd'}]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'geometry',
+        stylers: [{color: '#eeeeee'}]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#757575'}]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [{color: '#e5e5e5'}]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#9e9e9e'}]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [{color: '#ffffff'}]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#757575'}]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [{color: '#dadada'}]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#616161'}]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#9e9e9e'}]
+      },
+      {
+        featureType: 'transit.line',
+        elementType: 'geometry',
+        stylers: [{color: '#e5e5e5'}]
+      },
+      {
+        featureType: 'transit.station',
+        elementType: 'geometry',
+        stylers: [{color: '#eeeeee'}]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{color: '#c9c9c9'}]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#9e9e9e'}]
+      }
+    ],
 
-      var infoGold = [];
-
-      infoGold.length = goldStations.length;
-
-      var infowindowGold = new google.maps.InfoWindow();
-
-      var markerGold, i;
-
-    for (i = 0; i < goldStations.length; i++) { 
-      markerGold = new google.maps.Marker({
-        position: new google.maps.LatLng(goldStations[i][1], goldStations[i][2]),
-        map: map,
-        icon: "http://maps.google.com/mapfiles/marker_yellow.png"
-
-      });
-
-      google.maps.event.addListener(markerGold, 'click', (function(markerGold, i) {
-        return function() {
-          infowindowGold.setContent(infoGold[i]);
-          infowindowGold.open(map, markerGold);
-        }
-      })(markerGold, i));
-    }
-
-    var goldUnion = new google.maps.LatLng(34.058946, -118.233065);
-    
-    
-
-
-    var goldLinePath = new google.maps.Polyline({
-    path: [goldUnion],
-
-
-    strokeColor: "##FFB300",
-    strokeOpacity: 0.6,
-    strokeWeight: 6
-    });
-    goldLinePath.setMap(map);*/
-
-
-    // Set the map's style to the initial value of the selector.
-    var styleSelector = document.getElementById('style-selector');
-        map.setOptions({styles: styles[styleSelector.value]});
-
-
-    
-    // Closes initMap function (do not remove)
-
-    }
-
-    var styles = {
-        default: null,
-        silver: [
-          {
-            elementType: 'geometry',
-            stylers: [{color: '#f5f5f5'}]
-          },
-          {
-            elementType: 'labels.icon',
-            stylers: [{visibility: 'off'}]
-          },
-          {
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#616161'}]
-          },
-          {
-            elementType: 'labels.text.stroke',
-            stylers: [{color: '#f5f5f5'}]
-          },
-          {
-            featureType: 'administrative.land_parcel',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#bdbdbd'}]
-          },
-          {
-            featureType: 'poi',
-            elementType: 'geometry',
-            stylers: [{color: '#eeeeee'}]
-          },
-          {
-            featureType: 'poi',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#757575'}]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'geometry',
-            stylers: [{color: '#e5e5e5'}]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#9e9e9e'}]
-          },
-          {
-            featureType: 'road',
-            elementType: 'geometry',
-            stylers: [{color: '#ffffff'}]
-          },
-          {
-            featureType: 'road.arterial',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#757575'}]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry',
-            stylers: [{color: '#dadada'}]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#616161'}]
-          },
-          {
-            featureType: 'road.local',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#9e9e9e'}]
-          },
-          {
-            featureType: 'transit.line',
-            elementType: 'geometry',
-            stylers: [{color: '#e5e5e5'}]
-          },
-          {
-            featureType: 'transit.station',
-            elementType: 'geometry',
-            stylers: [{color: '#eeeeee'}]
-          },
-          {
-            featureType: 'water',
-            elementType: 'geometry',
-            stylers: [{color: '#c9c9c9'}]
-          },
-          {
-            featureType: 'water',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#9e9e9e'}]
-          }
-        ],
-
-        retro: [
-          {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
-          {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
-          {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
-          {
-            featureType: 'administrative',
-            elementType: 'geometry.stroke',
-            stylers: [{color: '#c9b2a6'}]
-          },
-          {
-            featureType: 'administrative.land_parcel',
-            elementType: 'geometry.stroke',
-            stylers: [{color: '#dcd2be'}]
-          },
-          {
-            featureType: 'administrative.land_parcel',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#ae9e90'}]
-          },
-          {
-            featureType: 'landscape.natural',
-            elementType: 'geometry',
-            stylers: [{color: '#dfd2ae'}]
-          },
-          {
-            featureType: 'poi',
-            elementType: 'geometry',
-            stylers: [{color: '#dfd2ae'}]
-          },
-          {
-            featureType: 'poi',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#93817c'}]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'geometry.fill',
-            stylers: [{color: '#a5b076'}]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#447530'}]
-          },
-          {
-            featureType: 'road',
-            elementType: 'geometry',
-            stylers: [{color: '#f5f1e6'}]
-          },
-          {
-            featureType: 'road.arterial',
-            elementType: 'geometry',
-            stylers: [{color: '#fdfcf8'}]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry',
-            stylers: [{color: '#f8c967'}]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry.stroke',
-            stylers: [{color: '#e9bc62'}]
-          },
-          {
-            featureType: 'road.highway.controlled_access',
-            elementType: 'geometry',
-            stylers: [{color: '#e98d58'}]
-          },
-          {
-            featureType: 'road.highway.controlled_access',
-            elementType: 'geometry.stroke',
-            stylers: [{color: '#db8555'}]
-          },
-          {
-            featureType: 'road.local',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#806b63'}]
-          },
-          {
-            featureType: 'transit.line',
-            elementType: 'geometry',
-            stylers: [{color: '#dfd2ae'}]
-          },
-          {
-            featureType: 'transit.line',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#8f7d77'}]
-          },
-          {
-            featureType: 'transit.line',
-            elementType: 'labels.text.stroke',
-            stylers: [{color: '#ebe3cd'}]
-          },
-          {
-            featureType: 'transit.station',
-            elementType: 'geometry',
-            stylers: [{color: '#dfd2ae'}]
-          },
-          {
-            featureType: 'water',
-            elementType: 'geometry.fill',
-            stylers: [{color: '#b9d3c2'}]
-          },
-          {
-            featureType: 'water',
-            elementType: 'labels.text.fill',
-            stylers: [{color: '#92998d'}]
-          }
-        ]
-      };
+    retro: [
+      {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
+      {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
+      {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
+      {
+        featureType: 'administrative',
+        elementType: 'geometry.stroke',
+        stylers: [{color: '#c9b2a6'}]
+      },
+      {
+        featureType: 'administrative.land_parcel',
+        elementType: 'geometry.stroke',
+        stylers: [{color: '#dcd2be'}]
+      },
+      {
+        featureType: 'administrative.land_parcel',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#ae9e90'}]
+      },
+      {
+        featureType: 'landscape.natural',
+        elementType: 'geometry',
+        stylers: [{color: '#dfd2ae'}]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'geometry',
+        stylers: [{color: '#dfd2ae'}]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#93817c'}]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry.fill',
+        stylers: [{color: '#a5b076'}]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#447530'}]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [{color: '#f5f1e6'}]
+      },
+      {
+        featureType: 'road.arterial',
+        elementType: 'geometry',
+        stylers: [{color: '#fdfcf8'}]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [{color: '#f8c967'}]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [{color: '#e9bc62'}]
+      },
+      {
+        featureType: 'road.highway.controlled_access',
+        elementType: 'geometry',
+        stylers: [{color: '#e98d58'}]
+      },
+      {
+        featureType: 'road.highway.controlled_access',
+        elementType: 'geometry.stroke',
+        stylers: [{color: '#db8555'}]
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#806b63'}]
+      },
+      {
+        featureType: 'transit.line',
+        elementType: 'geometry',
+        stylers: [{color: '#dfd2ae'}]
+      },
+      {
+        featureType: 'transit.line',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#8f7d77'}]
+      },
+      {
+        featureType: 'transit.line',
+        elementType: 'labels.text.stroke',
+        stylers: [{color: '#ebe3cd'}]
+      },
+      {
+        featureType: 'transit.station',
+        elementType: 'geometry',
+        stylers: [{color: '#dfd2ae'}]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry.fill',
+        stylers: [{color: '#b9d3c2'}]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#92998d'}]
+      }
+    ]
+  };
 
