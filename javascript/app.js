@@ -203,9 +203,15 @@
         ['Del Mar Station', 34.141808, -118.148251],
         ['Memorial Park Station', 34.147835, -118.147727],
         ['Lake Station', 34.151812, -118.131591],
-
-
-        ]],
+        ['Allen Station', 34.152395, -118.113956],
+        ['Sierra Madre Villa Station', 34.147730, -118.081368],
+        ['Arcadia Station', 34.142667, -118.029040],
+        ['Monrovia Station', 34.133050, -118.003233],
+        ['Duarte / City of Hope Station', 34.132497, -117.967519],
+        ['Irwindale Station', 34.129033, -117.932434],
+        ['Azusa Downtown Station', 34.135768, -117.906787],
+        ['APU / Citrus College Station', 34.136797, -117.891637]]],
+        //end line
         ];
 
     //add method here
@@ -407,7 +413,24 @@
     var goldMemorialPark = new google.maps.LatLng(34.147835, -118.147727);
     var goldMemorialParka = new google.maps.LatLng(34.151769, -118.145666);
     var goldLake = new google.maps.LatLng(34.151812, -118.131591);
-    
+    var goldAllen = new google.maps.LatLng(34.152395, -118.113956);
+    var goldAllena = new google.maps.LatLng(34.152467, -118.093468);
+    var goldAllenb = new google.maps.LatLng(34.147965, -118.084938);
+    var goldSierraMadreVilla = new google.maps.LatLng(34.147730, -118.081368);
+    var goldSierraMadreVillaA = new google.maps.LatLng(34.148750, -118.040354);
+    var goldArcadia = new google.maps.LatLng(34.142667, -118.029040);
+    var goldArcadiaA = new google.maps.LatLng(34.137939, -118.021037);
+    var goldMonrovia = new google.maps.LatLng(34.133050, -118.003233);
+    var goldMonroviaA = new google.maps.LatLng(34.132335, -117.999374);
+    var goldDuarteCityofHope = new google.maps.LatLng(34.132497, -117.967519);    
+    var goldDuarteCityofHopea = new google.maps.LatLng(34.132442, -117.952715);
+    var goldDuarteCityofHopeb = new google.maps.LatLng(34.128347, -117.939894);
+    var goldIrwindale = new google.maps.LatLng(34.129033, -117.932434);
+    var goldIrwindalea = new google.maps.LatLng(34.129809, -117.926867);
+    var goldAzusaDowntown = new google.maps.LatLng(34.135768, -117.906787);
+    var goldAzusaDowntowna = new google.maps.LatLng(34.136660, -117.902417);
+    var goldAzusaDowntownb = new google.maps.LatLng(34.136541, -117.894688);
+    var goldAPUCitrusCollege = new google.maps.LatLng(34.136797, -117.891637);
     
 
 
@@ -421,7 +444,11 @@
             goldHighlandPark, goldHighlandParka, goldHighlandParkb, goldHighlandParkc, 
             goldHighlandParkd, goldSouthPasadena, goldSouthPasadenaA, goldSouthPasadenaB,
             goldSouthPasadenaC, goldFillmore, goldDelMar, goldDelMara, goldMemorialPark, 
-            goldMemorialParka, goldLake],
+            goldMemorialParka, goldLake, goldAllen, goldAllena, goldAllenb, goldSierraMadreVilla,
+            goldSierraMadreVillaA, goldArcadia, goldArcadiaA, goldMonrovia, goldMonroviaA, 
+            goldDuarteCityofHope, goldDuarteCityofHopea, goldDuarteCityofHopeb, goldIrwindale,
+            goldIrwindalea, goldAzusaDowntown, goldAzusaDowntowna, goldAzusaDowntownb,
+            goldAPUCitrusCollege],
 
 
     strokeColor: "#F0AB00",
