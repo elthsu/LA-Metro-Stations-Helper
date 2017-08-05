@@ -24,7 +24,7 @@
                     type:"GET",
                     url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
                     + stations[1] + "," + stations[2] + "&"+
-                    "radius=5&unit=miles&sort=distance,asc&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
+                    "radius=5&unit=miles&sort=distance,asc&apikey=MPVkQDRzVG3aTpMq9qz7FrCoGQjCtgTE",
                     async:true,
                     dataType: "json"
                 }).done(function(json){
@@ -180,8 +180,32 @@
         ['Exposition / Bundy Station', 34.031666, -118.453036],
         ['26th Street / Bergamot Station', 34.028001, -118.469102],
         ['17th Street / Santa Monica College Station', 34.023156, -118.480391],
-        ['Downtown Santa Monica Station', 34.014019, -118.491398]]]
+        ['Downtown Santa Monica Station', 34.014019, -118.491398]]],
         //end line
+        //GOLDLINE
+        ["http://maps.google.com/mapfiles/marker_yellow.png",[
+        ['Atlantic Station', 34.033367, -118.155009],
+        ['East LA Civic Center Station', 34.033352, -118.161200],
+        ['Maravilla Station', 34.033303, -118.168146],
+        ['Indiana Station', 34.034280, -118.192164],
+        ['Soto Station', 34.043719, -118.210042],
+        ['Mariachi Plaza Station', 34.047211, -118.219646],
+        ['Pico / Aliso Station', 34.047637, -118.225904],
+        ['Little Tokyo / Arts District Station', 34.050040, -118.237899],
+        ['Union Station', 34.056051, -118.234757],
+        ['Chinatown Station', 34.063861, -118.235809],
+        ['Lincoln / Cypress Station', 34.081166, -118.220256],
+        ['Heritage Square Station', 34.087479, -118.212954],
+        ['Southwest Museum Station', 34.098404, -118.206474],
+        ['Highland Park Station', 34.111166, -118.192605],
+        ['South Pasadena Station', 34.115189, -118.157796],
+        ['Fillmore Station', 34.133474, -118.148193],
+        ['Del Mar Station', 34.141808, -118.148251],
+        ['Memorial Park Station', 34.147835, -118.147727],
+        ['Lake Station', 34.151812, -118.131591],
+
+
+        ]],
         ];
 
     //add method here
@@ -339,53 +363,72 @@
     
     expoLinePath.setMap(map);
 
-
-
-    /*var goldStations = [
-       
-        ['Union Station', 34.058946, -118.233065],
-
-      ];
-
-
-      var infoGold = [];
-
-      infoGold.length = goldStations.length;
-
-      var infowindowGold = new google.maps.InfoWindow();
-
-      var markerGold, i;
-
-    for (i = 0; i < goldStations.length; i++) { 
-      markerGold = new google.maps.Marker({
-        position: new google.maps.LatLng(goldStations[i][1], goldStations[i][2]),
-        map: map,
-        icon: "http://maps.google.com/mapfiles/marker_yellow.png"
-
-      });
-
-      google.maps.event.addListener(markerGold, 'click', (function(markerGold, i) {
-        return function() {
-          infowindowGold.setContent(infoGold[i]);
-          infowindowGold.open(map, markerGold);
-        }
-      })(markerGold, i));
-    }
-
-    var goldUnion = new google.maps.LatLng(34.058946, -118.233065);
+    var goldAtlantic = new google.maps.LatLng(34.033367, -118.155009);
+    var goldEastLACivicCenter = new google.maps.LatLng(34.033352, -118.161200);
+    var goldMiravilla = new google.maps.LatLng(34.033303, -118.168146);
+    var goldMiravillaa = new google.maps.LatLng(34.033275, -118.192183);
+    var goldIndiana = new google.maps.LatLng(34.034280, -118.192164);
+    var goldIndianaa = new google.maps.LatLng(34.035972, -118.192439);
+    var goldSoto = new google.maps.LatLng(34.043719, -118.210042);
+    var goldSotoa = new google.maps.LatLng(34.047190, -118.218483);
+    var goldMariachiPlaza = new google.maps.LatLng(34.047211, -118.219646);
+    var goldPicoAliso = new google.maps.LatLng(34.047637, -118.225904);
+    var goldPicoAlisoa = new google.maps.LatLng(34.049003, -118.237946);
+    var goldLittleTokyoArtsDistrict = new google.maps.LatLng(34.050040, -118.237899);
+    var goldLittleTokyoa = new google.maps.LatLng(34.053499, -118.237638);
+    var goldLittleTokyob = new google.maps.LatLng(34.053553, -118.235447);
+    var goldUnion = new google.maps.LatLng(34.056051, -118.234757);
+    var goldUniona = new google.maps.LatLng(34.060089, -118.233622);
+    var goldUnionb = new google.maps.LatLng(34.062209, -118.236182);
+    var goldChinatown = new google.maps.LatLng(34.063861, -118.235809);
+    var goldChinatowna = new google.maps.LatLng(34.067977, -118.233910);
+    var goldChinatownb = new google.maps.LatLng(34.071658, -118.226591);
+    var goldChinatownc = new google.maps.LatLng(34.078599, -118.223541);
+    var goldLincolnCypress = new google.maps.LatLng(34.081166, -118.220256);
+    var goldHeritageSquare = new google.maps.LatLng(34.087479, -118.212954);
+    var goldHeritageSquarea = new google.maps.LatLng(34.090127, -118.211302);
+    var goldHeritageSquareb = new google.maps.LatLng(34.092979, -118.211399);
+    var goldSouthwestMuseum = new google.maps.LatLng(34.098404, -118.206474);
+    var goldSouthwestMuseuma = new google.maps.LatLng(34.099980, -118.204870);
+    var goldSouthwestMuseumb = new google.maps.LatLng(34.104151, -118.204470);
+    var goldSouthwestMuseumc = new google.maps.LatLng(34.106116, -118.202695);
+    var goldHighlandPark = new google.maps.LatLng(34.111166, -118.192605);
+    var goldHighlandParka = new google.maps.LatLng(34.112174, -118.189312);
+    var goldHighlandParkb = new google.maps.LatLng(34.109961, -118.180116);
+    var goldHighlandParkc = new google.maps.LatLng(34.111864, -118.171037);
+    var goldHighlandParkd = new google.maps.LatLng(34.112756, -118.160881);
+    var goldSouthPasadena = new google.maps.LatLng(34.115189, -118.157796);
+    var goldSouthPasadenaA = new google.maps.LatLng(34.120827, -118.150928);
+    var goldSouthPasadenaB = new google.maps.LatLng(34.124416, -118.150492);
+    var goldSouthPasadenaC = new google.maps.LatLng(34.127066, -118.148018);
+    var goldFillmore = new google.maps.LatLng(34.133474, -118.148193);
+    var goldDelMar = new google.maps.LatLng(34.141808, -118.148251);
+    var goldDelMara = new google.maps.LatLng(34.147106, -118.148153);
+    var goldMemorialPark = new google.maps.LatLng(34.147835, -118.147727);
+    var goldMemorialParka = new google.maps.LatLng(34.151769, -118.145666);
+    var goldLake = new google.maps.LatLng(34.151812, -118.131591);
     
     
 
 
     var goldLinePath = new google.maps.Polyline({
-    path: [goldUnion],
+    path: [goldAtlantic, goldEastLACivicCenter, goldMiravilla, goldMiravillaa, goldIndiana, 
+            goldIndianaa, goldSoto, goldSotoa, goldMariachiPlaza, goldPicoAliso, goldPicoAlisoa,
+            goldLittleTokyoArtsDistrict, goldLittleTokyoa, goldLittleTokyob, goldUnion, goldUniona,
+            goldUnionb, goldChinatown, goldChinatowna, goldChinatownb, goldChinatownc,
+            goldLincolnCypress, goldHeritageSquare, goldHeritageSquarea, goldHeritageSquareb,
+            goldSouthwestMuseum, goldSouthwestMuseuma, goldSouthwestMuseumb, goldSouthwestMuseumc,
+            goldHighlandPark, goldHighlandParka, goldHighlandParkb, goldHighlandParkc, 
+            goldHighlandParkd, goldSouthPasadena, goldSouthPasadenaA, goldSouthPasadenaB,
+            goldSouthPasadenaC, goldFillmore, goldDelMar, goldDelMara, goldMemorialPark, 
+            goldMemorialParka, goldLake],
 
 
-    strokeColor: "##FFB300",
+    strokeColor: "#F0AB00",
     strokeOpacity: 0.6,
     strokeWeight: 6
     });
-    goldLinePath.setMap(map);*/
+    goldLinePath.setMap(map);
 
 
     // Set the map's style to the initial value of the selector.
