@@ -1,6 +1,7 @@
 //App Functions
 var functions = {
-
+    currentDate: moment().format().substr(0,19)+"Z",
+    weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
     populateMarkers: function(latLongArr){
 
         latLongArr.forEach(function(line,j){
@@ -17,17 +18,31 @@ var functions = {
                 map: map,
                 icon: line[0]
             });
+                /*
 
-            $.ajax({
-                
+                HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9(current)
+                LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9
+                https://app.ticketmaster.com/discovery/v2/events.json?size=100
+                &latlong=34.026809,-118.255494&radius=5&unit=miles&sort=distance,asc
+                &startDateTime=2017-08-04T23:36:03Z&endDateTime=2017-08-11T23:36:03Z
+                &apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
+
+                */
+
+        $.ajax({
+
                 type:"GET",
                 url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
-                + stations[1] + "," + stations[2] + "&"+
-                "radius=5&unit=miles&sort=distance,asc&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
+                + stations[1] + "," + stations[2]
+                + "&radius=5&unit=miles&sort=distance,asc"
+                + "&startDateTime=" + functions.currentDate
+                + "&endDateTime=" + functions.weekDate
+                + "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9",
                 async:true,
                 dataType: "json"
             }).done(function(json){
 
+                console.log(functions.current_date)
             var nearby = "";
             var j=0;
 
@@ -44,7 +59,7 @@ var functions = {
                 + "<a href=" + json._embedded.events[j].url 
                 + " target='_blank'>Purchase tickets now!</a></div><hr>");
                 j++;
-            }
+            }//end while loop
 
             info[i] = ("<div class='station'><strong>" + stations[0] 
                         + "</strong>: </div><br><hr>" + nearby);
