@@ -1,22 +1,102 @@
 //App Functions
 var functions = {
-    currentDate: moment().format().substr(0,19)+"Z",
+    currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
     weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
+    transitLines: [
+        //REDLINE
+        //https://maps.google.com/mapfiles/ms/icons/red-dot.png
+        ["Red Line","",[['Union Station',  34.055599, -118.233456],
+        ['Civic Center / Grand Park', 34.055442, -118.245244],
+        ['Pershing Square', 34.048424, -118.251584],
+        ['7th Street / Metro Center', 34.048775, -118.258615],
+        ['Westlake / MacArthur Park', 34.057220, -118.275904],
+        ['Wilshire / Vermont', 34.062539, -118.290880],
+        ['Vermont / Beverly',34.076710, -118.291938],
+        ['Vermont / Santa Monica', 34.090496, -118.292032],
+        ['Vermont / Sunset', 34.098378, -118.291433],
+        ['Hollywood / Western', 34.101498, -118.308962],
+        ['Hollywood / Vine', 34.101153, -118.325783],
+        ['Hollywood / Highland', 34.101727, -118.339255],
+        ['Universal City / Studio City', 34.139095, -118.362394],
+        ['North Hollywood', 34.168839, -118.376613]]],
+        //end line
+        //BLUELINE
+        ["Blue Line","https://maps.google.com/mapfiles/ms/icons/blue-dot.png",[
+        ['7th Street / Metro Center Station', 34.048175, -118.258915],
+        ['Pico Station', 34.040474, -118.266393],
+        ['Grand / LATTC Station', 34.032968, -118.268942],
+        ['San Pedro Station', 34.026809, -118.255494],
+        ['Washington Station', 34.019967, -118.243069],
+        ['Vernon Station', 34.003232, -118.243293],
+        ['Slausson Station', 33.988811, -118.243360],
+        ['Florence Station', 33.974084, -118.243280],
+        ['Firestone Station', 33.959591, -118.243191],
+        ['103rd Street / Watts Towers Station', 33.942542, -118.243156],
+        ['Willowbrook / Rosa Parks Station', 33.928256, -118.238049],
+        ['Compton Station', 33.897428, -118.224295],
+        ['Artesia Station', 33.876115, -118.222503],
+        ['Del Amo Station', 33.848198, -118.211015],
+        ['Wardlow Station', 33.819733, -118.195952],
+        ['Willow Station', 33.806788, -118.189763],
+        ['Pacific Coast Highway Station', 33.789401, -118.189359],
+        ['Anaheim Street Station', 33.781793, -118.189376],
+        ['5th Street Station', 33.773358, -118.189383],
+        ['1st Street Station', 33.768862, -118.189424],
+        ['Downtown Long Beach Station', 33.768043, -118.193101],
+        ['Pacific Avenue Station', 33.772253, -118.193690]]],
+        //end line
+        //PURPLELINE
+        ["Purple Line","https://maps.google.com/mapfiles/ms/icons/purple-dot.png",[
+        ['Union Station',  34.055199, -118.233456],
+        ['Civic Center / Grand Park', 34.055042, -118.245244],
+        ['Pershing Square', 34.048024, -118.251584],
+        ['7th Street / Metro Center', 34.048375, -118.258615],
+        ['Westlake / MacArthur Park', 34.056820, -118.275904],
+        ['Wilshire / Vermont', 34.062139, -118.290880],
+        ['Wilshire / Normandie',34.061608, -118.300931],
+        ['Wilshire / Western', 34.062097, -118.308847]]],
+        //end line
+        //EXPOLINE
+        ["Expo Line","https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7C10C4FF",[
+        ['7th Street / Metro Center Station', 34.048358, -118.259254],
+        ['Pico Station', 34.040656, -118.266847],
+        ['LATTC / Ortho Institute Station', 34.029264, -118.273941],
+        ['Jefferson / USC Station', 34.021968, -118.278327],
+        ['Exposition Park / USC Station', 34.018170, -118.285671],
+        ['Exposition / Vermont Station', 34.018318, -118.291802],
+        ['Exposition / Western Station', 34.018342, -118.308914],
+        ['Exposition / Crenshaw Station', 34.022722, -118.336401],
+        ['Farmdale Station', 34.023960, -118.346678],
+        ['Exposition / La Brea Station', 34.024828, -118.355144],
+        ['La Cienega / Jefferson Station', 34.026360, -118.372123],
+        ['Culver City Station', 34.027879, -118.388858],
+        ['Palms Station', 34.029293, -118.404250],
+        ['Westwood / Rancho Park Station', 34.036796, -118.424521],
+        ['Exposition / Sepulveda Station', 34.035416, -118.434290],
+        ['Exposition / Bundy Station', 34.031666, -118.453036],
+        ['26th Street / Bergamot Station', 34.028001, -118.469102],
+        ['17th Street / Santa Monica College Station', 34.023156, -118.480391],
+        ['Downtown Santa Monica Station', 34.014019, -118.491398]]]
+        //end line
+        ],
     populateMarkers: function(latLongArr){
 
         latLongArr.forEach(function(line,j){
 
+            var lineName = line[0]
             var info = [];
-            info.length = line[1].length;
+            info.length = line[2].length;
             
             var infowindow = new google.maps.InfoWindow();
             var marker, i;
-            
-            line[1].forEach(function(stations,i){
+            //do not change from i, it is same i of station index!
+            line[2].forEach(function(stations,i){
                 marker = new google.maps.Marker({
-                position: new google.maps.LatLng(stations[1], stations[2]),
-                map: map,
-                icon: line[0]
+
+                    position: new google.maps.LatLng(stations[1], stations[2]),
+                    map: map,
+                    icon: line[1]
+
             });
                 /*
 
@@ -42,31 +122,46 @@ var functions = {
                 dataType: "json"
             }).done(function(json){
 
-                console.log(functions.current_date)
             var nearby = "";
             var j=0;
 
-            while(j<json._embedded.events.length && j<10){
-                nearby+=("<div class='stuff'>"
-                +(j + 1)
-                +". " + json._embedded.events[j]._embedded.venues[0].name
-                + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
-                + json._embedded.events[j].name
-                + " - "
-                + (json._embedded.events[j].distance).toFixed(2) 
-                + "mi<br>"
-                + "<img src=" + json._embedded.events[j].images[0].url + " alt='event_img' width='115'>"
-                + "<a href=" + json._embedded.events[j].url 
-                + " target='_blank'>Purchase tickets now!</a></div><hr>");
-                j++;
-            }//end while loop
+            if(jQuery.isEmptyObject(json._embedded)){
+
+                nearby="Check again soon for more events!"
+
+            }
+            else{
+
+                while(j<json._embedded.events.length && j<10){
+
+                    nearby+=("<div class='stuff'>"
+                    +(j + 1)
+                    +". " + json._embedded.events[j]._embedded.venues[0].name
+                    + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
+                    + json._embedded.events[j].name
+                    + " - "
+                    + (json._embedded.events[j].distance).toFixed(2) 
+                    + "mi<br>"
+                    + "<img src=" + json._embedded.events[j].images[0].url
+                    + " alt='event_img' width='115' station='"
+                    + stations[0] + "' line='"
+                    + lineName + "'>"
+                    + "<a href=" + json._embedded.events[j].url 
+                    + " target='_blank'>Purchase tickets now!</a></div><hr>");
+                    j++;
+                    
+                }//end while loop
+
+            }//end if statement
+
+            
 
             info[i] = ("<div class='station'><strong>" + stations[0] 
                         + "</strong>: </div><br><hr>" + nearby);
 
             });
 
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
                     return function() {
                         infowindow.setContent(info[i]);
                         infowindow.open(map, marker);
@@ -99,86 +194,8 @@ function initMap() {
         clickableIcons: false
     });
 
-    var stations = [
-        //REDLINE
-        //https://maps.google.com/mapfiles/ms/icons/red-dot.png
-        ["",[['Union Station',  34.055599, -118.233456],
-        ['Civic Center / Grand Park', 34.055442, -118.245244],
-        ['Pershing Square', 34.048424, -118.251584],
-        ['7th Street / Metro Center', 34.048775, -118.258615],
-        ['Westlake / MacArthur Park', 34.057220, -118.275904],
-        ['Wilshire / Vermont', 34.062539, -118.290880],
-        ['Vermont / Beverly',34.076710, -118.291938],
-        ['Vermont / Santa Monica', 34.090496, -118.292032],
-        ['Vermont / Sunset', 34.098378, -118.291433],
-        ['Hollywood / Western', 34.101498, -118.308962],
-        ['Hollywood / Vine', 34.101153, -118.325783],
-        ['Hollywood / Highland', 34.101727, -118.339255],
-        ['Universal City / Studio City', 34.139095, -118.362394],
-        ['North Hollywood', 34.168839, -118.376613]]],
-        //end line
-        //BLUELINE
-        ["https://maps.google.com/mapfiles/ms/icons/blue-dot.png",[
-        ['7th Street / Metro Center Station', 34.048175, -118.258915],
-        ['Pico Station', 34.040474, -118.266393],
-        ['Grand / LATTC Station', 34.032968, -118.268942],
-        ['San Pedro Station', 34.026809, -118.255494],
-        ['Washington Station', 34.019967, -118.243069],
-        ['Vernon Station', 34.003232, -118.243293],
-        ['Slausson Station', 33.988811, -118.243360],
-        ['Florence Station', 33.974084, -118.243280],
-        ['Firestone Station', 33.959591, -118.243191],
-        ['103rd Street / Watts Towers Station', 33.942542, -118.243156],
-        ['Willowbrook / Rosa Parks Station', 33.928256, -118.238049],
-        ['Compton Station', 33.897428, -118.224295],
-        ['Artesia Station', 33.876115, -118.222503],
-        ['Del Amo Station', 33.848198, -118.211015],
-        ['Wardlow Station', 33.819733, -118.195952],
-        ['Willow Station', 33.806788, -118.189763],
-        ['Pacific Coast Highway Station', 33.789401, -118.189359],
-        ['Anaheim Street Station', 33.781793, -118.189376],
-        ['5th Street Station', 33.773358, -118.189383],
-        ['1st Street Station', 33.768862, -118.189424],
-        ['Downtown Long Beach Station', 33.768043, -118.193101],
-        ['Pacific Avenue Station', 33.772253, -118.193690]]],
-        //end line
-        //PURPLELINE
-        ["https://maps.google.com/mapfiles/ms/icons/purple-dot.png",[
-        ['Union Station',  34.055199, -118.233456],
-        ['Civic Center / Grand Park', 34.055042, -118.245244],
-        ['Pershing Square', 34.048024, -118.251584],
-        ['7th Street / Metro Center', 34.048375, -118.258615],
-        ['Westlake / MacArthur Park', 34.056820, -118.275904],
-        ['Wilshire / Vermont', 34.062139, -118.290880],
-        ['Wilshire / Normandie',34.061608, -118.300931],
-        ['Wilshire / Western', 34.062097, -118.308847]]],
-        //end line
-        //EXPOLINE
-        ["https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7C10C4FF",[
-        ['7th Street / Metro Center Station', 34.048358, -118.259254],
-        ['Pico Station', 34.040656, -118.266847],
-        ['LATTC / Ortho Institute Station', 34.029264, -118.273941],
-        ['Jefferson / USC Station', 34.021968, -118.278327],
-        ['Exposition Park / USC Station', 34.018170, -118.285671],
-        ['Exposition / Vermont Station', 34.018318, -118.291802],
-        ['Exposition / Western Station', 34.018342, -118.308914],
-        ['Exposition / Crenshaw Station', 34.022722, -118.336401],
-        ['Farmdale Station', 34.023960, -118.346678],
-        ['Exposition / La Brea Station', 34.024828, -118.355144],
-        ['La Cienega / Jefferson Station', 34.026360, -118.372123],
-        ['Culver City Station', 34.027879, -118.388858],
-        ['Palms Station', 34.029293, -118.404250],
-        ['Westwood / Rancho Park Station', 34.036796, -118.424521],
-        ['Exposition / Sepulveda Station', 34.035416, -118.434290],
-        ['Exposition / Bundy Station', 34.031666, -118.453036],
-        ['26th Street / Bergamot Station', 34.028001, -118.469102],
-        ['17th Street / Santa Monica College Station', 34.023156, -118.480391],
-        ['Downtown Santa Monica Station', 34.014019, -118.491398]]]
-        //end line
-        ];
-
     //add method here
-    functions.populateMarkers(stations);
+    functions.populateMarkers(functions.transitLines);
 
     //begin red line Polyline
     var redUnionStation = new google.maps.LatLng(34.055599, -118.233456);
@@ -340,6 +357,22 @@ var styleSelector = document.getElementById('style-selector');
 // Closes initMap function (do not remove)
 
 }
+
+//click listener to populate myEvents
+$(document).on("click",".stuff",function(){
+
+    var current = $(this).html(); 
+
+    var myEvent = $("<div>");
+    myEvent.addClass("mEvnt");
+    myEvent.attr('style',"border:black solid 1px;padding:0.5em;font-size:12px;margin-bottom:1em")
+    myEvent.html($(this).find('img').attr('station') + "  (<span>" + $(this).find('img').attr('line') + "</span>)" + "<hr>" + current)
+    myEvent.find('img').attr("width","100")
+    myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;")
+    myEvent.find('a').text("Purchase now!")
+    $("#myEvent").prepend(myEvent)
+
+});//modify for .stuff class
 
 var styles = {
     default: null,
