@@ -32,7 +32,7 @@ var functions = {
         ['Florence Station', 33.974084, -118.243280],
         ['Firestone Station', 33.959591, -118.243191],
         ['103rd Street / Watts Towers Station', 33.942542, -118.243156],
-        ['Willowbrook / Rosa Parks Station', 33.928256, -118.238049],
+        ['Willowbrook / Rosa Parks Station', 33.928256, -118.238049],//-118.238049
         ['Compton Station', 33.897428, -118.224295],
         ['Artesia Station', 33.876115, -118.222503],
         ['Del Amo Station', 33.848198, -118.211015],
@@ -76,7 +76,54 @@ var functions = {
         ['Exposition / Bundy Station', 34.031666, -118.453036],
         ['26th Street / Bergamot Station', 34.028001, -118.469102],
         ['17th Street / Santa Monica College Station', 34.023156, -118.480391],
-        ['Downtown Santa Monica Station', 34.014019, -118.491398]]]
+        ['Downtown Santa Monica Station', 34.014019, -118.491398]]],
+        //end line
+        //GOLDLINE
+        ["Gold Line", "https://maps.google.com/mapfiles/marker_yellow.png",[
+        ['Atlantic Station', 34.033367, -118.155009],
+        ['East LA Civic Center Station', 34.033352, -118.161200],
+        ['Maravilla Station', 34.033303, -118.168146],
+        ['Indiana Station', 34.034280, -118.192164],
+        ['Soto Station', 34.043719, -118.210042],
+        ['Mariachi Plaza Station', 34.047211, -118.219646],
+        ['Pico / Aliso Station', 34.047637, -118.225904],
+        ['Little Tokyo / Arts District Station', 34.050040, -118.237899],
+        ['Union Station', 34.056051, -118.234757],
+        ['Chinatown Station', 34.063861, -118.235809],
+        ['Lincoln / Cypress Station', 34.081166, -118.220256],
+        ['Heritage Square Station', 34.087479, -118.212954],
+        ['Southwest Museum Station', 34.098404, -118.206474],
+        ['Highland Park Station', 34.111166, -118.192605],
+        ['South Pasadena Station', 34.115189, -118.157796],
+        ['Fillmore Station', 34.133474, -118.148193],
+        ['Del Mar Station', 34.141808, -118.148251],
+        ['Memorial Park Station', 34.147835, -118.147727],
+        ['Lake Station', 34.151812, -118.131591],
+        ['Allen Station', 34.152395, -118.113956],
+        ['Sierra Madre Villa Station', 34.147730, -118.081368],
+        ['Arcadia Station', 34.142667, -118.029040],
+        ['Monrovia Station', 34.133050, -118.003233],
+        ['Duarte / City of Hope Station', 34.132497, -117.967519],
+        ['Irwindale Station', 34.129033, -117.932434],
+        ['Azusa Downtown Station', 34.135768, -117.906787],
+        ['APU / Citrus College Station', 34.136797, -117.891637]]],
+        //end line
+        //GREENLINE
+        ["Green Line", "https://maps.google.com/mapfiles/marker_green.png",[
+        ['Redondo Beach Station', 33.894577, -118.369161],
+        ['Douglas Station', 33.905288, -118.383232],
+        ['El Segundo Station', 33.916187, -118.386777],
+        ['Mariposa Station', 33.923288, -118.387579],
+        ['Aviation / LAX Station', 33.929612, -118.377150],
+        ['Hawthrone / Lennox Station', 33.933416, -118.351733],
+        ['Crenshaw Station', 33.925231, -118.326407],
+        ['Vermont / Athens Station', 33.928660, -118.291698],
+        ['Harbor Freeway Station', 33.928681, -118.281095],
+        ['Avalon Station', 33.927490, -118.265171],
+        ['Willowbrook Station', 33.928240, -118.238031],
+        ['Long Beach Boulevard Station', 33.925011, -118.210230],
+        ['Lakewood Boulevard Station', 33.913066, -118.140266],
+        ['Norwalk Station', 33.914116, -118.104085]]],
         //end line
         ],
     populateMarkers: function(latLongArr){
@@ -135,8 +182,8 @@ var functions = {
                 while(j<json._embedded.events.length && j<10){
 
                     nearby+=("<div class='stuff'>"
-                    +(j + 1)
-                    +". " + json._embedded.events[j]._embedded.venues[0].name
+                    +"<span class='position'>" + (j + 1)
+                    +". </span>" + json._embedded.events[j]._embedded.venues[0].name
                     + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
                     + json._embedded.events[j].name
                     + " - "
@@ -349,6 +396,162 @@ function initMap() {
 
     expoLinePath.setMap(map);
 
+        var goldAtlantic = new google.maps.LatLng(34.033367, -118.155009);
+    var goldEastLACivicCenter = new google.maps.LatLng(34.033352, -118.161200);
+    var goldMiravilla = new google.maps.LatLng(34.033303, -118.168146);
+    var goldMiravillaa = new google.maps.LatLng(34.033275, -118.192183);
+    var goldIndiana = new google.maps.LatLng(34.034280, -118.192164);
+    var goldIndianaa = new google.maps.LatLng(34.035972, -118.192439);
+    var goldSoto = new google.maps.LatLng(34.043719, -118.210042);
+    var goldSotoa = new google.maps.LatLng(34.047190, -118.218483);
+    var goldMariachiPlaza = new google.maps.LatLng(34.047211, -118.219646);
+    var goldPicoAliso = new google.maps.LatLng(34.047637, -118.225904);
+    var goldPicoAlisoa = new google.maps.LatLng(34.049003, -118.237946);
+    var goldLittleTokyoArtsDistrict = new google.maps.LatLng(34.050040, -118.237899);
+    var goldLittleTokyoa = new google.maps.LatLng(34.053499, -118.237638);
+    var goldLittleTokyob = new google.maps.LatLng(34.053553, -118.235447);
+    var goldUnion = new google.maps.LatLng(34.056051, -118.234757);
+    var goldUniona = new google.maps.LatLng(34.060089, -118.233622);
+    var goldUnionb = new google.maps.LatLng(34.062209, -118.236182);
+    var goldChinatown = new google.maps.LatLng(34.063861, -118.235809);
+    var goldChinatowna = new google.maps.LatLng(34.067977, -118.233910);
+    var goldChinatownb = new google.maps.LatLng(34.071658, -118.226591);
+    var goldChinatownc = new google.maps.LatLng(34.078599, -118.223541);
+    var goldLincolnCypress = new google.maps.LatLng(34.081166, -118.220256);
+    var goldHeritageSquare = new google.maps.LatLng(34.087479, -118.212954);
+    var goldHeritageSquarea = new google.maps.LatLng(34.090127, -118.211302);
+    var goldHeritageSquareb = new google.maps.LatLng(34.092979, -118.211399);
+    var goldSouthwestMuseum = new google.maps.LatLng(34.098404, -118.206474);
+    var goldSouthwestMuseuma = new google.maps.LatLng(34.099980, -118.204870);
+    var goldSouthwestMuseumb = new google.maps.LatLng(34.104151, -118.204470);
+    var goldSouthwestMuseumc = new google.maps.LatLng(34.106116, -118.202695);
+    var goldHighlandPark = new google.maps.LatLng(34.111166, -118.192605);
+    var goldHighlandParka = new google.maps.LatLng(34.112174, -118.189312);
+    var goldHighlandParkb = new google.maps.LatLng(34.109961, -118.180116);
+    var goldHighlandParkc = new google.maps.LatLng(34.111864, -118.171037);
+    var goldHighlandParkd = new google.maps.LatLng(34.112756, -118.160881);
+    var goldSouthPasadena = new google.maps.LatLng(34.115189, -118.157796);
+    var goldSouthPasadenaA = new google.maps.LatLng(34.120827, -118.150928);
+    var goldSouthPasadenaB = new google.maps.LatLng(34.124416, -118.150492);
+    var goldSouthPasadenaC = new google.maps.LatLng(34.127066, -118.148018);
+    var goldFillmore = new google.maps.LatLng(34.133474, -118.148193);
+    var goldDelMar = new google.maps.LatLng(34.141808, -118.148251);
+    var goldDelMara = new google.maps.LatLng(34.147106, -118.148153);
+    var goldMemorialPark = new google.maps.LatLng(34.147835, -118.147727);
+    var goldMemorialParka = new google.maps.LatLng(34.151769, -118.145666);
+    var goldLake = new google.maps.LatLng(34.151812, -118.131591);
+    var goldAllen = new google.maps.LatLng(34.152395, -118.113956);
+    var goldAllena = new google.maps.LatLng(34.152467, -118.093468);
+    var goldAllenb = new google.maps.LatLng(34.147965, -118.084938);
+    var goldSierraMadreVilla = new google.maps.LatLng(34.147730, -118.081368);
+    var goldSierraMadreVillaA = new google.maps.LatLng(34.148750, -118.040354);
+    var goldArcadia = new google.maps.LatLng(34.142667, -118.029040);
+    var goldArcadiaA = new google.maps.LatLng(34.137939, -118.021037);
+    var goldMonrovia = new google.maps.LatLng(34.133050, -118.003233);
+    var goldMonroviaA = new google.maps.LatLng(34.132335, -117.999374);
+    var goldDuarteCityofHope = new google.maps.LatLng(34.132497, -117.967519);    
+    var goldDuarteCityofHopea = new google.maps.LatLng(34.132442, -117.952715);
+    var goldDuarteCityofHopeb = new google.maps.LatLng(34.128347, -117.939894);
+    var goldIrwindale = new google.maps.LatLng(34.129033, -117.932434);
+    var goldIrwindalea = new google.maps.LatLng(34.129809, -117.926867);
+    var goldAzusaDowntown = new google.maps.LatLng(34.135768, -117.906787);
+    var goldAzusaDowntowna = new google.maps.LatLng(34.136660, -117.902417);
+    var goldAzusaDowntownb = new google.maps.LatLng(34.136541, -117.894688);
+    var goldAPUCitrusCollege = new google.maps.LatLng(34.136797, -117.891637);
+    
+
+
+    var goldLinePath = new google.maps.Polyline({
+    path: [goldAtlantic, goldEastLACivicCenter, goldMiravilla, goldMiravillaa, goldIndiana, 
+            goldIndianaa, goldSoto, goldSotoa, goldMariachiPlaza, goldPicoAliso, goldPicoAlisoa,
+            goldLittleTokyoArtsDistrict, goldLittleTokyoa, goldLittleTokyob, goldUnion, goldUniona,
+            goldUnionb, goldChinatown, goldChinatowna, goldChinatownb, goldChinatownc,
+            goldLincolnCypress, goldHeritageSquare, goldHeritageSquarea, goldHeritageSquareb,
+            goldSouthwestMuseum, goldSouthwestMuseuma, goldSouthwestMuseumb, goldSouthwestMuseumc,
+            goldHighlandPark, goldHighlandParka, goldHighlandParkb, goldHighlandParkc, 
+            goldHighlandParkd, goldSouthPasadena, goldSouthPasadenaA, goldSouthPasadenaB,
+            goldSouthPasadenaC, goldFillmore, goldDelMar, goldDelMara, goldMemorialPark, 
+            goldMemorialParka, goldLake, goldAllen, goldAllena, goldAllenb, goldSierraMadreVilla,
+            goldSierraMadreVillaA, goldArcadia, goldArcadiaA, goldMonrovia, goldMonroviaA, 
+            goldDuarteCityofHope, goldDuarteCityofHopea, goldDuarteCityofHopeb, goldIrwindale,
+            goldIrwindalea, goldAzusaDowntown, goldAzusaDowntowna, goldAzusaDowntownb,
+            goldAPUCitrusCollege],
+
+
+    strokeColor: "#F0AB00",
+    strokeOpacity: 0.6,
+    strokeWeight: 6
+    });
+    goldLinePath.setMap(map);
+
+    var greenRedondoBeach = new google.maps.LatLng(33.894577, -118.369161);
+    var greenDouglas = new google.maps.LatLng(33.905288, -118.383232);
+    var greenDouglasa = new google.maps.LatLng(33.907906, -118.385297);
+    var greenDouglasb = new google.maps.LatLng(33.915151, -118.385507);
+    var greenElSegundo = new google.maps.LatLng(33.916187, -118.386777);
+    var greenElSegundoa = new google.maps.LatLng(33.917019, -118.387490);
+    var greenMariposa = new google.maps.LatLng(33.923288, -118.387579);
+    var greenMariposaA = new google.maps.LatLng(33.926931, -118.387512);
+    var greenMariposaB = new google.maps.LatLng(33.928132, -118.386487);
+    var greenMariposaC = new google.maps.LatLng(33.929593, -118.382298);
+    var greenAviationLAX = new google.maps.LatLng(33.929612, -118.377150);
+    var greenAviationLAXa = new google.maps.LatLng(33.929643, -118.376136);
+    var greenAviationLAXb = new google.maps.LatLng(33.929940, -118.374392);
+    var greenAviationLAXc = new google.maps.LatLng(33.930044, -118.368240);
+    var greenAviationLAXd = new google.maps.LatLng(33.933494, -118.355953);
+    var greenAviationLAXe = new google.maps.LatLng(33.933649, -118.353648);
+    var greenHawthroneLennox = new google.maps.LatLng(33.933416, -118.351733);
+    var greenHawthroneLennoxa = new google.maps.LatLng(33.932176, -118.347652);
+    var greenHawthroneLennoxb = new google.maps.LatLng(33.925613, -118.337243);
+    var greenHawthroneLennoxc = new google.maps.LatLng(33.924863, -118.333802);
+    var greenCrenshaw = new google.maps.LatLng(33.925231, -118.326407);
+    var greenCrenshawa = new google.maps.LatLng(33.925464, -118.321448);
+    var greenCrenshawb = new google.maps.LatLng(33.925500, -118.310623);
+    var greenCrenshawc = new google.maps.LatLng(33.928437, -118.295711);
+    var greenVermontAthens = new google.maps.LatLng(33.928660, -118.291698);
+    var greenHarborFreeway = new google.maps.LatLng(33.928681, -118.281095);
+    var greenHarborFreewaya = new google.maps.LatLng(33.928649, -118.277262);
+    var greenHarborFreewayb = new google.maps.LatLng(33.927490, -118.270582);
+    var greenAvalon = new google.maps.LatLng(33.927490, -118.265171);
+    var greenAvalona = new google.maps.LatLng(33.927522, -118.258760);
+    var greenAvalonb = new google.maps.LatLng(33.928612, -118.250109);
+    var greenAvalonc = new google.maps.LatLng(33.928761, -118.246980);
+    var greenWillowbrook = new google.maps.LatLng(33.928240, -118.238031);
+    var greenWillowbrooka = new google.maps.LatLng(33.928018, -118.233320);
+    var greenWillowbrookb = new google.maps.LatLng(33.929660, -118.224301);
+    var greenWillowbrookc = new google.maps.LatLng(33.929556, -118.221846);
+    var greenWillowbrookd = new google.maps.LatLng(33.928967, -118.219307);
+    var greenLongBeachBoulevard = new google.maps.LatLng(33.925011, -118.210230);
+    var greenLongBeachBoulevarda = new google.maps.LatLng(33.916693, -118.191206);
+    var greenLongBeachBoulevardb = new google.maps.LatLng(33.911580, -118.176244);
+    var greenLongBeachBoulevardc = new google.maps.LatLng(33.911098, -118.168754);
+    var greenLongBeachBoulevardd = new google.maps.LatLng(33.912941, -118.148264);
+    var greenLakewoodBoulevard = new google.maps.LatLng(33.913066, -118.140266);
+    var greenNorwalk = new google.maps.LatLng(33.914116, -118.104085);
+
+    
+
+
+    var greenLinePath = new google.maps.Polyline({
+    path:  [greenRedondoBeach, greenDouglas, greenDouglasa, greenDouglasb, greenElSegundo,
+            greenElSegundoa, greenMariposa, greenMariposaA, greenMariposaB, greenMariposaC,
+            greenAviationLAX, greenAviationLAXa, greenAviationLAXb, greenAviationLAXc,
+            greenAviationLAXd, greenAviationLAXe, greenHawthroneLennox, greenHawthroneLennoxa,
+            greenHawthroneLennoxb, greenHawthroneLennoxc, greenCrenshaw, greenCrenshawa,
+            greenCrenshawb, greenCrenshawc, greenVermontAthens, greenHarborFreeway,
+            greenHarborFreewaya, greenHarborFreewayb, greenAvalon, greenAvalona, greenAvalonb,
+            greenAvalonc, greenWillowbrook, greenWillowbrooka, greenWillowbrookb, 
+            greenWillowbrookc, greenWillowbrookd, greenLongBeachBoulevard, 
+            greenLongBeachBoulevarda, greenLongBeachBoulevardb, greenLongBeachBoulevardc,
+            greenLongBeachBoulevardd, greenLakewoodBoulevard, greenNorwalk],
+
+
+    strokeColor: "#61C250",
+    strokeOpacity: 0.6,
+    strokeWeight: 6
+    });
+    greenLinePath.setMap(map);
+
 // Set the map's style to the initial value of the selector.
 var styleSelector = document.getElementById('style-selector');
     map.setOptions({styles: styles[styleSelector.value]});
@@ -365,12 +568,13 @@ $(document).on("click",".stuff",function(){
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.attr('style',"border:black solid 1px;padding:0.5em;font-size:12px;margin-bottom:1em")
-    myEvent.html($(this).find('img').attr('station') + "  (<span>" + $(this).find('img').attr('line') + "</span>)" + "<hr>" + current)
-    myEvent.find('img').attr("width","100")
-    myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;")
-    myEvent.find('a').text("Purchase now!")
-    $("#myEvent").prepend(myEvent)
+    myEvent.attr('style',"border:black solid 1px;padding:0.5em;font-size:12px;margin-bottom:1em");
+    myEvent.html($(this).find('img').attr('station') + "  (<span>" + $(this).find('img').attr('line') + "</span>)" + "<hr>" + current);
+    myEvent.find('img').attr("width","100");
+    myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
+    myEvent.find('a').text("Purchase now!");
+    myEvent.find('.position').text("");
+    $("#myEvent").prepend(myEvent);
 
 });//modify for .stuff class
 
