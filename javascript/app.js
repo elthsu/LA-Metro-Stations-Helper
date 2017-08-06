@@ -162,7 +162,7 @@ var functions = {
 
         $.when(
             $.ajax({type:"GET",
-                    url:"http://api.worldweatheronline.com/premium/v1/weather.ashx?"
+                    url:"https://api.worldweatheronline.com/premium/v1/weather.ashx?"
                     + "key=b0c790597a9545408c072433170408"
                     + "&q=" + stations[1] + "," + stations[2] + "&num_of_days=2&tp=3&format=json",
                     async:true,
