@@ -109,13 +109,13 @@
         var stations = [
         //REDLINE
         //https://maps.google.com/mapfiles/ms/icons/red-dot.png
-        ["",[['Union Station',  34.055599, -118.233456],
+        ["",[['Union Station', 34.055599, -118.233456],
         ['Civic Center / Grand Park', 34.055442, -118.245244],
         ['Pershing Square', 34.048424, -118.251584],
         ['7th Street / Metro Center', 34.048775, -118.258615],
         ['Westlake / MacArthur Park', 34.057220, -118.275904],
         ['Wilshire / Vermont', 34.062539, -118.290880],
-        ['Vermont / Beverly',34.076710, -118.291938],
+        ['Vermont / Beverly', 34.076710, -118.291938],
         ['Vermont / Santa Monica', 34.090496, -118.292032],
         ['Vermont / Sunset', 34.098378, -118.291433],
         ['Hollywood / Western', 34.101498, -118.308962],
@@ -151,7 +151,7 @@
         //end line
         //PURPLELINE
         ["https://maps.google.com/mapfiles/ms/icons/purple-dot.png",[
-        ['Union Station',  34.055199, -118.233456],
+        ['Union Station', 34.055199, -118.233456],
         ['Civic Center / Grand Park', 34.055042, -118.245244],
         ['Pershing Square', 34.048024, -118.251584],
         ['7th Street / Metro Center', 34.048375, -118.258615],
@@ -183,7 +183,7 @@
         ['Downtown Santa Monica Station', 34.014019, -118.491398]]],
         //end line
         //GOLDLINE
-        ["http://maps.google.com/mapfiles/marker_yellow.png",[
+        ["https://maps.google.com/mapfiles/marker_yellow.png",[
         ['Atlantic Station', 34.033367, -118.155009],
         ['East LA Civic Center Station', 34.033352, -118.161200],
         ['Maravilla Station', 34.033303, -118.168146],
@@ -211,6 +211,27 @@
         ['Irwindale Station', 34.129033, -117.932434],
         ['Azusa Downtown Station', 34.135768, -117.906787],
         ['APU / Citrus College Station', 34.136797, -117.891637]]],
+        //end line
+        //GREENLINE
+        ["https://maps.google.com/mapfiles/marker_green.png",[
+        ['Redondo Beach Station', 33.894577, -118.369161],
+        ['Douglas Station', 33.905288, -118.383232],
+        ['El Segundo Station', 33.916187, -118.386777],
+        ['Mariposa Station', 33.923288, -118.387579],
+        ['Aviation / LAX Station', 33.929612, -118.377150],
+        ['Hawthrone / Lennox Station', 33.933416, -118.351733],
+        ['Crenshaw Station', 33.925231, -118.326407],
+        ['Vermont / Athens Station', 33.928660, -118.291698],
+        ['Harbor Freeway Station', 33.928681, -118.281095],
+        ['Avalon Station', 33.927490, -118.265171],
+        ['Willowbrook Station', 33.928240, -118.238031],
+        ['Long Beach Boulevard Station', 33.925011, -118.210230],
+        ['Lakewood Boulevard Station', 33.913066, -118.140266],
+        ['Norwalk Station', 33.914116, -118.104085]
+
+
+
+        ]],
         //end line
         ];
 
@@ -456,6 +477,74 @@
     strokeWeight: 6
     });
     goldLinePath.setMap(map);
+
+    var greenRedondoBeach = new google.maps.LatLng(33.894577, -118.369161);
+    var greenDouglas = new google.maps.LatLng(33.905288, -118.383232);
+    var greenDouglasa = new google.maps.LatLng(33.907906, -118.385297);
+    var greenDouglasb = new google.maps.LatLng(33.915151, -118.385507);
+    var greenElSegundo = new google.maps.LatLng(33.916187, -118.386777);
+    var greenElSegundoa = new google.maps.LatLng(33.917019, -118.387490);
+    var greenMariposa = new google.maps.LatLng(33.923288, -118.387579);
+    var greenMariposaA = new google.maps.LatLng(33.926931, -118.387512);
+    var greenMariposaB = new google.maps.LatLng(33.928132, -118.386487);
+    var greenMariposaC = new google.maps.LatLng(33.929593, -118.382298);
+    var greenAviationLAX = new google.maps.LatLng(33.929612, -118.377150);
+    var greenAviationLAXa = new google.maps.LatLng(33.929643, -118.376136);
+    var greenAviationLAXb = new google.maps.LatLng(33.929940, -118.374392);
+    var greenAviationLAXc = new google.maps.LatLng(33.930044, -118.368240);
+    var greenAviationLAXd = new google.maps.LatLng(33.933494, -118.355953);
+    var greenAviationLAXe = new google.maps.LatLng(33.933649, -118.353648);
+    var greenHawthroneLennox = new google.maps.LatLng(33.933416, -118.351733);
+    var greenHawthroneLennoxa = new google.maps.LatLng(33.932176, -118.347652);
+    var greenHawthroneLennoxb = new google.maps.LatLng(33.925613, -118.337243);
+    var greenHawthroneLennoxc = new google.maps.LatLng(33.924863, -118.333802);
+    var greenCrenshaw = new google.maps.LatLng(33.925231, -118.326407);
+    var greenCrenshawa = new google.maps.LatLng(33.925464, -118.321448);
+    var greenCrenshawb = new google.maps.LatLng(33.925500, -118.310623);
+    var greenCrenshawc = new google.maps.LatLng(33.928437, -118.295711);
+    var greenVermontAthens = new google.maps.LatLng(33.928660, -118.291698);
+    var greenHarborFreeway = new google.maps.LatLng(33.928681, -118.281095);
+    var greenHarborFreewaya = new google.maps.LatLng(33.928649, -118.277262);
+    var greenHarborFreewayb = new google.maps.LatLng(33.927490, -118.270582);
+    var greenAvalon = new google.maps.LatLng(33.927490, -118.265171);
+    var greenAvalona = new google.maps.LatLng(33.927522, -118.258760);
+    var greenAvalonb = new google.maps.LatLng(33.928612, -118.250109);
+    var greenAvalonc = new google.maps.LatLng(33.928761, -118.246980);
+    var greenWillowbrook = new google.maps.LatLng(33.928240, -118.238031);
+    var greenWillowbrooka = new google.maps.LatLng(33.928018, -118.233320);
+    var greenWillowbrookb = new google.maps.LatLng(33.929660, -118.224301);
+    var greenWillowbrookc = new google.maps.LatLng(33.929556, -118.221846);
+    var greenWillowbrookd = new google.maps.LatLng(33.928967, -118.219307);
+    var greenLongBeachBoulevard = new google.maps.LatLng(33.925011, -118.210230);
+    var greenLongBeachBoulevarda = new google.maps.LatLng(33.916693, -118.191206);
+    var greenLongBeachBoulevardb = new google.maps.LatLng(33.911580, -118.176244);
+    var greenLongBeachBoulevardc = new google.maps.LatLng(33.911098, -118.168754);
+    var greenLongBeachBoulevardd = new google.maps.LatLng(33.912941, -118.148264);
+    var greenLakewoodBoulevard = new google.maps.LatLng(33.913066, -118.140266);
+    var greenNorwalk = new google.maps.LatLng(33.914116, -118.104085);
+
+    
+
+
+    var greenLinePath = new google.maps.Polyline({
+    path:  [greenRedondoBeach, greenDouglas, greenDouglasa, greenDouglasb, greenElSegundo,
+            greenElSegundoa, greenMariposa, greenMariposaA, greenMariposaB, greenMariposaC,
+            greenAviationLAX, greenAviationLAXa, greenAviationLAXb, greenAviationLAXc,
+            greenAviationLAXd, greenAviationLAXe, greenHawthroneLennox, greenHawthroneLennoxa,
+            greenHawthroneLennoxb, greenHawthroneLennoxc, greenCrenshaw, greenCrenshawa,
+            greenCrenshawb, greenCrenshawc, greenVermontAthens, greenHarborFreeway,
+            greenHarborFreewaya, greenHarborFreewayb, greenAvalon, greenAvalona, greenAvalonb,
+            greenAvalonc, greenWillowbrook, greenWillowbrooka, greenWillowbrookb, 
+            greenWillowbrookc, greenWillowbrookd, greenLongBeachBoulevard, 
+            greenLongBeachBoulevarda, greenLongBeachBoulevardb, greenLongBeachBoulevardc,
+            greenLongBeachBoulevardd, greenLakewoodBoulevard, greenNorwalk],
+
+
+    strokeColor: "#61C250",
+    strokeOpacity: 0.6,
+    strokeWeight: 6
+    });
+    greenLinePath.setMap(map);
 
 
     // Set the map's style to the initial value of the selector.
