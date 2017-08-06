@@ -1,5 +1,6 @@
 //App Functions
 var functions = {
+    weather: "",
     currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
     weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
     transitLines: [
@@ -147,6 +148,7 @@ var functions = {
             });
                 /*
 
+                http://api.worldweatheronline.com/premium/v1/weather.ashx?key=b0c790597a9545408c072433170408&q=34.0555892,-118.2335296&num_of_days=2&tp=3&format=json
                 HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9(current)
                 LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9
                 https://app.ticketmaster.com/discovery/v2/events.json?size=100
@@ -156,57 +158,66 @@ var functions = {
 
                 */
 
-        $.ajax({
+        //sync ajax calls
 
-                type:"GET",
-                url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
-                + stations[1] + "," + stations[2]
-                + "&radius=5&unit=miles&sort=distance,asc"
-                + "&startDateTime=" + functions.currentDate
-                + "&endDateTime=" + functions.weekDate
-                + "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9",
-                async:true,
-                dataType: "json"
-            }).done(function(json){
+        $.when(
+            $.ajax({type:"GET",
+                    url:"http://api.worldweatheronline.com/premium/v1/weather.ashx?"
+                    + "key=b0c790597a9545408c072433170408"
+                    + "&q=" + stations[1] + "," + stations[2] + "&num_of_days=2&tp=3&format=json",
+                    async:true,
+                    dataType: "json"}),
+            $.ajax({type:"GET",
+                    url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
+                    + stations[1] + "," + stations[2]
+                    + "&radius=5&unit=miles&sort=distance,asc"
+                    + "&startDateTime=" + functions.currentDate
+                    + "&endDateTime=" + functions.weekDate
+                    + "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9",
+                    async:true,
+                    dataType: "json"})).then(function(resp1, resp2) {
+                        console.log(resp1)
+                        console.log(resp2)
 
-            var nearby = "";
-            var j=0;
+                        var nearby = "";
+                        var j=0;
 
-            if(jQuery.isEmptyObject(json._embedded)){
+                        functions.weather = "Local weather: " + resp1[0].data.weather[0].maxtempF + "H/ " + resp1[0].data.weather[0].mintempF + "L";
+//begin   
+    
+                        if(jQuery.isEmptyObject(resp2[0]._embedded)){
 
-                nearby="Check again soon for more events!"
+                            nearby="Check again soon for more events!"
 
-            }
-            else{
+                        }
+                        else{
 
-                while(j<json._embedded.events.length && j<10){
+                            while(j<resp2[0]._embedded.events.length && j<10){
 
-                    nearby+=("<div class='stuff'>"
-                    +"<span class='position'>" + (j + 1)
-                    +". </span>" + json._embedded.events[j]._embedded.venues[0].name
-                    + " (" + json._embedded.events[j].classifications[0].segment.name + ")<br>"
-                    + json._embedded.events[j].name
-                    + " - "
-                    + (json._embedded.events[j].distance).toFixed(2) 
-                    + "mi<br>"
-                    + "<img src=" + json._embedded.events[j].images[0].url
-                    + " alt='event_img' width='115' station='"
-                    + stations[0] + "' line='"
-                    + lineName + "'>"
-                    + "<a href=" + json._embedded.events[j].url 
-                    + " target='_blank'>Purchase tickets now!</a></div><hr>");
-                    j++;
-                    
-                }//end while loop
+                                nearby+=("<div class='stuff'>"
+                                +"<span class='position'>" + (j + 1)
+                                +". </span>" + resp2[0]._embedded.events[j]._embedded.venues[0].name
+                                + " (" + resp2[0]._embedded.events[j].classifications[0].segment.name + ")<br>"
+                                + resp2[0]._embedded.events[j].name
+                                + " - "
+                                + (resp2[0]._embedded.events[j].distance).toFixed(2) 
+                                + "mi<br>"
+                                + "<img src=" + resp2[0]._embedded.events[j].images[0].url
+                                + " alt='event_img' width='115' station='"
+                                + stations[0] + "' line='"
+                                + lineName + "'>"
+                                + "<a href=" + resp2[0]._embedded.events[j].url 
+                                + " target='_blank'>Purchase tickets now!</a></div><hr>");
+                                j++;                    
+                            }//end while loop
+                        }//end if statement
 
-            }//end if statement
+                        info[i] = ("<div class='station'><strong>" + stations[0] 
+                        + "</strong>: </div><div class='weather'>" + functions.weather + "</div><hr>" + nearby);
 
-            
+//end 
 
-            info[i] = ("<div class='station'><strong>" + stations[0] 
-                        + "</strong>: </div><br><hr>" + nearby);
-
-            });
+        });
 
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                     return function() {
@@ -214,9 +225,9 @@ var functions = {
                         infowindow.open(map, marker);
                     }
                 })(marker, i));
-            });
+            });//end inner forEach loop
 
-        });//end for loop
+        });//end outer forEach loop
 
     },//end populate_markers method
 
@@ -568,7 +579,6 @@ $(document).on("click",".stuff",function(){
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.attr('style',"border:black solid 1px;padding:0.5em;font-size:12px;margin-bottom:1em");
     myEvent.html($(this).find('img').attr('station') + "  (<span>" + $(this).find('img').attr('line') + "</span>)" + "<hr>" + current);
     myEvent.find('img').attr("width","100");
     myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");

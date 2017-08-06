@@ -10,9 +10,28 @@ html, body {
 	background-color: #eee;
 }
 
+/*NEW CSS*/
 .stuff:hover{
 	background:#E0E0E0;
 }
+
+
+
+.weather{
+	 border:#40C0FF solid 1px;
+	 text-align:center;
+	 margin-bottom:-15px;
+	 margin-top:10px;
+}
+
+.mEvnt{
+	border:black solid 1px;
+	padding:0.5em;
+	font-size:12px;
+	margin-bottom:1em;
+}
+
+/*NEW CSS*/
 
 .container {
 	height: 80%;
