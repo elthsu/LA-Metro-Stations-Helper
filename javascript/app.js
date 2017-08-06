@@ -74,10 +74,25 @@
                             infowindow.setContent(info[i]);
                             infowindow.open(map, marker);
                         }
+
+
                     })(marker, i));
+
+                    marker.addListener('click', function() {
+                    map.setZoom(16);
+                    map.setCenter(marker.getPosition());
+                    var styleSelector = document.getElementById('style-selector');
+                    map.setOptions({styles: styles["retro"],
+                                draggable: false,
+                                disableDoubleClickZoom: true
+                            }); 
+                    });
+
                 });
 
             });//end for loop
+
+
 
         },//end populate_markers method
 
@@ -549,9 +564,7 @@
 
     // Set the map's style to the initial value of the selector.
     var styleSelector = document.getElementById('style-selector');
-        map.setOptions({styles: styles[styleSelector.value]});
-
-
+    map.setOptions({styles: styles[styleSelector.value]});
     
     // Closes initMap function (do not remove)
 
