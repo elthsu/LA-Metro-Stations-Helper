@@ -162,9 +162,8 @@ var functions = {
 
         $.when(
             $.ajax({type:"GET",
-                    url:"https://api.worldweatheronline.com/premium/v1/weather.ashx?"
-                    + "key=b0c790597a9545408c072433170408"
-                    + "&q=" + stations[1] + "," + stations[2] + "&num_of_days=2&tp=3&format=json",
+                    url:"https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='("
+                    + stations[1] + "," + stations[2] + ")') and u='f'&format=json",
                     async:true,
                     dataType: "json"}),
             $.ajax({type:"GET",
@@ -176,13 +175,16 @@ var functions = {
                     + "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9",
                     async:true,
                     dataType: "json"})).then(function(resp1, resp2) {
-                        console.log(resp1)
-                        console.log(resp2)
+                        //console.log(resp1)
+                        //console.log(resp2)
 
                         var nearby = "";
                         var j=0;
 
-                        functions.weather = "Local weather: " + resp1[0].data.weather[0].maxtempF + "H/ " + resp1[0].data.weather[0].mintempF + "L";
+                        functions.weather = "Local weather: "
+                        + resp1[0].query.results.channel.item.forecast[0].high + "H/ " 
+                        + resp1[0].query.results.channel.item.forecast[0].low + "L/"
+                        + resp1[0].query.results.channel.item.forecast[0].text;
 //begin   
     
                         if(jQuery.isEmptyObject(resp2[0]._embedded)){
@@ -197,7 +199,9 @@ var functions = {
                                 nearby+=("<div class='stuff'>"
                                 +"<span class='position'>" + (j + 1)
                                 +". </span>" + resp2[0]._embedded.events[j]._embedded.venues[0].name
-                                + " (" + resp2[0]._embedded.events[j].classifications[0].segment.name + ")<br>"
+                                + " (" + resp2[0]._embedded.events[j].classifications[0].segment.name + ")<span id='eventDate'> - "
+                                + resp2[0]._embedded.events[j].dates.start.localDate
+                                +"</span><br>"
                                 + resp2[0]._embedded.events[j].name
                                 + " - "
                                 + (resp2[0]._embedded.events[j].distance).toFixed(2) 
@@ -579,7 +583,9 @@ $(document).on("click",".stuff",function(){
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.html($(this).find('img').attr('station') + "  (<span>" + $(this).find('img').attr('line') + "</span>)" + "<hr>" + current);
+    myEvent.html($(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)"
+    + "<hr>" + current); 
+    myEvent.find('#eventDate').text().replace("- ","<br>");
     myEvent.find('img').attr("width","100");
     myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
     myEvent.find('a').text("Purchase now!");

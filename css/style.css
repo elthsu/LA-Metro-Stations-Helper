@@ -15,6 +15,10 @@ html, body {
 	background:#E0E0E0;
 }
 
+#myEvent{
+	height:91%;
+	overflow:auto;
+}
 
 
 .weather{
@@ -115,6 +119,13 @@ footer p {
 }
 
 @media screen and (max-width: 768px) {
+	/*new CSS*/
+
+	#myEvent{
+		height:82.5%;
+	}
+
+	/*END NEW*/
 	.col-sm-3, .col-sm-9{
 		height: 50%;
 		min-height: 50%;
