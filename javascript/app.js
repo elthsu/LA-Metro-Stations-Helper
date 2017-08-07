@@ -1,6 +1,7 @@
 //App Functions
 var functions = {
     weather: "",
+    info: "",
     currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
     weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
     transitLines: [
@@ -131,7 +132,7 @@ var functions = {
 
         latLongArr.forEach(function(line,j){
 
-            var lineName = line[0]
+            var lineName = line[0];
             var info = [];
             info.length = line[2].length;
             
@@ -145,12 +146,32 @@ var functions = {
                     map: map,
                     icon: line[1]
 
+                    });
+
+
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                            return function() {
+                                console.log(lineName);
+                                console.log(stations[0]);
+                                console.log(stations[1]);
+                                console.log(stations[2]);
+                                functions.addInfo(stations[0],stations[1],stations[2],lineName).then(function(){
+                                    console.log(functions.info);
+                                    infowindow.setContent(functions.info);
+                                    infowindow.open(map, marker);
+                                });
+
+                            }
+                    })(marker, i));
+
+                });
             });
+
                 /*
 
                 http://api.worldweatheronline.com/premium/v1/weather.ashx?key=b0c790597a9545408c072433170408&q=34.0555892,-118.2335296&num_of_days=2&tp=3&format=json
-                HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9(current)
-                LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9
+                HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
+                LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9(current)
                 https://app.ticketmaster.com/discovery/v2/events.json?size=100
                 &latlong=34.026809,-118.255494&radius=5&unit=miles&sort=distance,asc
                 &startDateTime=2017-08-04T23:36:03Z&endDateTime=2017-08-11T23:36:03Z
@@ -160,19 +181,26 @@ var functions = {
 
         //sync ajax calls
 
-        $.when(
+        
+
+    },//end populate_markers method
+
+    addInfo: function(stations,lat,long,line){
+                //sync ajax calls
+
+        return $.when(
             $.ajax({type:"GET",
                     url:"https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='("
-                    + stations[1] + "," + stations[2] + ")') and u='f'&format=json",
+                    + lat + "," + long + ")') and u='f'&format=json",
                     async:true,
                     dataType: "json"}),
             $.ajax({type:"GET",
                     url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
-                    + stations[1] + "," + stations[2]
+                    + lat + "," + long
                     + "&radius=5&unit=miles&sort=distance,asc"
                     + "&startDateTime=" + functions.currentDate
                     + "&endDateTime=" + functions.weekDate
-                    + "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9",
+                    + "&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
                     async:true,
                     dataType: "json"})).then(function(resp1, resp2) {
                         //console.log(resp1)
@@ -195,11 +223,21 @@ var functions = {
                         else{
 
                             while(j<resp2[0]._embedded.events.length && j<10){
+                                var genre = ""
+                                //console.log(resp2[0]._embedded.events[j]._embedded.venues[0].name)
+                                //console.log(resp2[0]._embedded.events[j].classifications[0].segment.name)
+
+                                if (resp2[0]._embedded.events[j].classifications){
+                                    genre = resp2[0]._embedded.events[j].classifications[0].segment.name;
+                                }
+                                else{
+                                    genre = "N/A"
+                                }
 
                                 nearby+=("<div class='stuff'>"
                                 +"<span class='position'>" + (j + 1)
                                 +". </span>" + resp2[0]._embedded.events[j]._embedded.venues[0].name
-                                + " (" + resp2[0]._embedded.events[j].classifications[0].segment.name + ")<span id='eventDate'> - "
+                                + " (" + genre + ")<span id='eventDate'> - "
                                 + resp2[0]._embedded.events[j].dates.start.localDate
                                 +"</span><br>"
                                 + resp2[0]._embedded.events[j].name
@@ -208,33 +246,22 @@ var functions = {
                                 + "mi<br>"
                                 + "<img src=" + resp2[0]._embedded.events[j].images[0].url
                                 + " alt='event_img' width='115' station='"
-                                + stations[0] + "' line='"
-                                + lineName + "'>"
+                                + stations + "' line='"
+                                + line + "'>"
                                 + "<a href=" + resp2[0]._embedded.events[j].url 
                                 + " target='_blank'>Purchase tickets now!</a></div><hr>");
                                 j++;                    
                             }//end while loop
                         }//end if statement
 
-                        info[i] = ("<div class='station'><strong>" + stations[0] 
-                        + "</strong>: </div><div class='weather'>" + functions.weather + "</div><hr>" + nearby);
-
-//end 
+                        functions.info = "<div class='station'><strong>" + stations 
+                        + "</strong></div><hr>" + ("<div class='weather'>" + functions.weather + "</div><hr>" + nearby);
+                        console.log(functions.info);
+//end                   
 
         });
 
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                    return function() {
-                        infowindow.setContent(info[i]);
-                        infowindow.open(map, marker);
-                    }
-                })(marker, i));
-            });//end inner forEach loop
-
-        });//end outer forEach loop
-
-    },//end populate_markers method
-
+    },
 }//end functions object
 
 var map;
@@ -580,16 +607,21 @@ var styleSelector = document.getElementById('style-selector');
 $(document).on("click",".stuff",function(){
 
     var current = $(this).html(); 
+    var dateNew = "";
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
     myEvent.html($(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)"
-    + "<hr>" + current); 
-    myEvent.find('#eventDate').text().replace("- ","<br>");
+    + "<hr>" + current);     
+
+    dateNew = myEvent.find('#eventDate').text().replace("- ","<br>")
+
     myEvent.find('img').attr("width","100");
     myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
     myEvent.find('a').text("Purchase now!");
+    myEvent.find('a').attr("style","font-size:10px")
     myEvent.find('.position').text("");
+    myEvent.find('#eventDate').html(dateNew);
     $("#myEvent").prepend(myEvent);
 
 });//modify for .stuff class
@@ -796,4 +828,3 @@ var styles = {
       }
     ]
   };
-
