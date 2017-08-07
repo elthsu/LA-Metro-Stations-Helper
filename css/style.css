@@ -7,6 +7,8 @@
 html, body {
 	height: 100%;
 	min-height: 100%;
+	width: 100%;
+	min-width: 100%;
 	background-color: #eee;
 }
 
@@ -16,8 +18,13 @@ html, body {
 }
 
 #myEvent{
-	height:91%;
-	overflow:auto;
+	position: absolute;
+	right: 5px;
+	left: 5px;
+	top: 31px;
+	bottom: 0px;
+	overflow: auto;
+	padding: 10px;
 }
 
 
@@ -39,7 +46,8 @@ html, body {
 
 .container {
 	height: 80%;
-	padding: 1% 5%;
+	width: 100%;
+	padding: 1%;
 }
 
 .jumbotron {
@@ -56,20 +64,39 @@ html, body {
 	font-family: 'Product Sans',Helvetica,sans-serif;
 }
 
-.row, .col-sm-3, .col-sm-9{
+.row, .col-sm-2, .col-sm-8{
 	height: 100%;
 	min-height: 100%;
+}
+.row {
+	margin: 0;
+	width: 100%;
+}
+
+.col-sm-2, .col-sm-8 {
+	padding: 0 5px;
 }
 
 .panel {
 	height: 100%;
 	border-color: #d62d20; 
+
 }
 
 .panel-heading {
 	background-color: #d62d20;
 	color: white;
 	font-family: 'Product Sans',Helvetica,sans-serif;
+	padding: 5px;
+	height:;
+}
+
+#clearMyEvents{
+	font-size: 10px;
+	padding: 0;
+	position: absolute;
+	top: 9px;
+	right: 6px;
 }
 
 #map {
@@ -118,23 +145,36 @@ footer p {
 	font-family: 'Product Sans',Helvetica,sans-serif;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
 	/*new CSS*/
 
 	#myEvent{
-		height:82.5%;
+		top:32.5px;
+		bottom:1.5px;
 	}
 
 	/*END NEW*/
-	.col-sm-3, .col-sm-9{
+	.col-sm-2 {
+		height: 25%;
+		min-height: 25%;
+		padding-top: 1.5px;
+		padding-bottom: 1.5px;
+	}
+	.col-sm-8 {
 		height: 50%;
 		min-height: 50%;
+		padding-top: 1.5px;
+		padding-bottom: 1.5px;
 	}
-	.col-sm-3 {
-		padding-bottom: .5%;
-	}
-	.col-sm-9 {
-		padding-top: .5%;
+
+	#clearMyEvents {
+		top: 12px;
+		right: 10px;
 	}
 }
 
+@media screen and (min-width: 768px) and (max-width: 860px) {
+	h1 span{
+		font-size: 50px;
+	}
+}
