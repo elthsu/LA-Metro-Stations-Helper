@@ -241,12 +241,13 @@ var functions = {
                     dataType: "json"}),
             $.ajax({type:"GET",
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
-                    + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] + "&api_key=5tssqxc4xj4fnsvcqnqgmbm2",
+                    + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] + "&api_key=cuen8da9wsfaewzvecfxd7ga",
                     async: true,
                     dataType: "json"})).then(function(resp1, resp2, resp3, resp4) {
 
 
                         var upcomingTrain = "";
+                        var weatherIcon = "";
 
                         for (var i = 0; i < resp3[0].items.length && i < 3; i++) {
                                                
@@ -261,6 +262,25 @@ var functions = {
                         + resp1[0].query.results.channel.item.forecast[0].high + "H/ " 
                         + resp1[0].query.results.channel.item.forecast[0].low + "L/"
                         + resp1[0].query.results.channel.item.forecast[0].text;
+
+                        //console.log(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("sun"));
+
+                        if(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("sun") > -1){
+
+                            weatherIcon = "<i class='fa fa-sun-o' aria-hidden='true'></i>";
+
+                        }
+                        else if(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("cloud") > -1){
+
+                            weatherIcon = "<i class='fa fa-cloud' aria-hidden='true'></i>";
+
+                        }
+                        else if(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("rain") > -1){
+
+                            weatherIcon = "<i class='fa fa-tint' aria-hidden='true'></i>";
+
+                        }
+                        
 //begin   
     
                         if(jQuery.isEmptyObject(resp2[0]._embedded)){
@@ -390,14 +410,15 @@ var functions = {
                             }//end outter for loop
 
 
-                            console.log(moviesObj);
+                            //console.log(moviesObj);
 
 
                         }//end if statement
+                       // console.log(weatherIcon)
 
                     functions.info = ("<div class='station'><strong>" + station[0] 
-                        + "<br>Upcoming Trains (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-2)
-                        + "</strong>" + "</div><div class='weather'>" + functions.weather + "</div><hr>" + nearby + movies);
+                        + "<br>Upcoming Trains <i class='fa fa-train'></i> (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-2)
+                        + "</strong>" + "</div><div class='weather'>" + functions.weather + " " + weatherIcon + "</div><hr>" + nearby + movies);
 
 //end 
 
