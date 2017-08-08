@@ -4,6 +4,9 @@ var functions = {
     polyLineArr: [],
     weather: "",
     info: "",
+    eventType: "",
+    radius: 5,
+    sortMethod: "distance,asc",
     currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
     weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
     transitLines: [
@@ -200,20 +203,20 @@ var functions = {
                 &apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
 
                 */
-
-        //sync ajax calls
-        // var tempMetro = "https://api.metro.net/agencies/lametro-rail/routes/" + line[0][1] + "/stops/" + 
-        //                 stations[3] + "/predictions/";
-
-
-
-        
-
     },//end populate_markers method
 
     addInfo: function(station,line){
                 //sync ajax calls
-
+        var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
+                    + station[1] + "," + station[2]
+                    + "&radius=" + functions.radius + "&unit=miles&sort="+functions.sortMethod
+                    + "&startDateTime=" + functions.currentDate
+                    + "&endDateTime=" + functions.weekDate
+                    + "&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9";
+        if(functions.eventType != ''){
+            var append = "&classificationName="+functions.eventType;
+            queryURL += append;
+        }
         return $.when(
 
             $.ajax({type:"GET",
@@ -222,12 +225,7 @@ var functions = {
                     async:true,
                     dataType: "json"}),
             $.ajax({type:"GET",
-                    url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
-                    + station[1] + "," + station[2]
-                    + "&radius=5&unit=miles&sort=distance,asc"
-                    + "&startDateTime=" + functions.currentDate
-                    + "&endDateTime=" + functions.weekDate
-                    + "&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9",
+                    url:queryURL,
                     async:true,
                     dataType: "json"}),
             $.ajax({type:"GET",
@@ -255,13 +253,13 @@ var functions = {
     
                         if(jQuery.isEmptyObject(resp2[0]._embedded)){
 
-                            nearby="Check again soon for more events!"
+                            nearby="Check again soon for more events!";
 
                         }
                         else{
 
                             while(j<resp2[0]._embedded.events.length && j<10){
-                                var genre = ""
+                                var genre = "";
                                 //console.log(resp2[0]._embedded.events[j]._embedded.venues[0].name)
                                 //console.log(resp2[0]._embedded.events[j].classifications[0].segment.name)
 
@@ -269,7 +267,7 @@ var functions = {
                                     genre = resp2[0]._embedded.events[j].classifications[0].segment.name;
                                 }
                                 else{
-                                    genre = "N/A"
+                                    genre = "N/A";
                                 }
 
                                 nearby+=("<div class='stuff'>"
@@ -716,7 +714,7 @@ $(document).on("click",".stuff",function(){
 
 $("#clearMyEvents").on("click",function(){
 
-    $("#myEvent").html("<p>Click and event to add it!</p>");
+    $("#myEvent").html("<p>Click an event to add it!</p>");
     
 });
 
@@ -748,7 +746,45 @@ $("#applyFilters").on("click",function(event){
     functions.clearOverlays(functions.markersArr,functions.polyLineArr);
     functions.populateOverlays(popMarker,popPoly);
 
-});//end button click for line filter logic
+    if($("#eventType").val() != null)
+        functions.eventType = $("#eventType").val();
+
+    functions.radius = $("#searchRadius").val();
+
+    var sortBy = $("#sortBy").val(); 
+
+    var selected = $("input[type='radio'][name='sortOrder']:checked");
+
+    if(selected.length>0 && sortBy != null){
+        functions.sortMethod = sortBy + selected.val();
+    }
+
+    console.log(functions.eventType);
+    console.log(functions.radius);
+    console.log(functions.sortMethod);
+
+});//end button click for filter logic
+
+$("#clearFilters").on("click", function(event){
+    event.preventDefault();
+    $('#eventType').val('null');
+    $('#sortBy').val('distance,');
+    $('#searchRadius').val('5');
+
+    $("input[type='radio'][value='asc']").each(function(){
+        this.checked = true;
+    });
+    $("input[type='radio'][value='desc']").each(function(){
+        this.checked = false;
+    });
+    $("input[type='checkbox'][name='Line']").each(function(){
+        this.checked = true;
+    });
+
+    functions.eventType='';
+    functions.radius=5;
+    functions.sortMethod='distance,asc';
+});
 
 var styles = {
     default: null,
