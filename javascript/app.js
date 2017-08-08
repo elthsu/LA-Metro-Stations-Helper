@@ -153,12 +153,8 @@ var functions = {
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                             return function() {
-                                console.log(lineName);
-                                console.log(stations[0]);
-                                console.log(stations[1]);
-                                console.log(stations[2]);
+
                                 functions.addInfo(stations[0],stations[1],stations[2],lineName,lineID,stationID).then(function(){
-                                    console.log(functions.info);
                                     infowindow.setContent(functions.info);
                                     infowindow.open(map, marker);
                                 });
@@ -168,7 +164,7 @@ var functions = {
 
                     marker.addListener('click', function() {
                     map.setZoom(16);
-                    map.setCenter(marker.getPosition());
+                    map.setCenter(this.getPosition());
                     var styleSelector = document.getElementById('style-selector');
                     map.setOptions({styles: styles["retro"],
                                     draggable: false,
@@ -204,6 +200,8 @@ var functions = {
 
                 */
 
+                // MOVIE API KEY: 2nu25m9my2e5qk9r5pgw63dn
+
         //sync ajax calls
         // var tempMetro = "https://api.metro.net/agencies/lametro-rail/routes/" + line[0][1] + "/stops/" + 
         //                 stations[3] + "/predictions/";
@@ -237,13 +235,19 @@ var functions = {
                     url: "https://api.metro.net/agencies/lametro-rail/routes/" + ID + "/stops/" + 
                         stationID + "/predictions/",
                     async: true,
-                    dataType: "json"})).then(function(resp1, resp2, resp3) {
+                    dataType: "json"}),
+            $.ajax({type:"GET",
+                    url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
+                    + functions.currentDate.slice(0, 10) + "&lat=" + lat + "&lng=" + long + "&api_key=5tssqxc4xj4fnsvcqnqgmbm2",
+                    async: true,
+                    dataType: "json"})).then(function(resp1, resp2, resp3, resp4) {
+
 
                         var upcomingTrain = "";
 
                         for (var i = 0; i < resp3[0].items.length && i < 3; i++) {
                                                
-                        upcomingTrain += moment().add(resp3[0].items[i].minutes, 'minutes').format("h:mm A") + "/";
+                        upcomingTrain += moment().add(resp3[0].items[i].minutes, 'minutes').format("h:mm A") + " / ";
 
                         }
 
@@ -265,9 +269,7 @@ var functions = {
 
                             while(j<resp2[0]._embedded.events.length && j<10){
                                 var genre = ""
-                                //console.log(resp2[0]._embedded.events[j]._embedded.venues[0].name)
-                                //console.log(resp2[0]._embedded.events[j].classifications[0].segment.name)
-
+                
                                 if (resp2[0]._embedded.events[j].classifications){
                                     genre = resp2[0]._embedded.events[j].classifications[0].segment.name;
                                 }
@@ -295,9 +297,106 @@ var functions = {
                             }//end while loop
                         }//end if statement
 
+                        var k = 0;
+                        var movies = "";
+                        
+                        
+
+                        if((resp4[0].length === 0)) {
+
+                            movies = "There are no movie theaters nearby!"
+
+                        }
+                        else{
+
+                            
+
+                            var moviesObj = {};
+
+                            for (var i = 0; i < resp4[0].length; i++) {
+
+                                var showtimeHolder = [];
+                                var theatreName = "";
+                                moviesObj[resp4[0][i].title] = {};
+
+    
+                                for (var j = 0; j < resp4[0][i].showtimes.length; j++) {
+
+                                    
+                                    if (resp4[0][i].showtimes[j].ticketURI) {
+
+                                        var timeCompare = (resp4[0][i].showtimes[j].dateTime).slice(11, 16);
+
+                                        var tempTime = moment(timeCompare, "HH:mm").format("h:mm A");
+
+                                        tempTime = "<a href='" + resp4[0][i].showtimes[j].ticketURI + "+" + timeCompare 
+                                                        + "' target=_blank> " + tempTime + " </a>";
+
+                                        // console.log(resp4[0][i].showtimes[j].theatre.name);
+
+                                        if (!moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name]) {
+
+                                            moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name] = [];
+
+
+                                        }
+                                        
+
+                                            moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name].push(tempTime);                                           
+
+
+                                        
+                                    }            
+
+                                }//end inner for loop 
+
+
+
+
+
+                                
+
+
+                                var ratings = "";
+                                
+                                if (resp4[0][i].ratings) {
+
+                                    ratings = resp4[0][i].ratings[0].code;
+
+                                }
+
+                                else {
+
+                                    ratings = "N/A";
+                                    
+                                }
+
+                                showtimeHolder.toString();    
+
+                                movies += ("<div class='movies'>"
+                                + "<br /><br />"
+                                + "<img src='https://dlby.tmsimg.com/" + resp4[0][i].preferredImage.uri + "?api_key=gvmc8sysuqe8pwpshucfnn33' height=150>"
+                                + "<span class='position'>" 
+                                + "<h3>"+ resp4[0][i].title + "</h3>"
+                                + "</span><br />"
+                                + "<h5> Rated: " 
+                                + ratings
+                                + "</h5><br />"
+                                + "<br />");
+                                // + theatresArray);
+
+
+                            }//end outter for loop
+
+
+                            console.log(moviesObj);
+
+
+                        }//end if statement
+
                     functions.info = ("<div class='station'><strong>" + stations 
-                        + "<br>Upcoming Trains (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-1)
-                        + "</strong>" + "</div><div class='weather'>" + functions.weather + "</div><hr>" + nearby);
+                        + "<br>Upcoming Trains (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-2)
+                        + "</strong>" + "</div><div class='weather'>" + functions.weather + "</div><hr>" + nearby + movies);
 //end 
 
         });
