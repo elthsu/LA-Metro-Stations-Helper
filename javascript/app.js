@@ -1,5 +1,7 @@
 //App Functions
 var functions = {
+    markersArr: [],
+    polyLineArr: [],
     weather: "",
     info: "",
     currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
@@ -132,9 +134,6 @@ var functions = {
 
         latLongArr.forEach(function(line,j){
 
-            var lineName = line[0][0];
-            var lineID = line[0][1];
-            var stationID = line[2][j][3];
             var info = [];
             info.length = line[2].length;
             
@@ -151,14 +150,10 @@ var functions = {
                     });
 
 
+
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                             return function() {
-                                console.log(lineName);
-                                console.log(stations[0]);
-                                console.log(stations[1]);
-                                console.log(stations[2]);
-                                functions.addInfo(stations[0],stations[1],stations[2],lineName,lineID,stationID).then(function(){
-                                    console.log(functions.info);
+                                functions.addInfo(stations,line[0]).then(function(){
                                     infowindow.setContent(functions.info);
                                     infowindow.open(map, marker);
                                 });
@@ -168,13 +163,15 @@ var functions = {
 
                     marker.addListener('click', function() {
                     map.setZoom(16);
-                    map.setCenter(marker.getPosition());
+                    map.setCenter(this.getPosition());
                     var styleSelector = document.getElementById('style-selector');
                     map.setOptions({styles: styles["retro"],
                                     draggable: false,
                                     disableDoubleClickZoom: true
                             });
                     });
+
+                    functions.markersArr.push(marker);
 
                     google.maps.event.addListener(infowindow,'closeclick',function(){
 
@@ -185,7 +182,7 @@ var functions = {
                                     zoom: 13,
                                     mapTypeControl: false,
                                     clickableIcons: false
-                                }); ; //removes the marker
+                                }); //removes the marker
     // then, remove the infowindows name from the array
 });
 
@@ -214,19 +211,19 @@ var functions = {
 
     },//end populate_markers method
 
-    addInfo: function(stations,lat,long,line,ID,stationID){
+    addInfo: function(station,line){
                 //sync ajax calls
 
         return $.when(
 
             $.ajax({type:"GET",
                     url:"https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='("
-                    + lat + "," + long + ")') and u='f'&format=json",
+                    + station[1] + "," + station[2] + ")') and u='f'&format=json",
                     async:true,
                     dataType: "json"}),
             $.ajax({type:"GET",
                     url:"https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
-                    + lat + "," + long
+                    + station[1] + "," + station[2]
                     + "&radius=5&unit=miles&sort=distance,asc"
                     + "&startDateTime=" + functions.currentDate
                     + "&endDateTime=" + functions.weekDate
@@ -234,8 +231,8 @@ var functions = {
                     async:true,
                     dataType: "json"}),
             $.ajax({type:"GET",
-                    url: "https://api.metro.net/agencies/lametro-rail/routes/" + ID + "/stops/" + 
-                        stationID + "/predictions/",
+                    url: "https://api.metro.net/agencies/lametro-rail/routes/" + line[1] + "/stops/" + 
+                        station[3] + "/predictions/",
                     async: true,
                     dataType: "json"})).then(function(resp1, resp2, resp3) {
 
@@ -287,15 +284,15 @@ var functions = {
                                 + "mi<br>"
                                 + "<img src=" + resp2[0]._embedded.events[j].images[0].url
                                 + " alt='event_img' width='115' station='"
-                                + stations + "' line='"
-                                + line + "'>"
+                                + station[0] + "' line='"
+                                + line[0] + "'>"
                                 + "<a href=" + resp2[0]._embedded.events[j].url 
                                 + " target='_blank'>Purchase tickets now!</a></div><hr>");
                                 j++;                    
                             }//end while loop
                         }//end if statement
 
-                    functions.info = ("<div class='station'><strong>" + stations 
+                    functions.info = ("<div class='station'><strong>" + station[0] 
                         + "<br>Upcoming Trains (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-1)
                         + "</strong>" + "</div><div class='weather'>" + functions.weather + "</div><hr>" + nearby);
 //end 
@@ -303,6 +300,29 @@ var functions = {
         });
 
 
+
+    },
+    clearOverlays: function(markersArray,polyLineArray) {
+        for (var i = 0; i < markersArray.length; i++ ) {
+                markersArray[i].setMap(null);
+              }
+
+        for (var j = 0; j < polyLineArray.length; j++ ) {
+
+            polyLineArray[j].setMap(null);
+
+        }
+
+    },//end clearOverlays
+    populateOverlays: function(markersArray,polyLineArray){
+
+        functions.populateMarkers(markersArray);
+
+        for (var j = 0; j < polyLineArray.length; j++ ) {
+            
+            polyLineArray[j].setMap(map);
+
+        }
 
     },
 }//end functions object
@@ -570,6 +590,7 @@ function initMap() {
     strokeOpacity: 0.6,
     strokeWeight: 6
     });
+
     goldLinePath.setMap(map);
 
     var greenRedondoBeach = new google.maps.LatLng(33.894577, -118.369161);
@@ -638,16 +659,33 @@ function initMap() {
     strokeOpacity: 0.6,
     strokeWeight: 6
     });
+
     greenLinePath.setMap(map);
+
+//populate polyLineArr
+
+functions.polyLineArr.push(redLinePath);
+functions.polyLineArr.push(blueLinePath);
+functions.polyLineArr.push(purpleLinePath);
+functions.polyLineArr.push(expoLinePath);
+functions.polyLineArr.push(goldLinePath);
+functions.polyLineArr.push(greenLinePath);
+
+
+//end populate
 
 // Set the map's style to the initial value of the selector.
 var styleSelector = document.getElementById('style-selector');
     map.setOptions({styles: styles[styleSelector.value]});
 
 
-// Closes initMap function (do not remove)
 
+
+// Closes initMap function (do not remove)
 }
+
+
+
 
 //click listener to populate myEvents
 $(document).on("click",".stuff",function(){
@@ -678,9 +716,39 @@ $(document).on("click",".stuff",function(){
 
 $("#clearMyEvents").on("click",function(){
 
-    $("#myEvent").html("<p>Click and event to add it!</p>")
+    $("#myEvent").html("<p>Click and event to add it!</p>");
     
 });
+
+//change to applyfilters button
+$("#applyFilters").on("click",function(event){
+    event.preventDefault();
+    var popPoly = [];
+    var popMarker = [];
+    var indexArr = [];
+    var x = document.getElementsByClassName("fLines");
+
+    for (var i = 0; i < x.length; i++) {
+        var checked = x[i].checked;
+        
+        if (checked) {
+
+            indexArr.push(i);
+
+        }
+    };
+
+    for(d=0;d<indexArr.length;d++){
+
+        popMarker.push(functions.transitLines[indexArr[d]]);
+        popPoly.push(functions.polyLineArr[indexArr[d]]);
+
+    }
+
+    functions.clearOverlays(functions.markersArr,functions.polyLineArr);
+    functions.populateOverlays(popMarker,popPoly);
+
+});//end button click for line filter logic
 
 var styles = {
     default: null,
