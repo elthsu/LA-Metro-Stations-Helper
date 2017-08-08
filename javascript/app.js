@@ -716,6 +716,7 @@ $("#clearMyEvents").on("click",function(){
 
 });
 
+//change to applyfilters button
 $(".panel-heading").on("click",function(){
     var popPoly = [];
     var popMarker = [];
