@@ -652,6 +652,10 @@ var styleSelector = document.getElementById('style-selector');
 //click listener to populate myEvents
 $(document).on("click",".stuff",function(){
 
+    if($('#myEvent').is(':has(p)')){
+        $("#myEvent").empty();
+    }
+
     var current = $(this).html(); 
     var dateNew = "";
 
@@ -674,7 +678,7 @@ $(document).on("click",".stuff",function(){
 
 $("#clearMyEvents").on("click",function(){
 
-    $("#myEvent").empty();
+    $("#myEvent").html("<p>Click and event to add it!</p>")
     
 });
 
