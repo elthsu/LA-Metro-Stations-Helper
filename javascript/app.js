@@ -203,7 +203,7 @@ var functions = {
 
                 */
 
-                // MOVIE API KEY: 2nu25m9my2e5qk9r5pgw63dn
+                // MOVIE API KEY: 2nu25m9my2e5qk9r5pgw63dn, fkg8ke2e5vt89h4r58rftr7p
 
         //sync ajax calls
         // var tempMetro = "https://api.metro.net/agencies/lametro-rail/routes/" + line[0][1] + "/stops/" + 
@@ -241,7 +241,8 @@ var functions = {
                     dataType: "json"}),
             $.ajax({type:"GET",
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
-                    + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] + "&api_key=5tssqxc4xj4fnsvcqnqgmbm2",
+                    + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
+                    + "&api_key=2nu25m9my2e5qk9r5pgw63dn",
                     async: true,
                     dataType: "json"})).then(function(resp1, resp2, resp3, resp4) {
 
@@ -311,6 +312,8 @@ var functions = {
                             movies = "There are no movie theaters nearby!"
 
                         }
+                        
+
                         else{
 
                             
@@ -319,12 +322,36 @@ var functions = {
 
                             for (var i = 0; i < resp4[0].length; i++) {
 
-                                var showtimeHolder = [];
                                 var theatreName = "";
                                 moviesObj[resp4[0][i].title] = {};
 
-    
+                                var poster;
+                                var ratings;
+                                
+                                
+                                if (resp4[0][i].ratings) {
+                                    
+                                    ratings = resp4[0][i].ratings[0].code;
+                                    
+                                }
+
+                                else {
+
+                                    ratings = "N/A";
+
+
+                                }
+
+                               
+                                poster = "<img src='https://dlby.tmsimg.com/" + resp4[0][i].preferredImage.uri 
+                                        + "?api_key=gvmc8sysuqe8pwpshucfnn33' height=150>";
+
+
+
+                                
+
                                 for (var j = 0; j < resp4[0][i].showtimes.length; j++) {
+
 
                                     
                                     if (resp4[0][i].showtimes[j].ticketURI) {
@@ -336,7 +363,6 @@ var functions = {
                                         tempTime = "<a href='" + resp4[0][i].showtimes[j].ticketURI + "+" + timeCompare 
                                                         + "' target=_blank> " + tempTime + " </a>";
 
-                                        // console.log(resp4[0][i].showtimes[j].theatre.name);
 
                                         if (!moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name]) {
 
@@ -344,60 +370,98 @@ var functions = {
 
                                         }
                                         
+                                            moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name].push(tempTime);
 
-                                            moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name].push(tempTime);                                           
-                           
-                                    }            
+                                    }     
+
 
                                 }//end inner for loop 
 
 
+                                var times = "";
 
-
-
-                                
-
-
-                                var ratings = "";
-                                
-                                if (resp4[0][i].ratings) {
-
-                                    ratings = resp4[0][i].ratings[0].code;
-
-                                }
-
-                                else {
-
-                                    ratings = "N/A";
+                                (Object.keys(moviesObj)).forEach(function(movie){
                                     
-                                }
+                                    times = "";
+                                    
 
-                                showtimeHolder.toString();    
+                                    (Object.keys(moviesObj[movie])).forEach(function(theatre){
 
-                                movies += ("<div class='movies'>"
-                                + "<br /><br />"
-                                + "<img src='https://dlby.tmsimg.com/" + resp4[0][i].preferredImage.uri + "?api_key=gvmc8sysuqe8pwpshucfnn33' height=150>"
-                                + "<span class='position'>" 
-                                + "<h3>"+ resp4[0][i].title + "</h3>"
-                                + "</span><br />"
-                                + "<h5> Rated: " 
-                                + ratings
-                                + "</h5><br />"
-                                + "<br />");
-                                // + theatresArray);
+                                    times += theatre;
+                                    
+
+
+                                        for (var i = 0; i < Object.keys(moviesObj[movie][theatre]).length; i++) {
+                                                
+                                                   times += moviesObj[movie][theatre][i];
+                                                };
+                                                
+
+                                    })
+                                         
+                                })   
+                                  
+                                
+
+                                movies += ("<div class='movies_info'>" 
+
+                                            + "<div='moviePosters'>" 
+
+                                            + poster
+
+                                            + "</div>"
+                      
+                                            + resp4[0][i].title 
+
+                                            + "Rated : "
+                                            
+                                            + ratings
+
+                                            + times
+
+                                            + "</div>"
+                                        
+                                        
+                                        + "<hr>");
+
 
 
                             }//end outter for loop
 
 
-                            console.log(moviesObj);
+                        }//end else statement
 
 
-                        }//end if statement
+
+// forEach(movie in moviesObj){
+//     console.log(movie);
+//     forEach(theatre in moviesObj[movie]{
+//         console.log(theatre);
+//             for (var i = 0; i < moviesObj[movie][theatre].length; i++) {
+//                 console.log(moviesObj[movie][theatre][i]);
+//             }    
+//     }
+// }
+
+                                
+                                     
+                                     
+                            
+                                
+
+                                // }
+
+                                console.log(Object.keys(moviesObj));
+                                console.log(moviesObj)
+                                // console.log(x);      
+                                // console.log(y); 
+                                // console.log(z);    
+
 
                     functions.info = ("<div class='station'><strong>" + station[0] 
                         + "<br>Upcoming Trains (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-2)
-                        + "</strong>" + "</div><div class='weather'>" + functions.weather + "</div><hr>" + nearby + movies);
+                        + "</strong>" + "</div><div class='weather'>" + functions.weather + "</div><hr>" + nearby 
+                        + "<div class='movies_container'>" + movies + "</div>");
 
 //end 
 
