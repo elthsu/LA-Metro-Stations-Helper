@@ -161,7 +161,11 @@ form button {
 }
 
 /*Events Styling*/
-.stuff:hover {
+.stuff:hover{
+	background:#E0E0E0;
+}
+
+.movies_info:hover{
 	background:#E0E0E0;
 }
 
