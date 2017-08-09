@@ -183,8 +183,8 @@ form button {
 }
 
 .movies_info {
-	height: 150px;
-	line-height: 1.3;
+	height: 200px;
+	line-height: 1;
 	.vertical-align: center;
 }
 

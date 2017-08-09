@@ -154,14 +154,15 @@ var functions = {
 
                     });
 
-
+                    google.maps.event.addListener(infowindow,'domready',function() {
+                        $('.weather').parent().parent().css({'width':'350px','height':'350px'});
+                    });
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                             return function() {
                                 if(functions.prevWindow != null)
                                     functions.prevWindow.close();
                                 functions.addInfo(stations,line[0]).then(function(){
-
                                     infowindow.setContent(functions.info);
                                     infowindow.open(map, marker);
                                     functions.prevWindow = infowindow;
@@ -477,7 +478,7 @@ var functions = {
                         functions.info = ("<div class='station'><strong>" + station[0] + " - (" + moment(functions.currentDate).format("M/D/YY") + ")"
                         + "<br>Upcoming Trains <i class='fa fa-train'></i> (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-2)
                         + "</strong>" + "</div><div class='weather'>" + functions.weather + " " + weatherIcon + "</div><hr>"
-                        + "<div id='myCarousel' class='carousel slide' data-ride='carousel'>"
+                        + "<div id='myCarousel' class='carousel slide' data-ride='carousel' data-interval='false'>"
                         + "<!-- Indicators -->"
                         + "<ol class='carousel-indicators'>"
                         + "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>"
@@ -991,6 +992,10 @@ $("#clearMyEvents").on("click",function(){
     $("#myEvent").html("<p>Click an event to add it!</p>");
     localStorage.clear();
 
+});
+
+$(".carousel-control").mouseup(function(){
+    $(this).blur();
 });
 
 //click listener to apply filter options
