@@ -33,7 +33,6 @@ html, body {
 	margin-left: 15px;
 	border: none;
 	background-color: #2196F3;
-	color: white;
 }
 
 .navbar-toggle:hover, .navbar-toggle:focus {
@@ -45,7 +44,7 @@ html, body {
 }
 
 .icon-bar {
-	background-color: white !important;
+	background-color: #E3F2FD !important;
 }
 
 .navbar h1 {
@@ -57,7 +56,7 @@ html, body {
 	font-family:'Product Sans',Helvetica,sans-serif;
 	padding: 10px;
 	background-color: #E3F2FD;
-	border: none;
+	box-shadow: 6px 6px 6px -4px grey;
 }
 
 .navmenu h2 {
@@ -91,6 +90,7 @@ form button {
 	padding: 0 5px;
 }
 
+/*My Events Styling*/
 .panel {
 	height: 100%;
 	border-color: #F44336; 
@@ -116,16 +116,29 @@ form button {
 }
 
 #myEvent p {
-	width: 100%;
-	text-align: center;
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #clearMyEvents {
 	font-size: 10px;
-	padding: 0;
+	padding: 0 2px;
 	position: absolute;
-	top: 9px;
+	top: 8px;
 	right: 10px;
+	border: 1px solid white;
+}
+
+#clearMyEvents:hover {
+	border: 1px solid #F44336;
+	color: #F44336;
+	background-color: white;
 }
 
  /*Map Styling*/
@@ -177,6 +190,28 @@ form button {
 	padding:0.5em;
 	font-size:12px;
 	margin-bottom:1em;
+}
+
+.mEvnt hr {
+	margin: 5px 0px;
+}
+
+.mEvnt a {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+}
+
+.close {
+	float: right;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fd0500;
+    opacity: .5;
+    position: absolute;
+    top: 10px;
+    right: 15px;
 }
 
 /*Footer Styling*/
@@ -232,7 +267,7 @@ footer p {
 	}
 
 	#clearMyEvents {
-		top: 12px;
+		top: 10px;
 		right: 12px;
 	}
 }

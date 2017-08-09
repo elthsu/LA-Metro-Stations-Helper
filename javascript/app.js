@@ -7,6 +7,7 @@ var functions = {
     eventType: "",
     radius: 5,
     sortMethod: "distance,asc",
+    lastMarkerPos: {lat: 34.048775, lng: -118.258615},
     currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
     weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
     transitLines: [
@@ -168,6 +169,7 @@ var functions = {
 
                     marker.addListener('click', function() {
                     map.setZoom(16);
+                    functions.lastMarkerPos = this.getPosition();
                     map.setCenter(this.getPosition());
                     var styleSelector = document.getElementById('style-selector');
                     map.setOptions({styles: styles["retro"],
@@ -187,8 +189,7 @@ var functions = {
                                     zoom: 13,
                                     mapTypeControl: false,
                                     clickableIcons: false
-                                }); //removes the marker
-    // then, remove the infowindows name from the array
+                                }); 
 });
 
                 });
@@ -455,6 +456,17 @@ var functions = {
         }
 
     },
+    remove: function(data) {
+        var parent = data.parentNode;
+        var grandparent = parent.parentNode;
+        grandparent.removeChild(parent);
+        var name = grandparent.className;
+        // localStorage.clear();
+        // localStorage.setItem("topics",JSON.stringify(topics));
+        var checkEmpty = $(name).children().length;
+        if(checkEmpty==0)
+            $("#myEvent").html("<p>Click an event to add it!</p>");
+    }
 }//end functions object
 
 
@@ -829,13 +841,16 @@ $(document).on("click",".stuff",function(){
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.html($(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)"
-    + "<hr>" + current);     
+    myEvent.html($(this).find('img').attr('station') + "<br>(<span class='mEvntLine'>" + $(this).find('img').attr('line') + "</span>)"
+    + "<hr>" + current);
+
+    var close = $("<button>").html('&times;').addClass('close').attr("onclick","functions.remove(this)");
+    myEvent.prepend(close);     
 
     dateNew = myEvent.find('#eventDate').text().replace("- ","<br>")
 
-    myEvent.find('img').attr("width","100");
-    myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
+    myEvent.find('img').attr("width","100%");
+    myEvent.find('.mEvntLine').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
     myEvent.find('a').text("Purchase now!");
     myEvent.find('a').attr("style","font-size:10px")
     myEvent.find('.position').text("");
@@ -844,13 +859,14 @@ $(document).on("click",".stuff",function(){
 
 });//modify for .stuff class
 
+//click listener to clear my events
 $("#clearMyEvents").on("click",function(){
 
     $("#myEvent").html("<p>Click an event to add it!</p>");
     
 });
 
-//change to applyfilters button
+//click listener to apply filter options
 $("#applyFilters").on("click",function(event){
     event.preventDefault();
     var popPoly = [];
@@ -887,7 +903,9 @@ $("#applyFilters").on("click",function(event){
 
     var selected = $("input[type='radio'][name='sortOrder']:checked");
 
-    if(selected.length>0 && sortBy != null){
+    var removeDistanceDesc = (sortBy == 'distance,' && selected.val() == 'desc');
+
+    if(selected.length>0 && sortBy != null && !removeDistanceDesc){
         functions.sortMethod = sortBy + selected.val();
     }
 
@@ -895,8 +913,18 @@ $("#applyFilters").on("click",function(event){
     console.log(functions.radius);
     console.log(functions.sortMethod);
 
+    map.setOptions({styles: styles["silver"],
+        draggable: true,
+        disableDoubleClickZoom: false,
+        center: functions.lastMarkerPos,
+        zoom: map.getZoom(),
+        mapTypeControl: false,
+        clickableIcons: false
+    });
+
 });//end button click for filter logic
 
+//click listener to clear filter options
 $("#clearFilters").on("click", function(event){
     event.preventDefault();
     $('#eventType').val('null');
@@ -916,6 +944,11 @@ $("#clearFilters").on("click", function(event){
     functions.eventType='';
     functions.radius=5;
     functions.sortMethod='distance,asc';
+});
+
+//click listener to remove focus from filter toggle
+$(".navbar-toggle").on("click",function(){
+    $(".navbar-toggle").blur();
 });
 
 var styles = {
