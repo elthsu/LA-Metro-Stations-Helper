@@ -250,7 +250,7 @@ var functions = {
             $.ajax({type:"GET",
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
                     + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
-                    + "&api_key=43ufks3c66vmhm5wsw6utddz",
+                    + "&api_key=5tssqxc4xj4fnsvcqnqgmbm2",
 
 
                     async: true,
@@ -374,7 +374,7 @@ var functions = {
                                 }
 
                                
-                                poster = "<img src='https://dlby.tmsimg.com/" + resp4[0][i].preferredImage.uri 
+                                poster = "<img class='movie_poster' src='https://dlby.tmsimg.com/" + resp4[0][i].preferredImage.uri 
                                         + "?api_key=gvmc8sysuqe8pwpshucfnn33' height=150 station='"
                                 + station[0] + "' line='"
                                 + line[0] + "'>";
@@ -420,13 +420,13 @@ var functions = {
 
                                     (Object.keys(moviesObj[movie])).forEach(function(theatre){
 
-                                    times += "<br />" + "<p>" + theatre + "</p>";
+                                    times += "<br />" + "<h6>" + theatre + "</h6>";
                                     
 
 
                                         for (var i = 0; i < Object.keys(moviesObj[movie][theatre]).length; i++) {
                                                 
-                                                   times += " " + moviesObj[movie][theatre][i];
+                                                   times += (moviesObj[movie][theatre][i] + "&nbsp;");
                                                 };
                                                 
 
@@ -435,29 +435,34 @@ var functions = {
                                 })   
                                   
                                 
+                                if(times != ''){
+                                    movies += "<div class='movies_info'>" 
+     
+                                                + poster
 
-                                movies += "<div class='movies_info'>" 
+                                                + "<h4><strong>" 
 
-                                            + "<div class='movie_poster'>" 
+                                                + resp4[0][i].title 
 
-                                            + poster
+                                                + "</strong>"
 
-                                            + "</div>"
-                      
-                                            + resp4[0][i].title 
+                                                + "&emsp;Rated: "
+                                                
+                                                + ratings
 
-                                            + " Rated : "
+                                                + "</h4>"
+
+                                                + "<span>"
+
+                                                + times
+
+                                                + "</span>"
+
+                                                + "</div>"
                                             
-                                            + ratings
-
-                                            + times
-
-                                            + "</div>"
-                                        
-                                        
-                                        + "<hr>";
-
-
+                                            
+                                            + "<hr>";
+                                }
 
                             }//end outter for loop
 
@@ -469,7 +474,7 @@ var functions = {
                     }//end else statement
                        // console.log(weatherIcon)
 
-                        functions.info = ("<div class='station'><strong>" + station[0] 
+                        functions.info = ("<div class='station'><strong>" + station[0] + " - (" + moment(functions.currentDate).format("M/D/YY") + ")"
                         + "<br>Upcoming Trains <i class='fa fa-train'></i> (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-2)
                         + "</strong>" + "</div><div class='weather'>" + functions.weather + " " + weatherIcon + "</div><hr>"
                         + "<div id='myCarousel' class='carousel slide' data-ride='carousel'>"
@@ -952,12 +957,23 @@ $(document).on("click",".movies_info",function(){
         $("#myEvent").empty();
     }
 
-    var current = $(this).html();
+    // var current = $(this).html();
+    var current = $(this).clone();
+    current.find('.movie_poster').css({'width':'60%','margin':'0 20%'});
+    current.find('h4').css('text-align','center');
+    current.find('strong').append('<br>');
+    current.find('h6').css('text-align','center');
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.html($(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)"
-    + "<hr>" + current);
+    myEvent.html("<div id='movieHeader'>" + $(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)"
+    + "</div><hr>" + current.html());
+
+    myEvent.find('#movieHeader').css('text-align','center');
+
+    var close = $("<button>").html('&times;').addClass('close').attr("onclick","functions.remove(this)");
+    myEvent.prepend(close);     
+
     $("#myEvent").prepend(myEvent);
 
     var events = [];

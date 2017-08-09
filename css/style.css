@@ -174,26 +174,42 @@ form button {
 }
 
 /*Events Styling*/
-.stuff:hover{
+.stuff img {
+	margin-right: 5px;
+}
+
+.stuff:hover {
 	background:#E0E0E0;
 }
 
-.movies_info:hover{
-	background:#E0E0E0;
+.movies_info {
+	height: 150px;
+	line-height: 1.3;
+	.vertical-align: center;
+}
+
+.movie_poster {
+	width: 100px;
+	float: left;
+	margin-right: 5px;
+}
+
+.movies_info:hover {
+	background: #E0E0E0;
 }
 
 .weather {
-	 border:#40C0FF solid 1px;
-	 text-align:center;
-	 margin-bottom:-15px;
-	 margin-top:10px;
+	 border: #40C0FF solid 1px;
+	 text-align: center;
+	 margin-bottom: -15px;
+	 margin-top: 10px;
 }
 
 .mEvnt {
 	border:black solid 1px;
-	padding:0.5em;
-	font-size:12px;
-	margin-bottom:1em;
+	padding: 0.5em;
+	font-size: 12px;
+	margin-bottom: 1em;
 }
 
 .mEvnt hr {
@@ -210,11 +226,10 @@ form button {
 	float: right;
     font-size: 15px;
     font-weight: 700;
-    line-height: 1;
+    line-height: 0.12;
     color: #fd0500;
     opacity: .5;
     position: absolute;
-    top: 10px;
     right: 15px;
 }
 
@@ -254,7 +269,7 @@ footer p {
  }
 
  .carousel-control:hover, .carousel-control:focus {
-   opacity: 0.1; /* this will remove the darker color on focus and hover */
+   opacity: 0.2; /* this will remove the darker color on focus and hover */
  }
 
 
@@ -286,6 +301,28 @@ footer p {
 	#myEvent{
 		top:32.5px;
 		bottom:1.5px;
+	}
+
+	.mEvnt {
+		height: 210px;
+	}
+
+	#myEvent .mEvnt .movie_poster {
+		width: 120px !important;
+		margin-right: 5px !important;
+		margin-left: 0px !important;
+	}
+
+	#myEvent .mEvnt h4{
+		margin: 0;
+	}
+
+	#myEvent .mEvnt h6 {
+		margin-top: 0; 
+	}
+
+	#myEvent .mEvnt a {
+		display: inherit;
 	}
 
 	#clearMyEvents {
