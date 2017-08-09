@@ -387,13 +387,13 @@ var functions = {
 
                                     (Object.keys(moviesObj[movie])).forEach(function(theatre){
 
-                                    times += theatre;
+                                    times += "<br />" + "<p>" + theatre + "</p>";
                                     
 
 
                                         for (var i = 0; i < Object.keys(moviesObj[movie][theatre]).length; i++) {
                                                 
-                                                   times += moviesObj[movie][theatre][i];
+                                                   times += " " + moviesObj[movie][theatre][i];
                                                 };
                                                 
 
@@ -403,9 +403,9 @@ var functions = {
                                   
                                 
 
-                                movies += ("<div class='movies_info'>" 
+                                movies += "<div class='movies_info'>" 
 
-                                            + "<div='moviePosters'>" 
+                                            + "<div class='movie_poster'>" 
 
                                             + poster
 
@@ -413,7 +413,7 @@ var functions = {
                       
                                             + resp4[0][i].title 
 
-                                            + "Rated : "
+                                            + " Rated : "
                                             
                                             + ratings
 
@@ -422,7 +422,7 @@ var functions = {
                                             + "</div>"
                                         
                                         
-                                        + "<hr>");
+                                        + "<hr>";
 
 
 
