@@ -7,8 +7,10 @@ var functions = {
     eventType: "",
     radius: 5,
     sortMethod: "distance,asc",
+    lastMarkerPos: {lat: 34.048775, lng: -118.258615},
     currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
     weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
+    prevWindow: null,
     transitLines: [
         //REDLINE
         //https://maps.google.com/mapfiles/ms/icons/red-dot.png
@@ -156,11 +158,13 @@ var functions = {
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                             return function() {
-
+                                if(functions.prevWindow != null)
+                                    functions.prevWindow.close();
                                 functions.addInfo(stations,line[0]).then(function(){
 
                                     infowindow.setContent(functions.info);
                                     infowindow.open(map, marker);
+                                    functions.prevWindow = infowindow;
                                 });
 
                             }
@@ -168,6 +172,7 @@ var functions = {
 
                     marker.addListener('click', function() {
                     map.setZoom(16);
+                    functions.lastMarkerPos = this.getPosition();
                     map.setCenter(this.getPosition());
                     var styleSelector = document.getElementById('style-selector');
                     map.setOptions({styles: styles["retro"],
@@ -187,8 +192,7 @@ var functions = {
                                     zoom: 13,
                                     mapTypeControl: false,
                                     clickableIcons: false
-                                }); //removes the marker
-    // then, remove the infowindows name from the array
+                                }); 
 });
 
                 });
@@ -245,9 +249,9 @@ var functions = {
                     dataType: "json"}),
             $.ajax({type:"GET",
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
-
                     + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
                     + "&api_key=43ufks3c66vmhm5wsw6utddz",
+
 
                     async: true,
                     dataType: "json"})).then(function(resp1, resp2, resp3, resp4) {
@@ -524,6 +528,19 @@ var functions = {
         }
 
     },
+    remove: function(data) {
+        var parent = data.parentNode;
+        var grandparent = parent.parentNode;
+        grandparent.removeChild(parent);
+        var name = "." + grandparent.className;
+        var events = JSON.parse(localStorage.getItem("events"));
+        var index = events.indexOf(parent.innerHTML);
+        events.splice(index,1);
+        localStorage.setItem("events",JSON.stringify(events));
+        var checkEmpty = $(name).children().length;
+        if(checkEmpty==0)
+            $("#myEvent").html("<p>Click an event to add it!</p>");
+    }
 }//end functions object
 
 
@@ -878,6 +895,14 @@ var styleSelector = document.getElementById('style-selector');
     map.setOptions({styles: styles[styleSelector.value]});
 
 
+if(localStorage.getItem("events") != null && JSON.parse(localStorage.getItem("events")).length != 0){
+    console.log("grabbing memory");
+    $('#myEvent').empty();
+    var storedEvents = JSON.parse(localStorage.getItem("events"));
+    for(var i=0;i<storedEvents.length;i++){
+        $('#myEvent').prepend("<div class='mEvnt'>" + storedEvents[i] + "</div>");
+    }
+}
 
 
 // Closes initMap function (do not remove)
@@ -898,22 +923,34 @@ $(document).on("click",".stuff",function(){
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.html($(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)"
-    + "<hr>" + current);     
+    myEvent.html($(this).find('img').attr('station') + "<br>(<span class='mEvntLine'>" + $(this).find('img').attr('line') + "</span>)"
+    + "<hr>" + current);
+
+    var close = $("<button>").html('&times;').addClass('close').attr("onclick","functions.remove(this)");
+    myEvent.prepend(close);     
 
     dateNew = myEvent.find('#eventDate').text().replace("- ","<br>")
 
-    myEvent.find('img').attr("width","100");
-    myEvent.find('span').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
+    myEvent.find('img').attr("width","100%");
+    myEvent.find('.mEvntLine').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
     myEvent.find('a').text("Purchase now!");
     myEvent.find('a').attr("style","font-size:10px")
     myEvent.find('.position').text("");
     myEvent.find('#eventDate').html(dateNew);
     $("#myEvent").prepend(myEvent);
-
+    var events = [];
+    if(localStorage.getItem("events") != null){
+        events = JSON.parse(localStorage.getItem("events"));
+    }
+    events.push(myEvent.html());
+    localStorage.setItem("events",JSON.stringify(events));
 });//modify for .stuff class
 
 $(document).on("click",".movies_info",function(){
+
+    if($('#myEvent').is(':has(p)')){
+        $("#myEvent").empty();
+    }
 
     var current = $(this).html();
 
@@ -923,15 +960,24 @@ $(document).on("click",".movies_info",function(){
     + "<hr>" + current);
     $("#myEvent").prepend(myEvent);
 
-});//modify for .stuff class
+    var events = [];
+    if(localStorage.getItem("events") != null){
+        events = JSON.parse(localStorage.getItem("events"));
+    }
+    events.push(myEvent.html());
+    localStorage.setItem("events",JSON.stringify(events));
 
+});//modify for .movies_info class
+
+//click listener to clear my events
 $("#clearMyEvents").on("click",function(){
 
     $("#myEvent").html("<p>Click an event to add it!</p>");
-    
+    localStorage.clear();
+
 });
 
-//change to applyfilters button
+//click listener to apply filter options
 $("#applyFilters").on("click",function(event){
     event.preventDefault();
     var popPoly = [];
@@ -968,7 +1014,9 @@ $("#applyFilters").on("click",function(event){
 
     var selected = $("input[type='radio'][name='sortOrder']:checked");
 
-    if(selected.length>0 && sortBy != null){
+    var removeDistanceDesc = (sortBy == 'distance,' && selected.val() == 'desc');
+
+    if(selected.length>0 && sortBy != null && !removeDistanceDesc){
         functions.sortMethod = sortBy + selected.val();
     }
 
@@ -976,8 +1024,18 @@ $("#applyFilters").on("click",function(event){
     console.log(functions.radius);
     console.log(functions.sortMethod);
 
+    map.setOptions({styles: styles["silver"],
+        draggable: true,
+        disableDoubleClickZoom: false,
+        center: functions.lastMarkerPos,
+        zoom: map.getZoom(),
+        mapTypeControl: false,
+        clickableIcons: false
+    });
+
 });//end button click for filter logic
 
+//click listener to clear filter options
 $("#clearFilters").on("click", function(event){
     event.preventDefault();
     $('#eventType').val('null');
@@ -997,6 +1055,11 @@ $("#clearFilters").on("click", function(event){
     functions.eventType='';
     functions.radius=5;
     functions.sortMethod='distance,asc';
+});
+
+//click listener to remove focus from filter toggle
+$(".navbar-toggle").on("click",function(){
+    $(".navbar-toggle").blur();
 });
 
 var styles = {
