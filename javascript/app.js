@@ -10,6 +10,7 @@ var functions = {
     lastMarkerPos: {lat: 34.048775, lng: -118.258615},
     currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
     weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
+    prevWindow: null,
     transitLines: [
         //REDLINE
         //https://maps.google.com/mapfiles/ms/icons/red-dot.png
@@ -157,11 +158,13 @@ var functions = {
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                             return function() {
-
+                                if(functions.prevWindow != null)
+                                    functions.prevWindow.close();
                                 functions.addInfo(stations,line[0]).then(function(){
 
                                     infowindow.setContent(functions.info);
                                     infowindow.open(map, marker);
+                                    functions.prevWindow = infowindow;
                                 });
 
                             }
@@ -248,7 +251,7 @@ var functions = {
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
 
                     + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
-                    + "&api_key=2nu25m9my2e5qk9r5pgw63dn",
+                    + "&api_key=5tssqxc4xj4fnsvcqnqgmbm2",
 
                     async: true,
                     dataType: "json"})).then(function(resp1, resp2, resp3, resp4) {
@@ -529,9 +532,11 @@ var functions = {
         var parent = data.parentNode;
         var grandparent = parent.parentNode;
         grandparent.removeChild(parent);
-        var name = grandparent.className;
-        // localStorage.clear();
-        // localStorage.setItem("topics",JSON.stringify(topics));
+        var name = "." + grandparent.className;
+        var events = JSON.parse(localStorage.getItem("events"));
+        var index = events.indexOf(parent.innerHTML);
+        events.splice(index,1);
+        localStorage.setItem("events",JSON.stringify(events));
         var checkEmpty = $(name).children().length;
         if(checkEmpty==0)
             $("#myEvent").html("<p>Click an event to add it!</p>");
@@ -890,6 +895,14 @@ var styleSelector = document.getElementById('style-selector');
     map.setOptions({styles: styles[styleSelector.value]});
 
 
+if(localStorage.getItem("events") != null && JSON.parse(localStorage.getItem("events")).length != 0){
+    console.log("grabbing memory");
+    $('#myEvent').empty();
+    var storedEvents = JSON.parse(localStorage.getItem("events"));
+    for(var i=0;i<storedEvents.length;i++){
+        $('#myEvent').prepend("<div class='mEvnt'>" + storedEvents[i] + "</div>");
+    }
+}
 
 
 // Closes initMap function (do not remove)
@@ -925,10 +938,19 @@ $(document).on("click",".stuff",function(){
     myEvent.find('.position').text("");
     myEvent.find('#eventDate').html(dateNew);
     $("#myEvent").prepend(myEvent);
-
+    var events = [];
+    if(localStorage.getItem("events") != null){
+        events = JSON.parse(localStorage.getItem("events"));
+    }
+    events.push(myEvent.html());
+    localStorage.setItem("events",JSON.stringify(events));
 });//modify for .stuff class
 
 $(document).on("click",".movies_info",function(){
+
+    if($('#myEvent').is(':has(p)')){
+        $("#myEvent").empty();
+    }
 
     var current = $(this).html();
 
@@ -938,13 +960,21 @@ $(document).on("click",".movies_info",function(){
     + "<hr>" + current);
     $("#myEvent").prepend(myEvent);
 
-});//modify for .stuff class
+    var events = [];
+    if(localStorage.getItem("events") != null){
+        events = JSON.parse(localStorage.getItem("events"));
+    }
+    events.push(myEvent.html());
+    localStorage.setItem("events",JSON.stringify(events));
+
+});//modify for .movies_info class
 
 //click listener to clear my events
 $("#clearMyEvents").on("click",function(){
 
     $("#myEvent").html("<p>Click an event to add it!</p>");
-    
+    localStorage.clear();
+
 });
 
 //click listener to apply filter options
