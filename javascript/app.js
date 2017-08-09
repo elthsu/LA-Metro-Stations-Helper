@@ -251,7 +251,7 @@ var functions = {
             $.ajax({type:"GET",
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
                     + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
-                    + "&api_key=5tssqxc4xj4fnsvcqnqgmbm2",
+                    + "&api_key=hfpwtcrhpd8vykyp27aej4pf",
 
 
                     async: true,
