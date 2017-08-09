@@ -205,6 +205,24 @@ footer p {
 	font-size: 10px;
 }
 
+
+/*Carousel Styling*/
+.carousel-control{
+
+	width:10%;
+	opacity: .005;
+
+}
+
+ .left a, .right a {
+   outline: none !important; /* this will remove the outline when we click the anchor tag */
+ }
+
+ .carousel-control:hover, .carousel-control:focus {
+   opacity: 0.1; /* this will remove the darker color on focus and hover */
+ }
+
+
 /*Media Queries*/
 @media screen and (max-width: 767px) {
 

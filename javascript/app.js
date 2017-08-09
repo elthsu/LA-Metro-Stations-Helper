@@ -205,8 +205,8 @@ var functions = {
                 &apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
 
                 */
-
-                // MOVIE API KEY: 2nu25m9my2e5qk9r5pgw63dn, fkg8ke2e5vt89h4r58rftr7p
+                //TICKETMASTER API KEY: HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9 LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9
+                // MOVIE API KEY: 2nu25m9my2e5qk9r5pgw63dn, fkg8ke2e5vt89h4r58rftr7p, 43ufks3c66vmhm5wsw6utddz
 
         //sync ajax calls
         // var tempMetro = "https://api.metro.net/agencies/lametro-rail/routes/" + line[0][1] + "/stops/" + 
@@ -222,7 +222,7 @@ var functions = {
                     + "&radius=" + functions.radius + "&unit=miles&sort="+functions.sortMethod
                     + "&startDateTime=" + functions.currentDate
                     + "&endDateTime=" + functions.weekDate
-                    + "&apikey=LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9";
+                    + "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9";
         if(functions.eventType != ''){
             var append = "&classificationName="+functions.eventType;
             queryURL += append;
@@ -247,7 +247,7 @@ var functions = {
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
 
                     + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
-                    + "&api_key=2nu25m9my2e5qk9r5pgw63dn",
+                    + "&api_key=43ufks3c66vmhm5wsw6utddz",
 
                     async: true,
                     dataType: "json"})).then(function(resp1, resp2, resp3, resp4) {
