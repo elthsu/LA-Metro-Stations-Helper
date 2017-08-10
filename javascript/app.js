@@ -250,7 +250,7 @@ var functions = {
             $.ajax({type:"GET",
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
                     + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
-                    + "&api_key=5tssqxc4xj4fnsvcqnqgmbm2",
+                    + "&api_key=cuen8da9wsfaewzvecfxd7ga",
 
 
                     async: true,
@@ -962,7 +962,7 @@ $(document).on("click",".movies_info",function(){
     current.find('.movie_poster').css({'width':'60%','margin':'0 20%'});
     current.find('h4').css('text-align','center');
     current.find('strong').append('<br>');
-    current.find('h6').css('text-align','center');
+    //current.find('h6').css('text-align','center');
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
