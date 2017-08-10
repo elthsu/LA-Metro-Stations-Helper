@@ -250,12 +250,8 @@ var functions = {
                     dataType: "json"}),
             $.ajax({type:"GET",
                     url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
-                    + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] 
-<<<<<<< HEAD
+                    + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2]
                     + "&api_key=cuen8da9wsfaewzvecfxd7ga",
-=======
-                    + "&api_key=hfpwtcrhpd8vykyp27aej4pf",
->>>>>>> 9ebab6bc85472b3039da696930daef75cf0d3087
 
 
                     async: true,
