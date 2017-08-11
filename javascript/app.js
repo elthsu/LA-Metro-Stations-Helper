@@ -960,7 +960,7 @@ $(document).on("click",".movies_info",function(){
 
     // var current = $(this).html();
     var current = $(this).clone();
-    current.find('.movie_poster').css({'width':'60%','margin':'0 20%'});
+    current.find('.movie_poster').css({'width':'60%','height':'auto','margin':'0 20%'});
     current.find('h4').css('text-align','center');
     current.find('strong').append('<br>');
     //current.find('h6').css('text-align','center');

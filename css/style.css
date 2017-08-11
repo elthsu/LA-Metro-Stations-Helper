@@ -305,7 +305,8 @@ footer p {
 	}
 
 	.mEvnt {
-		height: 210px;
+		height: auto;
+		overflow: auto;
 	}
 
 	#myEvent .mEvnt .movie_poster {
