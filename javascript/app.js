@@ -7,528 +7,568 @@ var functions = {
     eventType: "",
     radius: 5,
     sortMethod: "distance,asc",
-    lastMarkerPos: {lat: 34.048775, lng: -118.258615},
-    currentDate: moment().format().substr(0,19)+"Z",//format for TM api startDateTime/endDateTime
-    weekDate: moment().add(14,'day').format().substr(0,19)+"Z",
+    lastMarkerPos: { lat: 34.048775, lng: -118.258615 },
+    currentDate: moment().format().substr(0, 19) + "Z", //format for TM api startDateTime/endDateTime
+    weekDate: moment().add(14, 'day').format().substr(0, 19) + "Z",
     prevWindow: null,
     transitLines: [
         //REDLINE
         //https://maps.google.com/mapfiles/ms/icons/red-dot.png
-        [["Red Line", 802],"",[['Union Station',  34.055599, -118.233456, 80214],
-        ['Civic Center / Grand Park', 34.055442, -118.245244, 80213],
-        ['Pershing Square', 34.048424, -118.251584, 80212],
-        ['7th Street / Metro Center', 34.048775, -118.258615, 80211],
-        ['Westlake / MacArthur Park', 34.057220, -118.275904, 80210],
-        ['Wilshire / Vermont', 34.062539, -118.290880, 80209],
-        ['Vermont / Beverly',34.076710, -118.291938, 80208],
-        ['Vermont / Santa Monica', 34.090496, -118.292032, 80207],
-        ['Vermont / Sunset', 34.098378, -118.291433, 80206],
-        ['Hollywood / Western', 34.101498, -118.308962, 80205],
-        ['Hollywood / Vine', 34.101153, -118.325783, 80204],
-        ['Hollywood / Highland', 34.101727, -118.339255, 80203],
-        ['Universal City / Studio City', 34.139095, -118.362394, 80202],
-        ['North Hollywood', 34.168839, -118.376613, 80201]]],
+        [
+            ["Red Line", 802], "", [
+                ['Union Station', 34.055599, -118.233456, 80214],
+                ['Civic Center / Grand Park', 34.055442, -118.245244, 80213],
+                ['Pershing Square', 34.048424, -118.251584, 80212],
+                ['7th Street / Metro Center', 34.048775, -118.258615, 80211],
+                ['Westlake / MacArthur Park', 34.057220, -118.275904, 80210],
+                ['Wilshire / Vermont', 34.062539, -118.290880, 80209],
+                ['Vermont / Beverly', 34.076710, -118.291938, 80208],
+                ['Vermont / Santa Monica', 34.090496, -118.292032, 80207],
+                ['Vermont / Sunset', 34.098378, -118.291433, 80206],
+                ['Hollywood / Western', 34.101498, -118.308962, 80205],
+                ['Hollywood / Vine', 34.101153, -118.325783, 80204],
+                ['Hollywood / Highland', 34.101727, -118.339255, 80203],
+                ['Universal City / Studio City', 34.139095, -118.362394, 80202],
+                ['North Hollywood', 34.168839, -118.376613, 80201]
+            ]
+        ],
         //end line
         //BLUELINE
-        [["Blue Line", 801],"https://maps.google.com/mapfiles/ms/icons/blue-dot.png",[
-        ['7th Street / Metro Center Station', 34.048175, -118.258915, 80122],
-        ['Pico Station', 34.040474, -118.266393, 80121],
-        ['Grand / LATTC Station', 34.032968, -118.268942, 80120],
-        ['San Pedro Station', 34.026809, -118.255494, 80119],
-        ['Washington Station', 34.019967, -118.243069, 80118],
-        ['Vernon Station', 34.003232, -118.243293, 80117],
-        ['Slauson Station', 33.988811, -118.243360, 80116],
-        ['Florence Station', 33.974084, -118.243280, 80115],
-        ['Firestone Station', 33.959591, -118.243191, 80114],
-        ['103rd Street / Watts Towers Station', 33.942542, -118.243156, 80113],
-        ['Willowbrook / Rosa Parks Station', 33.928331, -118.239053, 80112],
-        ['Compton Station', 33.897428, -118.224295, 80111],
-        ['Artesia Station', 33.876115, -118.222503, 80110],
-        ['Del Amo Station', 33.848198, -118.211015, 80109],
-        ['Wardlow Station', 33.819733, -118.195952, 80108],
-        ['Willow Station', 33.806788, -118.189763, 80107],
-        ['Pacific Coast Highway Station', 33.789401, -118.189359, 80106],
-        ['Anaheim Street Station', 33.781793, -118.189376, 80105],
-        ['5th Street Station', 33.773358, -118.189383, 80154],
-        ['1st Street Station', 33.768862, -118.189424, 80153],
-        ['Downtown Long Beach Station', 33.768043, -118.193101, 80101],
-        ['Pacific Avenue Station', 33.772253, -118.193690, 80102]]],
+        [
+            ["Blue Line", 801], "https://maps.google.com/mapfiles/ms/icons/blue-dot.png", [
+                ['7th Street / Metro Center Station', 34.048175, -118.258915, 80122],
+                ['Pico Station', 34.040474, -118.266393, 80121],
+                ['Grand / LATTC Station', 34.032968, -118.268942, 80120],
+                ['San Pedro Station', 34.026809, -118.255494, 80119],
+                ['Washington Station', 34.019967, -118.243069, 80118],
+                ['Vernon Station', 34.003232, -118.243293, 80117],
+                ['Slauson Station', 33.988811, -118.243360, 80116],
+                ['Florence Station', 33.974084, -118.243280, 80115],
+                ['Firestone Station', 33.959591, -118.243191, 80114],
+                ['103rd Street / Watts Towers Station', 33.942542, -118.243156, 80113],
+                ['Willowbrook / Rosa Parks Station', 33.928331, -118.239053, 80112],
+                ['Compton Station', 33.897428, -118.224295, 80111],
+                ['Artesia Station', 33.876115, -118.222503, 80110],
+                ['Del Amo Station', 33.848198, -118.211015, 80109],
+                ['Wardlow Station', 33.819733, -118.195952, 80108],
+                ['Willow Station', 33.806788, -118.189763, 80107],
+                ['Pacific Coast Highway Station', 33.789401, -118.189359, 80106],
+                ['Anaheim Street Station', 33.781793, -118.189376, 80105],
+                ['5th Street Station', 33.773358, -118.189383, 80154],
+                ['1st Street Station', 33.768862, -118.189424, 80153],
+                ['Downtown Long Beach Station', 33.768043, -118.193101, 80101],
+                ['Pacific Avenue Station', 33.772253, -118.193690, 80102]
+            ]
+        ],
         //end line
         //PURPLELINE
-        [["Purple Line", 805],"https://maps.google.com/mapfiles/ms/icons/purple-dot.png",[
-        ['Union Station',  34.055199, -118.233456, 80214],
-        ['Civic Center / Grand Park', 34.055042, -118.245244, 80213],
-        ['Pershing Square', 34.048024, -118.251584, 80212],
-        ['7th Street / Metro Center', 34.048375, -118.258615, 80211],
-        ['Westlake / MacArthur Park', 34.056820, -118.275904, 80210],
-        ['Wilshire / Vermont', 34.062139, -118.290880, 80209],
-        ['Wilshire / Normandie',34.061608, -118.300931, 80215],
-        ['Wilshire / Western', 34.062097, -118.308847, 80216]]],
+        [
+            ["Purple Line", 805], "https://maps.google.com/mapfiles/ms/icons/purple-dot.png", [
+                ['Union Station', 34.055199, -118.233456, 80214],
+                ['Civic Center / Grand Park', 34.055042, -118.245244, 80213],
+                ['Pershing Square', 34.048024, -118.251584, 80212],
+                ['7th Street / Metro Center', 34.048375, -118.258615, 80211],
+                ['Westlake / MacArthur Park', 34.056820, -118.275904, 80210],
+                ['Wilshire / Vermont', 34.062139, -118.290880, 80209],
+                ['Wilshire / Normandie', 34.061608, -118.300931, 80215],
+                ['Wilshire / Western', 34.062097, -118.308847, 80216]
+            ]
+        ],
         //end line
         //EXPOLINE
-        [["Expo Line", 806],"https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7C10C4FF",[
-        ['7th Street / Metro Center Station', 34.048358, -118.259254, 80122],
-        ['Pico Station', 34.040656, -118.266847, 80121],
-        ['LATTC / Ortho Institute Station', 34.029264, -118.273941, 80123],
-        ['Jefferson / USC Station', 34.021968, -118.278327, 80124],
-        ['Exposition Park / USC Station', 34.018170, -118.285671, 80125],
-        ['Exposition / Vermont Station', 34.018318, -118.291802, 80126],
-        ['Exposition / Western Station', 34.018342, -118.308914, 80127],
-        ['Exposition / Crenshaw Station', 34.022722, -118.336401, 80128],
-        ['Farmdale Station', 34.023960, -118.346678, 80129],
-        ['Exposition / La Brea Station', 34.024828, -118.355144, 80130],
-        ['La Cienega / Jefferson Station', 34.026360, -118.372123, 80131],
-        ['Culver City Station', 34.027879, -118.388858, 80132],
-        ['Palms Station', 34.029293, -118.404250, 80133],
-        ['Westwood / Rancho Park Station', 34.036796, -118.424521, 80134],
-        ['Exposition / Sepulveda Station', 34.035416, -118.434290, 80135],
-        ['Exposition / Bundy Station', 34.031666, -118.453036, 80136],
-        ['26th Street / Bergamot Station', 34.028001, -118.469102, 80137],
-        ['17th Street / Santa Monica College Station', 34.023156, -118.480391, 80138],
-        ['Downtown Santa Monica Station', 34.014019, -118.491398, 80139]]],
+        [
+            ["Expo Line", 806], "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=E%7C10C4FF", [
+                ['7th Street / Metro Center Station', 34.048358, -118.259254, 80122],
+                ['Pico Station', 34.040656, -118.266847, 80121],
+                ['LATTC / Ortho Institute Station', 34.029264, -118.273941, 80123],
+                ['Jefferson / USC Station', 34.021968, -118.278327, 80124],
+                ['Exposition Park / USC Station', 34.018170, -118.285671, 80125],
+                ['Exposition / Vermont Station', 34.018318, -118.291802, 80126],
+                ['Exposition / Western Station', 34.018342, -118.308914, 80127],
+                ['Exposition / Crenshaw Station', 34.022722, -118.336401, 80128],
+                ['Farmdale Station', 34.023960, -118.346678, 80129],
+                ['Exposition / La Brea Station', 34.024828, -118.355144, 80130],
+                ['La Cienega / Jefferson Station', 34.026360, -118.372123, 80131],
+                ['Culver City Station', 34.027879, -118.388858, 80132],
+                ['Palms Station', 34.029293, -118.404250, 80133],
+                ['Westwood / Rancho Park Station', 34.036796, -118.424521, 80134],
+                ['Exposition / Sepulveda Station', 34.035416, -118.434290, 80135],
+                ['Exposition / Bundy Station', 34.031666, -118.453036, 80136],
+                ['26th Street / Bergamot Station', 34.028001, -118.469102, 80137],
+                ['17th Street / Santa Monica College Station', 34.023156, -118.480391, 80138],
+                ['Downtown Santa Monica Station', 34.014019, -118.491398, 80139]
+            ]
+        ],
         //end line
         //GOLDLINE
-        [["Gold Line", 804], "https://maps.google.com/mapfiles/marker_yellow.png",[
-        ['Atlantic Station', 34.033367, -118.155009, 80401],
-        ['East LA Civic Center Station', 34.033352, -118.161200, 80402],
-        ['Maravilla Station', 34.033303, -118.168146, 80403],
-        ['Indiana Station', 34.034280, -118.192164, 80404],
-        ['Soto Station', 34.043719, -118.210042, 80405],
-        ['Mariachi Plaza Station', 34.047211, -118.219646, 80406],
-        ['Pico / Aliso Station', 34.047637, -118.225904, 80407],
-        ['Little Tokyo / Arts District Station', 34.050040, -118.237899, 80408],
-        ['Union Station', 34.056051, -118.234757, 80409],
-        ['Chinatown Station', 34.063861, -118.235809, 80410],
-        ['Lincoln Heights / Cypress Park Station', 34.081166, -118.220256, 80411],
-        ['Heritage Square Station', 34.087479, -118.212954, 80412],
-        ['Southwest Museum Station', 34.098404, -118.206474, 80413],
-        ['Highland Park Station', 34.111166, -118.192605, 80414],
-        ['South Pasadena Station', 34.115189, -118.157796, 80415],
-        ['Fillmore Station', 34.133474, -118.148193, 80416],
-        ['Del Mar Station', 34.141808, -118.148251, 80417],
-        ['Memorial Park Station', 34.147835, -118.147727, 80418],
-        ['Lake Station', 34.151812, -118.131591, 80419],
-        ['Allen Station', 34.152395, -118.113956, 80420],
-        ['Sierra Madre Villa Station', 34.147730, -118.081368, 80421],
-        ['Arcadia Station', 34.142667, -118.029040, 80422],
-        ['Monrovia Station', 34.133050, -118.003233, 80423],
-        ['Duarte / City of Hope Station', 34.132497, -117.967519, 80424],
-        ['Irwindale Station', 34.129033, -117.932434, 80425],
-        ['Azusa Downtown Station', 34.135768, -117.906787, 80426],
-        ['APU / Citrus College Station', 34.136797, -117.891637, 80427]]],
+        [
+            ["Gold Line", 804], "https://maps.google.com/mapfiles/marker_yellow.png", [
+                ['Atlantic Station', 34.033367, -118.155009, 80401],
+                ['East LA Civic Center Station', 34.033352, -118.161200, 80402],
+                ['Maravilla Station', 34.033303, -118.168146, 80403],
+                ['Indiana Station', 34.034280, -118.192164, 80404],
+                ['Soto Station', 34.043719, -118.210042, 80405],
+                ['Mariachi Plaza Station', 34.047211, -118.219646, 80406],
+                ['Pico / Aliso Station', 34.047637, -118.225904, 80407],
+                ['Little Tokyo / Arts District Station', 34.050040, -118.237899, 80408],
+                ['Union Station', 34.056051, -118.234757, 80409],
+                ['Chinatown Station', 34.063861, -118.235809, 80410],
+                ['Lincoln Heights / Cypress Park Station', 34.081166, -118.220256, 80411],
+                ['Heritage Square Station', 34.087479, -118.212954, 80412],
+                ['Southwest Museum Station', 34.098404, -118.206474, 80413],
+                ['Highland Park Station', 34.111166, -118.192605, 80414],
+                ['South Pasadena Station', 34.115189, -118.157796, 80415],
+                ['Fillmore Station', 34.133474, -118.148193, 80416],
+                ['Del Mar Station', 34.141808, -118.148251, 80417],
+                ['Memorial Park Station', 34.147835, -118.147727, 80418],
+                ['Lake Station', 34.151812, -118.131591, 80419],
+                ['Allen Station', 34.152395, -118.113956, 80420],
+                ['Sierra Madre Villa Station', 34.147730, -118.081368, 80421],
+                ['Arcadia Station', 34.142667, -118.029040, 80422],
+                ['Monrovia Station', 34.133050, -118.003233, 80423],
+                ['Duarte / City of Hope Station', 34.132497, -117.967519, 80424],
+                ['Irwindale Station', 34.129033, -117.932434, 80425],
+                ['Azusa Downtown Station', 34.135768, -117.906787, 80426],
+                ['APU / Citrus College Station', 34.136797, -117.891637, 80427]
+            ]
+        ],
         //end line
         //GREENLINE
-        [["Green Line", 803], "https://maps.google.com/mapfiles/marker_green.png",[
-        ['Redondo Beach Station', 33.894577, -118.369161, 80301],
-        ['Douglas Station', 33.905288, -118.383232, 80302],
-        ['El Segundo Station', 33.916187, -118.386777, 80303],
-        ['Mariposa Station', 33.923288, -118.387579, 80304],
-        ['Aviation / LAX Station', 33.929612, -118.377150, 80305],
-        ['Hawthrone / Lennox Station', 33.933416, -118.351733, 80306],
-        ['Crenshaw Station', 33.925231, -118.326407, 80307],
-        ['Vermont / Athens Station', 33.928660, -118.291698, 80308],
-        ['Harbor Freeway Station', 33.928681, -118.281095, 80309],
-        ['Avalon Station', 33.927490, -118.265171, 80310],
-        ['Willowbrook / Rosa Parks Station', 33.928240, -118.238031, 80311],
-        ['Long Beach Boulevard Station', 33.925011, -118.210230, 80312],
-        ['Lakewood Boulevard Station', 33.913066, -118.140266, 80313],
-        ['Norwalk Station', 33.914116, -118.104085, 80314]]],
-        //end line
+        [
+            ["Green Line", 803], "https://maps.google.com/mapfiles/marker_green.png", [
+                ['Redondo Beach Station', 33.894577, -118.369161, 80301],
+                ['Douglas Station', 33.905288, -118.383232, 80302],
+                ['El Segundo Station', 33.916187, -118.386777, 80303],
+                ['Mariposa Station', 33.923288, -118.387579, 80304],
+                ['Aviation / LAX Station', 33.929612, -118.377150, 80305],
+                ['Hawthrone / Lennox Station', 33.933416, -118.351733, 80306],
+                ['Crenshaw Station', 33.925231, -118.326407, 80307],
+                ['Vermont / Athens Station', 33.928660, -118.291698, 80308],
+                ['Harbor Freeway Station', 33.928681, -118.281095, 80309],
+                ['Avalon Station', 33.927490, -118.265171, 80310],
+                ['Willowbrook / Rosa Parks Station', 33.928240, -118.238031, 80311],
+                ['Long Beach Boulevard Station', 33.925011, -118.210230, 80312],
+                ['Lakewood Boulevard Station', 33.913066, -118.140266, 80313],
+                ['Norwalk Station', 33.914116, -118.104085, 80314]
+            ]
         ],
-    populateMarkers: function(latLongArr){
+        //end line
+    ],
+    populateMarkers: function(latLongArr) {
 
-        latLongArr.forEach(function(line,j){
+        latLongArr.forEach(function(line, j) {
+            console.log(line)
 
             var info = [];
             info.length = line[2].length;
-            
+
             var infowindow = new google.maps.InfoWindow();
             var marker, i;
             //do not change from i, it is same i of station index!
-            line[2].forEach(function(stations,i){
+            line[2].forEach(function(stations, i) {
                 marker = new google.maps.Marker({
 
                     position: new google.maps.LatLng(stations[1], stations[2]),
                     map: map,
                     icon: line[1]
 
-                    });
+                });
 
-                    google.maps.event.addListener(infowindow,'domready',function() {
-                        $('.weather').parent().parent().css({'width':'350px','height':'350px'});
-                    });
+                google.maps.event.addListener(infowindow, 'domready', function() {
+                    $('.weather').parent().parent().css({ 'width': '350px', 'height': '350px' });
+                });
 
-                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                            return function() {
-                                if(functions.prevWindow != null)
-                                    functions.prevWindow.close();
-                                functions.addInfo(stations,line[0]).then(function(){
-                                    infowindow.setContent(functions.info);
-                                    infowindow.open(map, marker);
-                                    functions.prevWindow = infowindow;
-                                });
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        if (functions.prevWindow != null)
+                            functions.prevWindow.close();
+                        functions.addInfo(stations, line[0]).then(function() {
+                            infowindow.setContent(functions.info);
+                            infowindow.open(map, marker);
+                            functions.prevWindow = infowindow;
+                        });
 
-                            }
-                    })(marker, i));
+                    }
+                })(marker, i));
 
-                    marker.addListener('click', function() {
+                marker.addListener('click', function() {
                     map.setZoom(16);
                     functions.lastMarkerPos = this.getPosition();
                     map.setCenter(this.getPosition());
                     var styleSelector = document.getElementById('style-selector');
-                    map.setOptions({styles: styles["retro"],
-                                    draggable: false,
-                                    disableDoubleClickZoom: true
-                            });
+                    map.setOptions({
+                        styles: styles["retro"],
+                        draggable: false,
+                        disableDoubleClickZoom: true
                     });
-
-                    functions.markersArr.push(marker);
-
-                    google.maps.event.addListener(infowindow,'closeclick',function(){
-
-                    map.setOptions({styles: styles["silver"],
-                                    draggable: true,
-                                    disableDoubleClickZoom: false,
-                                    center: this.position,
-                                    zoom: 13,
-                                    mapTypeControl: false,
-                                    clickableIcons: false
-                                }); 
-});
-
                 });
+
+                functions.markersArr.push(marker);
+
+                google.maps.event.addListener(infowindow, 'closeclick', function() {
+
+                    map.setOptions({
+                        styles: styles["silver"],
+                        draggable: true,
+                        disableDoubleClickZoom: false,
+                        center: this.position,
+                        zoom: 13,
+                        mapTypeControl: false,
+                        clickableIcons: false
+                    });
+                });
+
             });
+        });
 
-                /*
+        /*
 
-                http://api.worldweatheronline.com/premium/v1/weather.ashx?key=b0c790597a9545408c072433170408&q=34.0555892,-118.2335296&num_of_days=2&tp=3&format=json
-                HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
-                LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9(current)
-                https://app.ticketmaster.com/discovery/v2/events.json?size=100
-                &latlong=34.026809,-118.255494&radius=5&unit=miles&sort=distance,asc
-                &startDateTime=2017-08-04T23:36:03Z&endDateTime=2017-08-11T23:36:03Z
-                &apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
+        http://api.worldweatheronline.com/premium/v1/weather.ashx?key=b0c790597a9545408c072433170408&q=34.0555892,-118.2335296&num_of_days=2&tp=3&format=json
+        HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
+        LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9(current)
+        https://app.ticketmaster.com/discovery/v2/events.json?size=100
+        &latlong=34.026809,-118.255494&radius=5&unit=miles&sort=distance,asc
+        &startDateTime=2017-08-04T23:36:03Z&endDateTime=2017-08-11T23:36:03Z
+        &apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9
 
-                */
-                //TICKETMASTER API KEY: HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9 LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9
-                // MOVIE API KEY: 2nu25m9my2e5qk9r5pgw63dn, fkg8ke2e5vt89h4r58rftr7p, 43ufks3c66vmhm5wsw6utddz
+        */
+        //TICKETMASTER API KEY: HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9 LYfOBf4l5UcGurejeNMAvQ1TYzsrsnu9
+        // MOVIE API KEY: 2nu25m9my2e5qk9r5pgw63dn, fkg8ke2e5vt89h4r58rftr7p, 43ufks3c66vmhm5wsw6utddz
 
         //sync ajax calls
         // var tempMetro = "https://api.metro.net/agencies/lametro-rail/routes/" + line[0][1] + "/stops/" + 
         //                 stations[3] + "/predictions/";
 
 
-    },//end populate_markers method
+    }, //end populate_markers method
 
-    addInfo: function(station,line){
-                //sync ajax calls
-        var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" 
-                    + station[1] + "," + station[2]
-                    + "&radius=" + functions.radius + "&unit=miles&sort="+functions.sortMethod
-                    + "&startDateTime=" + functions.currentDate
-                    + "&endDateTime=" + functions.weekDate
-                    + "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9";
-        if(functions.eventType != ''){
-            var append = "&classificationName="+functions.eventType;
+    addInfo: function(station, line) {
+        //sync ajax calls
+        var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=100&latlong=" +
+            station[1] + "," + station[2] +
+            "&radius=" + functions.radius + "&unit=miles&sort=" + functions.sortMethod +
+            "&startDateTime=" + functions.currentDate +
+            "&endDateTime=" + functions.weekDate +
+            "&apikey=HSapqKFWyAlQB7MxBkl3dvnFWzTWBkQ9";
+        if (functions.eventType != '') {
+            var append = "&classificationName=" + functions.eventType;
             queryURL += append;
         }
         return $.when(
 
-            $.ajax({type:"GET",
-                    url:"https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='("
-                    + station[1] + "," + station[2] + ")') and u='f'&format=json",
-                    async:true,
-                    dataType: "json"}),
-            $.ajax({type:"GET",
-                    url:queryURL,
-                    async:true,
-                    dataType: "json"}),
-            $.ajax({type:"GET",
-                    url: "https://api.metro.net/agencies/lametro-rail/routes/" + line[1] + "/stops/" + 
-                        station[3] + "/predictions/",
-                    async: true,
-                    dataType: "json"}),
-            $.ajax({type:"GET",
-                    url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" 
-                    + functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2]
-                    + "&api_key=cuen8da9wsfaewzvecfxd7ga",
+            $.ajax({
+                type: "GET",
+                url: "https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='(" +
+                    station[1] + "," + station[2] + ")') and u='f'&format=json",
+                async: true,
+                dataType: "json"
+            }),
+            $.ajax({
+                type: "GET",
+                url: queryURL,
+                async: true,
+                dataType: "json"
+            }),
+            $.ajax({
+                url: "https://api.metro.net/agencies/lametro-rail/routes/" + line[1] + "/stops/" +
+                    station[3] + "/predictions/",
+                crossOrigin:true,
+/*                headers:{
+                    'Access-Control-Allow-Origin':"https://api.metro.net/agencies/lametro-rail/routes/" + line[1] + "/stops/"
+                    + station[3] + "/predictions/"
+                },*/
+                type: "GET",
+                async: true,
+                dataType: "jsonp"
+            }),
+            $.ajax({
+                type: "GET",
+                url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=" +
+                    functions.currentDate.slice(0, 10) + "&lat=" + station[1] + "&lng=" + station[2] +
+                    "&api_key=cuen8da9wsfaewzvecfxd7ga",
+                async: true,
+                dataType: "json"
+            })).then(function(resp1, resp2, resp3, resp4) {
+
+            /*console.log(JSON.parse(resp3[0]));*/
+            resp3 = JSON.parse(resp3[0]);
+
+            var upcomingTrain = "";
+            var weatherIcon = "";
+
+            for (var i = 0; i < resp3.items.length && i < 3; i++) {
+
+                upcomingTrain += moment().add(resp3.items[i].minutes, 'minutes').format("h:mm A") + " / ";
+
+            }
+
+            var nearby = "";
+            var j = 0;
+
+            functions.weather = "Local weather: " +
+                resp1[0].query.results.channel.item.forecast[0].high + "H/ " +
+                resp1[0].query.results.channel.item.forecast[0].low + "L/" +
+                resp1[0].query.results.channel.item.forecast[0].text;
+
+            //console.log(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("sun"));
+
+            if (resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("sun") > -1) {
+
+                weatherIcon = "<i class='fa fa-sun-o' aria-hidden='true'></i>";
+
+            } else if (resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("cloud") > -1) {
+
+                weatherIcon = "<i class='fa fa-cloud' aria-hidden='true'></i>";
+
+            } else if (resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("rain") > -1) {
+
+                weatherIcon = "<i class='fa fa-tint' aria-hidden='true'></i>";
+
+            }
+
+            //begin   
+
+            if (jQuery.isEmptyObject(resp2[0]._embedded)) {
+
+                nearby = "Check again soon for more events!";
+
+            } else {
+
+                while (j < resp2[0]._embedded.events.length && j < 10) {
+
+                    var genre = "";
+
+                    if (resp2[0]._embedded.events[j].classifications) {
+                        genre = resp2[0]._embedded.events[j].classifications[0].segment.name;
+                    } else {
+                        genre = "N/A";
+                    }
+
+                    nearby += ("<div class='stuff'>" +
+                        "<span class='position'>" + (j + 1) +
+                        ". </span>" + resp2[0]._embedded.events[j]._embedded.venues[0].name +
+                        " (" + genre + ")<span id='eventDate'> - " +
+                        resp2[0]._embedded.events[j].dates.start.localDate +
+                        "</span><br>" +
+                        resp2[0]._embedded.events[j].name +
+                        " - " +
+                        (resp2[0]._embedded.events[j].distance).toFixed(2) +
+                        "mi<br>" +
+                        "<img src=" + resp2[0]._embedded.events[j].images[0].url +
+                        " alt='event_img' width='115' station='" +
+                        station[0] + "' line='" +
+                        line[0] + "'>" +
+                        "<a href=" + resp2[0]._embedded.events[j].url +
+                        " target='_blank'>Purchase tickets now!</a></div><hr>");
+                    j++;
+                } //end while loop
+            } //end if statement
 
 
-                    async: true,
-                    dataType: "json"})).then(function(resp1, resp2, resp3, resp4) {
+            var k = 0;
+            var movies = "";
 
 
-                        var upcomingTrain = "";
-                        var weatherIcon = "";
 
-                        for (var i = 0; i < resp3[0].items.length && i < 3; i++) {
-                                               
-                        upcomingTrain += moment().add(resp3[0].items[i].minutes, 'minutes').format("h:mm A") + " / ";
+            if ((resp4[0].length === 0)) {
+
+                movies = "There are no movie theaters nearby!";
+
+            } else {
+
+
+
+                var moviesObj = {};
+
+                for (var i = 0; i < resp4[0].length; i++) {
+
+                    var theatreName = "";
+                    moviesObj[resp4[0][i].title] = {};
+
+                    var poster;
+                    var ratings;
+
+
+                    if (resp4[0][i].ratings) {
+
+                        ratings = resp4[0][i].ratings[0].code;
+
+                    } else {
+
+                        ratings = "N/A";
+
+
+                    }
+
+
+                    poster = "<img class='movie_poster' src='https://dlby.tmsimg.com/" + resp4[0][i].preferredImage.uri +
+                        "?api_key=gvmc8sysuqe8pwpshucfnn33' height=150 station='" +
+                        station[0] + "' line='" +
+                        line[0] + "'>";
+
+
+
+
+
+                    for (var j = 0; j < resp4[0][i].showtimes.length; j++) {
+
+
+
+                        if (resp4[0][i].showtimes[j].ticketURI) {
+
+                            var timeCompare = (resp4[0][i].showtimes[j].dateTime).slice(11, 16);
+
+                            var tempTime = moment(timeCompare, "HH:mm").format("h:mm A");
+
+                            tempTime = "<a href='" + resp4[0][i].showtimes[j].ticketURI + "+" + timeCompare +
+                                "' target=_blank> " + tempTime + " </a>";
+
+
+                            if (!moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name]) {
+
+                                moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name] = [];
+
+                            }
+
+                            moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name].push(tempTime);
 
                         }
 
-                        var nearby = "";
-                        var j=0;
 
-                        functions.weather = "Local weather: "
-                        + resp1[0].query.results.channel.item.forecast[0].high + "H/ " 
-                        + resp1[0].query.results.channel.item.forecast[0].low + "L/"
-                        + resp1[0].query.results.channel.item.forecast[0].text;
+                    } //end inner for loop 
 
-                        //console.log(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("sun"));
 
-                        if(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("sun") > -1){
+                    var times = "";
 
-                            weatherIcon = "<i class='fa fa-sun-o' aria-hidden='true'></i>";
+                    (Object.keys(moviesObj)).forEach(function(movie) {
 
-                        }
-                        else if(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("cloud") > -1){
+                        times = "";
 
-                            weatherIcon = "<i class='fa fa-cloud' aria-hidden='true'></i>";
 
-                        }
-                        else if(resp1[0].query.results.channel.item.forecast[0].text.toLowerCase().search("rain") > -1){
+                        (Object.keys(moviesObj[movie])).forEach(function(theatre) {
 
-                            weatherIcon = "<i class='fa fa-tint' aria-hidden='true'></i>";
+                            times += "<br />" + "<h6>" + theatre + "</h6>";
 
-                        }
-                        
-//begin   
-    
-                        if(jQuery.isEmptyObject(resp2[0]._embedded)){
 
-                            nearby="Check again soon for more events!";
 
-                        }
-                        else{
+                            for (var i = 0; i < Object.keys(moviesObj[movie][theatre]).length; i++) {
 
-                            while(j<resp2[0]._embedded.events.length && j<10){
+                                times += (moviesObj[movie][theatre][i] + "&nbsp;");
+                            };
 
-                                var genre = "";
-                
-                                if (resp2[0]._embedded.events[j].classifications){
-                                    genre = resp2[0]._embedded.events[j].classifications[0].segment.name;
-                                }
-                                else{
-                                    genre = "N/A";
-                                }
 
-                                nearby+=("<div class='stuff'>"
-                                +"<span class='position'>" + (j + 1)
-                                +". </span>" + resp2[0]._embedded.events[j]._embedded.venues[0].name
-                                + " (" + genre + ")<span id='eventDate'> - "
-                                + resp2[0]._embedded.events[j].dates.start.localDate
-                                +"</span><br>"
-                                + resp2[0]._embedded.events[j].name
-                                + " - "
-                                + (resp2[0]._embedded.events[j].distance).toFixed(2) 
-                                + "mi<br>"
-                                + "<img src=" + resp2[0]._embedded.events[j].images[0].url
-                                + " alt='event_img' width='115' station='"
-                                + station[0] + "' line='"
-                                + line[0] + "'>"
-                                + "<a href=" + resp2[0]._embedded.events[j].url 
-                                + " target='_blank'>Purchase tickets now!</a></div><hr>");
-                                j++;                    
-                            }//end while loop
-                        }//end if statement
+                        })
 
+                    })
 
-                        var k = 0;
-                        var movies = "";
-                        
-                        
 
-                        if((resp4[0].length === 0)) {
+                    if (times != '') {
+                        movies += "<div class='movies_info'>"
 
-                            movies = "There are no movie theaters nearby!";
+                            +
+                            poster
 
-                        }
-                        
+                            +
+                            "<h4><strong>"
 
-                        else{
+                            +
+                            resp4[0][i].title
 
-                            
+                            +
+                            "</strong>"
 
-                            var moviesObj = {};
+                            +
+                            "&emsp;Rated: "
 
-                            for (var i = 0; i < resp4[0].length; i++) {
+                            +
+                            ratings
 
-                                var theatreName = "";
-                                moviesObj[resp4[0][i].title] = {};
+                            +
+                            "</h4>"
 
-                                var poster;
-                                var ratings;
-                                
-                                
-                                if (resp4[0][i].ratings) {
-                                    
-                                    ratings = resp4[0][i].ratings[0].code;
-                                    
-                                }
+                            +
+                            "<span>"
 
-                                else {
+                            +
+                            times
 
-                                    ratings = "N/A";
+                            +
+                            "</span>"
 
+                            +
+                            "</div>"
 
-                                }
 
-                               
-                                poster = "<img class='movie_poster' src='https://dlby.tmsimg.com/" + resp4[0][i].preferredImage.uri 
-                                        + "?api_key=gvmc8sysuqe8pwpshucfnn33' height=150 station='"
-                                + station[0] + "' line='"
-                                + line[0] + "'>";
+                            +
+                            "<hr>";
+                    }
 
+                } //end outter for loop
 
 
-                                
 
-                                for (var j = 0; j < resp4[0][i].showtimes.length; j++) {
+                //console.log(moviesObj);
 
 
-                                    
-                                    if (resp4[0][i].showtimes[j].ticketURI) {
+            } //end else statement
+            // console.log(weatherIcon)
 
-                                        var timeCompare = (resp4[0][i].showtimes[j].dateTime).slice(11, 16);
-
-                                        var tempTime = moment(timeCompare, "HH:mm").format("h:mm A");
-
-                                        tempTime = "<a href='" + resp4[0][i].showtimes[j].ticketURI + "+" + timeCompare 
-                                                        + "' target=_blank> " + tempTime + " </a>";
-
-
-                                        if (!moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name]) {
-
-                                            moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name] = [];
-
-                                        }
-                                        
-                                            moviesObj[resp4[0][i].title][resp4[0][i].showtimes[j].theatre.name].push(tempTime);
-
-                                    }     
-
-
-                                }//end inner for loop 
-
-
-                                var times = "";
-
-                                (Object.keys(moviesObj)).forEach(function(movie){
-                                    
-                                    times = "";
-                                    
-
-                                    (Object.keys(moviesObj[movie])).forEach(function(theatre){
-
-                                    times += "<br />" + "<h6>" + theatre + "</h6>";
-                                    
-
-
-                                        for (var i = 0; i < Object.keys(moviesObj[movie][theatre]).length; i++) {
-                                                
-                                                   times += (moviesObj[movie][theatre][i] + "&nbsp;");
-                                                };
-                                                
-
-                                    })
-                                         
-                                })   
-                                  
-                                
-                                if(times != ''){
-                                    movies += "<div class='movies_info'>" 
-     
-                                                + poster
-
-                                                + "<h4><strong>" 
-
-                                                + resp4[0][i].title 
-
-                                                + "</strong>"
-
-                                                + "&emsp;Rated: "
-                                                
-                                                + ratings
-
-                                                + "</h4>"
-
-                                                + "<span>"
-
-                                                + times
-
-                                                + "</span>"
-
-                                                + "</div>"
-                                            
-                                            
-                                            + "<hr>";
-                                }
-
-                            }//end outter for loop
-
-
-
-                            //console.log(moviesObj);
-
-
-                    }//end else statement
-                       // console.log(weatherIcon)
-
-                        functions.info = ("<div class='station'><strong>" + station[0] + " - (" + moment(functions.currentDate).format("M/D/YY") + ")"
-                        + "<br>Upcoming Trains <i class='fa fa-train'></i> (real-time): " + upcomingTrain.slice(0,upcomingTrain.length-2)
-                        + "</strong>" + "</div><div class='weather'>" + functions.weather + " " + weatherIcon + "</div><hr>"
-                        + "<div id='myCarousel' class='carousel slide' data-ride='carousel' data-interval='false'>"
-                        + "<!-- Indicators -->"
-                        + "<ol class='carousel-indicators'>"
-                        + "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>"
-                        + "<li data-target='#myCarousel' data-slide-to='1'></li>"
-                        + "</ol>"
-                        + "<!-- Wrapper for slides -->"
-                        + "<div class='carousel-inner'>"
-                        + "<div class='item active'>"
-                        + nearby
-                        + "</div>"
-                        + "<div class='item'>"
-                        + movies
-                        + "</div>"
-                        + "</div>"
-                        + "<!-- Left and right controls -->"
-                        + "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>"
-                        + "<span class='glyphicon glyphicon-chevron-left'></span>"
-                        + "<span class='sr-only'>Previous</span>"
-                        + "</a>"
-                        + "<a class='right carousel-control' href='#myCarousel' data-slide='next'>"
-                        + "<span class='glyphicon glyphicon-chevron-right'></span>"
-                        + "<span class='sr-only'>Next</span>"
-                        + "</a>"
-                        + "</div>");
-            })//end statement
-
-
-//end 
+            functions.info = ("<div class='station'><strong>" + station[0] + " - (" + moment(functions.currentDate).format("M/D/YY") + ")" +
+                "<br>Upcoming Trains <i class='fa fa-train'></i> (real-time): " + upcomingTrain.slice(0, upcomingTrain.length - 2) +
+                "</strong>" + "</div><div class='weather'>" + functions.weather + " " + weatherIcon + "</div><hr>" +
+                "<div id='myCarousel' class='carousel slide' data-ride='carousel' data-interval='false'>" +
+                "<!-- Indicators -->" +
+                "<ol class='carousel-indicators'>" +
+                "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>" +
+                "<li data-target='#myCarousel' data-slide-to='1'></li>" +
+                "</ol>" +
+                "<!-- Wrapper for slides -->" +
+                "<div class='carousel-inner'>" +
+                "<div class='item active'>" +
+                nearby +
+                "</div>" +
+                "<div class='item'>" +
+                movies +
+                "</div>" +
+                "</div>" +
+                "<!-- Left and right controls -->" +
+                "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>" +
+                "<span class='glyphicon glyphicon-chevron-left'></span>" +
+                "<span class='sr-only'>Previous</span>" +
+                "</a>" +
+                "<a class='right carousel-control' href='#myCarousel' data-slide='next'>" +
+                "<span class='glyphicon glyphicon-chevron-right'></span>" +
+                "<span class='sr-only'>Next</span>" +
+                "</a>" +
+                "</div>");
+        }) //end statement
+
+
+        //end 
 
 
 
     },
-    clearOverlays: function(markersArray,polyLineArray) {
-        for (var i = 0; i < markersArray.length; i++ ) {
-                markersArray[i].setMap(null);
-              }
+    clearOverlays: function(markersArray, polyLineArray) {
+        for (var i = 0; i < markersArray.length; i++) {
+            markersArray[i].setMap(null);
+        }
 
-        for (var j = 0; j < polyLineArray.length; j++ ) {
+        for (var j = 0; j < polyLineArray.length; j++) {
 
             polyLineArray[j].setMap(null);
 
         }
 
-    },//end clearOverlays
-    populateOverlays: function(markersArray,polyLineArray){
+    }, //end clearOverlays
+    populateOverlays: function(markersArray, polyLineArray) {
+
+        console.log(markersArray)
 
         functions.populateMarkers(markersArray);
 
-        for (var j = 0; j < polyLineArray.length; j++ ) {
-            
+        for (var j = 0; j < polyLineArray.length; j++) {
+
             polyLineArray[j].setMap(map);
 
         }
@@ -541,13 +581,13 @@ var functions = {
         var name = "." + grandparent.className;
         var events = JSON.parse(localStorage.getItem("events"));
         var index = events.indexOf(parent.innerHTML);
-        events.splice(index,1);
-        localStorage.setItem("events",JSON.stringify(events));
+        events.splice(index, 1);
+        localStorage.setItem("events", JSON.stringify(events));
         var checkEmpty = $(name).children().length;
-        if(checkEmpty==0)
+        if (checkEmpty == 0)
             $("#myEvent").html("<p>Click an event to add it!</p>");
     }
-}//end functions object
+} //end functions object
 
 
 
@@ -562,10 +602,10 @@ function initMap() {
 
     // Create the map with no initial style specified.
     // It therefore has default styling.
-    
+
     map = new google.maps.Map(document.getElementById('map'), {
-        
-        center: {lat: 34.048775, lng: -118.258615},
+
+        center: { lat: 34.048775, lng: -118.258615 },
         zoom: 11,
         mapTypeControl: false,
         clickableIcons: false
@@ -591,10 +631,11 @@ function initMap() {
     var redNorthHollywood = new google.maps.LatLng(34.168839, -118.376613);
 
     var redLinePath = new google.maps.Polyline({
-        path: [redUnionStation, redCivicCenterGrandPark, redPershingSquare, red7thStreet, 
-            redWestlakeMacArthurPark, redWilshireVermont, redVermontBeverly, 
-            redVermontSantaMonica, redVermontSunset, redHollywoodWestern, 
-            redHollywoodVine, redHollywoodHighland, redUniversalCityStudioCity, redNorthHollywood],
+        path: [redUnionStation, redCivicCenterGrandPark, redPershingSquare, red7thStreet,
+            redWestlakeMacArthurPark, redWilshireVermont, redVermontBeverly,
+            redVermontSantaMonica, redVermontSunset, redHollywoodWestern,
+            redHollywoodVine, redHollywoodHighland, redUniversalCityStudioCity, redNorthHollywood
+        ],
 
 
         strokeColor: "red",
@@ -619,9 +660,10 @@ function initMap() {
 
 
     var purpleLinePath = new google.maps.Polyline({
-        path: [purpleUnionStation, purpleCivicCenterGrandPark, purplePershingSquare, 
-        purple7thStreet, purpleWestlakeMacArthurPark, purpleWilshireVermont, purpleWilshireNormandie, 
-        purpleWilshireWestern],
+        path: [purpleUnionStation, purpleCivicCenterGrandPark, purplePershingSquare,
+            purple7thStreet, purpleWestlakeMacArthurPark, purpleWilshireVermont, purpleWilshireNormandie,
+            purpleWilshireWestern
+        ],
 
 
         strokeColor: "#8E67FD",
@@ -666,13 +708,14 @@ function initMap() {
 
 
     var blueLinePath = new google.maps.Polyline({
-        path: [blue7thStreet, bluePico, blueGrandLATTCa, blueGrandLATTC, blueSanPedro, 
-            blueWashingtona, blueWashington, blueVernon, blueSlauson, blueFlorence, 
-            blueFirestone, blue103rdStreetWattsTowers, blueWillowbrookRosaParksa, 
-            blueWillowbrookRosaParks, blueComptona, blueCompton, blueArtesia, blueDelAmo, 
+        path: [blue7thStreet, bluePico, blueGrandLATTCa, blueGrandLATTC, blueSanPedro,
+            blueWashingtona, blueWashington, blueVernon, blueSlauson, blueFlorence,
+            blueFirestone, blue103rdStreetWattsTowers, blueWillowbrookRosaParksa,
+            blueWillowbrookRosaParks, blueComptona, blueCompton, blueArtesia, blueDelAmo,
             blueWardlowa, blueWardlow, blueWillow, blueWillowa, bluePacificCoastHighway,
             blueAnaheim, blue5thStreet, blue1stStreet, blue1stStreeta, blueDowntownLongBeach,
-            blueDowntownLongBeacha, bluePacificAve, bluePacificAvea, bluePacificAveb],
+            blueDowntownLongBeacha, bluePacificAve, bluePacificAvea, bluePacificAveb
+        ],
 
 
         strokeColor: "#6991FD",
@@ -711,12 +754,12 @@ function initMap() {
 
     var expoLinePath = new google.maps.Polyline({
         path: [expo7thStreet, expoPico, expoLATTC, expoJeffersonUSC, expoJeffersonUSCa,
-              expoExpositionUSC, expoExpositionVermont, expoExpositionWestern, expoExpositionWesterna,
-              expoExpositionCrenshaw, expoFarmdale, expoExpositionLaBrea, expoLaCienegaJefferson,
-              expoCulverCity, expoPalms, expoPalmsa, expoPalmsb, expoWestwoodRanchoPark, 
-              expoExpositionSepulveda, expoExpositionBundy, 
-              expoExpositionBundya, expo26thStreetBergamot, expo17thStreetSMC, expoDowntownSantaMonica
-              ],
+            expoExpositionUSC, expoExpositionVermont, expoExpositionWestern, expoExpositionWesterna,
+            expoExpositionCrenshaw, expoFarmdale, expoExpositionLaBrea, expoLaCienegaJefferson,
+            expoCulverCity, expoPalms, expoPalmsa, expoPalmsb, expoWestwoodRanchoPark,
+            expoExpositionSepulveda, expoExpositionBundy,
+            expoExpositionBundya, expo26thStreetBergamot, expo17thStreetSMC, expoDowntownSantaMonica
+        ],
 
 
         strokeColor: "#10C4FF",
@@ -726,7 +769,7 @@ function initMap() {
 
     expoLinePath.setMap(map);
 
-        var goldAtlantic = new google.maps.LatLng(34.033367, -118.155009);
+    var goldAtlantic = new google.maps.LatLng(34.033367, -118.155009);
     var goldEastLACivicCenter = new google.maps.LatLng(34.033352, -118.161200);
     var goldMiravilla = new google.maps.LatLng(34.033303, -118.168146);
     var goldMiravillaa = new google.maps.LatLng(34.033275, -118.192183);
@@ -779,7 +822,7 @@ function initMap() {
     var goldArcadiaA = new google.maps.LatLng(34.137939, -118.021037);
     var goldMonrovia = new google.maps.LatLng(34.133050, -118.003233);
     var goldMonroviaA = new google.maps.LatLng(34.132335, -117.999374);
-    var goldDuarteCityofHope = new google.maps.LatLng(34.132497, -117.967519);    
+    var goldDuarteCityofHope = new google.maps.LatLng(34.132497, -117.967519);
     var goldDuarteCityofHopea = new google.maps.LatLng(34.132442, -117.952715);
     var goldDuarteCityofHopeb = new google.maps.LatLng(34.128347, -117.939894);
     var goldIrwindale = new google.maps.LatLng(34.129033, -117.932434);
@@ -788,29 +831,30 @@ function initMap() {
     var goldAzusaDowntowna = new google.maps.LatLng(34.136660, -117.902417);
     var goldAzusaDowntownb = new google.maps.LatLng(34.136541, -117.894688);
     var goldAPUCitrusCollege = new google.maps.LatLng(34.136797, -117.891637);
-    
+
 
 
     var goldLinePath = new google.maps.Polyline({
-    path: [goldAtlantic, goldEastLACivicCenter, goldMiravilla, goldMiravillaa, goldIndiana, 
+        path: [goldAtlantic, goldEastLACivicCenter, goldMiravilla, goldMiravillaa, goldIndiana,
             goldIndianaa, goldSoto, goldSotoa, goldMariachiPlaza, goldPicoAliso, goldPicoAlisoa,
             goldLittleTokyoArtsDistrict, goldLittleTokyoa, goldLittleTokyob, goldUnion, goldUniona,
             goldUnionb, goldChinatown, goldChinatowna, goldChinatownb, goldChinatownc,
             goldLincolnCypress, goldHeritageSquare, goldHeritageSquarea, goldHeritageSquareb,
             goldSouthwestMuseum, goldSouthwestMuseuma, goldSouthwestMuseumb, goldSouthwestMuseumc,
-            goldHighlandPark, goldHighlandParka, goldHighlandParkb, goldHighlandParkc, 
+            goldHighlandPark, goldHighlandParka, goldHighlandParkb, goldHighlandParkc,
             goldHighlandParkd, goldSouthPasadena, goldSouthPasadenaA, goldSouthPasadenaB,
-            goldSouthPasadenaC, goldFillmore, goldDelMar, goldDelMara, goldMemorialPark, 
+            goldSouthPasadenaC, goldFillmore, goldDelMar, goldDelMara, goldMemorialPark,
             goldMemorialParka, goldLake, goldAllen, goldAllena, goldAllenb, goldSierraMadreVilla,
-            goldSierraMadreVillaA, goldArcadia, goldArcadiaA, goldMonrovia, goldMonroviaA, 
+            goldSierraMadreVillaA, goldArcadia, goldArcadiaA, goldMonrovia, goldMonroviaA,
             goldDuarteCityofHope, goldDuarteCityofHopea, goldDuarteCityofHopeb, goldIrwindale,
             goldIrwindalea, goldAzusaDowntown, goldAzusaDowntowna, goldAzusaDowntownb,
-            goldAPUCitrusCollege],
+            goldAPUCitrusCollege
+        ],
 
 
-    strokeColor: "#F0AB00",
-    strokeOpacity: 0.6,
-    strokeWeight: 6
+        strokeColor: "#F0AB00",
+        strokeOpacity: 0.6,
+        strokeWeight: 6
     });
 
     goldLinePath.setMap(map);
@@ -860,146 +904,147 @@ function initMap() {
     var greenLakewoodBoulevard = new google.maps.LatLng(33.913066, -118.140266);
     var greenNorwalk = new google.maps.LatLng(33.914116, -118.104085);
 
-    
+
 
 
     var greenLinePath = new google.maps.Polyline({
-    path:  [greenRedondoBeach, greenDouglas, greenDouglasa, greenDouglasb, greenElSegundo,
+        path: [greenRedondoBeach, greenDouglas, greenDouglasa, greenDouglasb, greenElSegundo,
             greenElSegundoa, greenMariposa, greenMariposaA, greenMariposaB, greenMariposaC,
             greenAviationLAX, greenAviationLAXa, greenAviationLAXb, greenAviationLAXc,
             greenAviationLAXd, greenAviationLAXe, greenHawthroneLennox, greenHawthroneLennoxa,
             greenHawthroneLennoxb, greenHawthroneLennoxc, greenCrenshaw, greenCrenshawa,
             greenCrenshawb, greenCrenshawc, greenVermontAthens, greenHarborFreeway,
             greenHarborFreewaya, greenHarborFreewayb, greenAvalon, greenAvalona, greenAvalonb,
-            greenAvalonc, greenWillowbrook, greenWillowbrooka, greenWillowbrookb, 
-            greenWillowbrookc, greenWillowbrookd, greenLongBeachBoulevard, 
+            greenAvalonc, greenWillowbrook, greenWillowbrooka, greenWillowbrookb,
+            greenWillowbrookc, greenWillowbrookd, greenLongBeachBoulevard,
             greenLongBeachBoulevarda, greenLongBeachBoulevardb, greenLongBeachBoulevardc,
-            greenLongBeachBoulevardd, greenLakewoodBoulevard, greenNorwalk],
+            greenLongBeachBoulevardd, greenLakewoodBoulevard, greenNorwalk
+        ],
 
 
-    strokeColor: "#61C250",
-    strokeOpacity: 0.6,
-    strokeWeight: 6
+        strokeColor: "#61C250",
+        strokeOpacity: 0.6,
+        strokeWeight: 6
     });
 
     greenLinePath.setMap(map);
 
-//populate polyLineArr
+    //populate polyLineArr
 
-functions.polyLineArr.push(redLinePath);
-functions.polyLineArr.push(blueLinePath);
-functions.polyLineArr.push(purpleLinePath);
-functions.polyLineArr.push(expoLinePath);
-functions.polyLineArr.push(goldLinePath);
-functions.polyLineArr.push(greenLinePath);
-
-
-//end populate
-
-// Set the map's style to the initial value of the selector.
-var styleSelector = document.getElementById('style-selector');
-    map.setOptions({styles: styles[styleSelector.value]});
+    functions.polyLineArr.push(redLinePath);
+    functions.polyLineArr.push(blueLinePath);
+    functions.polyLineArr.push(purpleLinePath);
+    functions.polyLineArr.push(expoLinePath);
+    functions.polyLineArr.push(goldLinePath);
+    functions.polyLineArr.push(greenLinePath);
 
 
-if(localStorage.getItem("events") != null && JSON.parse(localStorage.getItem("events")).length != 0){
-    console.log("grabbing memory");
-    $('#myEvent').empty();
-    var storedEvents = JSON.parse(localStorage.getItem("events"));
-    for(var i=0;i<storedEvents.length;i++){
-        $('#myEvent').prepend("<div class='mEvnt'>" + storedEvents[i] + "</div>");
+    //end populate
+
+    // Set the map's style to the initial value of the selector.
+    var styleSelector = document.getElementById('style-selector');
+    map.setOptions({ styles: styles[styleSelector.value] });
+
+
+    if (localStorage.getItem("events") != null && JSON.parse(localStorage.getItem("events")).length != 0) {
+        console.log("grabbing memory");
+        $('#myEvent').empty();
+        var storedEvents = JSON.parse(localStorage.getItem("events"));
+        for (var i = 0; i < storedEvents.length; i++) {
+            $('#myEvent').prepend("<div class='mEvnt'>" + storedEvents[i] + "</div>");
+        }
     }
-}
 
 
-// Closes initMap function (do not remove)
+    // Closes initMap function (do not remove)
 }
 
 
 
 
 //click listener to populate myEvents
-$(document).on("click",".stuff",function(){
+$(document).on("click", ".stuff", function() {
 
-    if($('#myEvent').is(':has(p)')){
+    if ($('#myEvent').is(':has(p)')) {
         $("#myEvent").empty();
     }
 
-    var current = $(this).html(); 
+    var current = $(this).html();
     var dateNew = "";
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.html($(this).find('img').attr('station') + "<br>(<span class='mEvntLine'>" + $(this).find('img').attr('line') + "</span>)"
-    + "<hr>" + current);
+    myEvent.html($(this).find('img').attr('station') + "<br>(<span class='mEvntLine'>" + $(this).find('img').attr('line') + "</span>)" +
+        "<hr>" + current);
 
-    var close = $("<button>").html('&times;').addClass('close').attr("onclick","functions.remove(this)");
-    myEvent.prepend(close);     
+    var close = $("<button>").html('&times;').addClass('close').attr("onclick", "functions.remove(this)");
+    myEvent.prepend(close);
 
-    dateNew = myEvent.find('#eventDate').text().replace("- ","<br>")
+    dateNew = myEvent.find('#eventDate').text().replace("- ", "<br>")
 
-    myEvent.find('img').attr("width","100%");
-    myEvent.find('.mEvntLine').attr("style","font-size:8px;font-weight:bolder;vertical-align:middle;");
+    myEvent.find('img').attr("width", "100%");
+    myEvent.find('.mEvntLine').attr("style", "font-size:8px;font-weight:bolder;vertical-align:middle;");
     myEvent.find('a').text("Purchase now!");
-    myEvent.find('a').attr("style","font-size:10px")
+    myEvent.find('a').attr("style", "font-size:10px")
     myEvent.find('.position').text("");
     myEvent.find('#eventDate').html(dateNew);
     $("#myEvent").prepend(myEvent);
     var events = [];
-    if(localStorage.getItem("events") != null){
+    if (localStorage.getItem("events") != null) {
         events = JSON.parse(localStorage.getItem("events"));
     }
     events.push(myEvent.html());
-    localStorage.setItem("events",JSON.stringify(events));
-});//modify for .stuff class
+    localStorage.setItem("events", JSON.stringify(events));
+}); //modify for .stuff class
 
-$(document).on("click",".movies_info",function(){
+$(document).on("click", ".movies_info", function() {
 
-    if($('#myEvent').is(':has(p)')){
+    if ($('#myEvent').is(':has(p)')) {
         $("#myEvent").empty();
     }
 
     // var current = $(this).html();
     var current = $(this).clone();
-    current.find('.movie_poster').css({'width':'60%','height':'auto','margin':'0 20%'});
-    current.find('h4').css('text-align','center');
+    current.find('.movie_poster').css({ 'width': '60%', 'height': 'auto', 'margin': '0 20%' });
+    current.find('h4').css('text-align', 'center');
     current.find('strong').append('<br>');
     //current.find('h6').css('text-align','center');
 
     var myEvent = $("<div>");
     myEvent.addClass("mEvnt");
-    myEvent.html("<div id='movieHeader'>" + $(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)"
-    + "</div><hr>" + current.html());
+    myEvent.html("<div id='movieHeader'>" + $(this).find('img').attr('station') + "<br>(<span>" + $(this).find('img').attr('line') + "</span>)" +
+        "</div><hr>" + current.html());
 
-    myEvent.find('#movieHeader').css('text-align','center');
+    myEvent.find('#movieHeader').css('text-align', 'center');
 
-    var close = $("<button>").html('&times;').addClass('close').attr("onclick","functions.remove(this)");
-    myEvent.prepend(close);     
+    var close = $("<button>").html('&times;').addClass('close').attr("onclick", "functions.remove(this)");
+    myEvent.prepend(close);
 
     $("#myEvent").prepend(myEvent);
 
     var events = [];
-    if(localStorage.getItem("events") != null){
+    if (localStorage.getItem("events") != null) {
         events = JSON.parse(localStorage.getItem("events"));
     }
     events.push(myEvent.html());
-    localStorage.setItem("events",JSON.stringify(events));
+    localStorage.setItem("events", JSON.stringify(events));
 
-});//modify for .movies_info class
+}); //modify for .movies_info class
 
 //click listener to clear my events
-$("#clearMyEvents").on("click",function(){
+$("#clearMyEvents").on("click", function() {
 
     $("#myEvent").html("<p>Click an event to add it!</p>");
     localStorage.clear();
 
 });
 
-$(".carousel-control").mouseup(function(){
+$(".carousel-control").mouseup(function() {
     $(this).blur();
 });
 
 //click listener to apply filter options
-$("#applyFilters").on("click",function(event){
+$("#applyFilters").on("click", function(event) {
     event.preventDefault();
     var popPoly = [];
     var popMarker = [];
@@ -1008,7 +1053,7 @@ $("#applyFilters").on("click",function(event){
 
     for (var i = 0; i < x.length; i++) {
         var checked = x[i].checked;
-        
+
         if (checked) {
 
             indexArr.push(i);
@@ -1016,28 +1061,28 @@ $("#applyFilters").on("click",function(event){
         }
     };
 
-    for(d=0;d<indexArr.length;d++){
+    for (d = 0; d < indexArr.length; d++) {
 
         popMarker.push(functions.transitLines[indexArr[d]]);
         popPoly.push(functions.polyLineArr[indexArr[d]]);
 
     }
 
-    functions.clearOverlays(functions.markersArr,functions.polyLineArr);
-    functions.populateOverlays(popMarker,popPoly);
+    functions.clearOverlays(functions.markersArr, functions.polyLineArr);
+    functions.populateOverlays(popMarker, popPoly);
 
-    if($("#eventType").val() != null)
+    if ($("#eventType").val() != null)
         functions.eventType = $("#eventType").val();
 
     functions.radius = $("#searchRadius").val();
 
-    var sortBy = $("#sortBy").val(); 
+    var sortBy = $("#sortBy").val();
 
     var selected = $("input[type='radio'][name='sortOrder']:checked");
 
     var removeDistanceDesc = (sortBy == 'distance,' && selected.val() == 'desc');
 
-    if(selected.length>0 && sortBy != null && !removeDistanceDesc){
+    if (selected.length > 0 && sortBy != null && !removeDistanceDesc) {
         functions.sortMethod = sortBy + selected.val();
     }
 
@@ -1045,7 +1090,8 @@ $("#applyFilters").on("click",function(event){
     console.log(functions.radius);
     console.log(functions.sortMethod);
 
-    map.setOptions({styles: styles["silver"],
+    map.setOptions({
+        styles: styles["silver"],
         draggable: true,
         disableDoubleClickZoom: false,
         center: functions.lastMarkerPos,
@@ -1054,234 +1100,233 @@ $("#applyFilters").on("click",function(event){
         clickableIcons: false
     });
 
-});//end button click for filter logic
+}); //end button click for filter logic
 
 //click listener to clear filter options
-$("#clearFilters").on("click", function(event){
+$("#clearFilters").on("click", function(event) {
     event.preventDefault();
     $('#eventType').val('null');
     $('#sortBy').val('distance,');
     $('#searchRadius').val('5');
 
-    $("input[type='radio'][value='asc']").each(function(){
+    $("input[type='radio'][value='asc']").each(function() {
         this.checked = true;
     });
-    $("input[type='radio'][value='desc']").each(function(){
+    $("input[type='radio'][value='desc']").each(function() {
         this.checked = false;
     });
-    $("input[type='checkbox'][name='Line']").each(function(){
+    $("input[type='checkbox'][name='Line']").each(function() {
         this.checked = true;
     });
 
-    functions.eventType='';
-    functions.radius=5;
-    functions.sortMethod='distance,asc';
+    functions.eventType = '';
+    functions.radius = 5;
+    functions.sortMethod = 'distance,asc';
 });
 
 //click listener to remove focus from filter toggle
-$(".navbar-toggle").on("click",function(){
+$(".navbar-toggle").on("click", function() {
     $(".navbar-toggle").blur();
 });
 
 var styles = {
     default: null,
-    silver: [
-      {
-        elementType: 'geometry',
-        stylers: [{color: '#f5f5f5'}]
-      },
-      {
-        elementType: 'labels.icon',
-        stylers: [{visibility: 'off'}]
-      },
-      {
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#616161'}]
-      },
-      {
-        elementType: 'labels.text.stroke',
-        stylers: [{color: '#f5f5f5'}]
-      },
-      {
-        featureType: 'administrative.land_parcel',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#bdbdbd'}]
-      },
-      {
-        featureType: 'poi',
-        elementType: 'geometry',
-        stylers: [{color: '#eeeeee'}]
-      },
-      {
-        featureType: 'poi',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#757575'}]
-      },
-      {
-        featureType: 'poi.park',
-        elementType: 'geometry',
-        stylers: [{color: '#e5e5e5'}]
-      },
-      {
-        featureType: 'poi.park',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#9e9e9e'}]
-      },
-      {
-        featureType: 'road',
-        elementType: 'geometry',
-        stylers: [{color: '#ffffff'}]
-      },
-      {
-        featureType: 'road.arterial',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#757575'}]
-      },
-      {
-        featureType: 'road.highway',
-        elementType: 'geometry',
-        stylers: [{color: '#dadada'}]
-      },
-      {
-        featureType: 'road.highway',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#616161'}]
-      },
-      {
-        featureType: 'road.local',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#9e9e9e'}]
-      },
-      {
-        featureType: 'transit.line',
-        elementType: 'geometry',
-        stylers: [{color: '#e5e5e5'}]
-      },
-      {
-        featureType: 'transit.station',
-        elementType: 'geometry',
-        stylers: [{color: '#eeeeee'}]
-      },
-      {
-        featureType: 'water',
-        elementType: 'geometry',
-        stylers: [{color: '#c9c9c9'}]
-      },
-      {
-        featureType: 'water',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#9e9e9e'}]
-      }
+    silver: [{
+            elementType: 'geometry',
+            stylers: [{ color: '#f5f5f5' }]
+        },
+        {
+            elementType: 'labels.icon',
+            stylers: [{ visibility: 'off' }]
+        },
+        {
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#616161' }]
+        },
+        {
+            elementType: 'labels.text.stroke',
+            stylers: [{ color: '#f5f5f5' }]
+        },
+        {
+            featureType: 'administrative.land_parcel',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#bdbdbd' }]
+        },
+        {
+            featureType: 'poi',
+            elementType: 'geometry',
+            stylers: [{ color: '#eeeeee' }]
+        },
+        {
+            featureType: 'poi',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#757575' }]
+        },
+        {
+            featureType: 'poi.park',
+            elementType: 'geometry',
+            stylers: [{ color: '#e5e5e5' }]
+        },
+        {
+            featureType: 'poi.park',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#9e9e9e' }]
+        },
+        {
+            featureType: 'road',
+            elementType: 'geometry',
+            stylers: [{ color: '#ffffff' }]
+        },
+        {
+            featureType: 'road.arterial',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#757575' }]
+        },
+        {
+            featureType: 'road.highway',
+            elementType: 'geometry',
+            stylers: [{ color: '#dadada' }]
+        },
+        {
+            featureType: 'road.highway',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#616161' }]
+        },
+        {
+            featureType: 'road.local',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#9e9e9e' }]
+        },
+        {
+            featureType: 'transit.line',
+            elementType: 'geometry',
+            stylers: [{ color: '#e5e5e5' }]
+        },
+        {
+            featureType: 'transit.station',
+            elementType: 'geometry',
+            stylers: [{ color: '#eeeeee' }]
+        },
+        {
+            featureType: 'water',
+            elementType: 'geometry',
+            stylers: [{ color: '#c9c9c9' }]
+        },
+        {
+            featureType: 'water',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#9e9e9e' }]
+        }
     ],
 
     retro: [
-      {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
-      {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
-      {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
-      {
-        featureType: 'administrative',
-        elementType: 'geometry.stroke',
-        stylers: [{color: '#c9b2a6'}]
-      },
-      {
-        featureType: 'administrative.land_parcel',
-        elementType: 'geometry.stroke',
-        stylers: [{color: '#dcd2be'}]
-      },
-      {
-        featureType: 'administrative.land_parcel',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#ae9e90'}]
-      },
-      {
-        featureType: 'landscape.natural',
-        elementType: 'geometry',
-        stylers: [{color: '#dfd2ae'}]
-      },
-      {
-        featureType: 'poi',
-        elementType: 'geometry',
-        stylers: [{color: '#dfd2ae'}]
-      },
-      {
-        featureType: 'poi',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#93817c'}]
-      },
-      {
-        featureType: 'poi.park',
-        elementType: 'geometry.fill',
-        stylers: [{color: '#a5b076'}]
-      },
-      {
-        featureType: 'poi.park',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#447530'}]
-      },
-      {
-        featureType: 'road',
-        elementType: 'geometry',
-        stylers: [{color: '#f5f1e6'}]
-      },
-      {
-        featureType: 'road.arterial',
-        elementType: 'geometry',
-        stylers: [{color: '#fdfcf8'}]
-      },
-      {
-        featureType: 'road.highway',
-        elementType: 'geometry',
-        stylers: [{color: '#f8c967'}]
-      },
-      {
-        featureType: 'road.highway',
-        elementType: 'geometry.stroke',
-        stylers: [{color: '#e9bc62'}]
-      },
-      {
-        featureType: 'road.highway.controlled_access',
-        elementType: 'geometry',
-        stylers: [{color: '#e98d58'}]
-      },
-      {
-        featureType: 'road.highway.controlled_access',
-        elementType: 'geometry.stroke',
-        stylers: [{color: '#db8555'}]
-      },
-      {
-        featureType: 'road.local',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#806b63'}]
-      },
-      {
-        featureType: 'transit.line',
-        elementType: 'geometry',
-        stylers: [{color: '#dfd2ae'}]
-      },
-      {
-        featureType: 'transit.line',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#8f7d77'}]
-      },
-      {
-        featureType: 'transit.line',
-        elementType: 'labels.text.stroke',
-        stylers: [{color: '#ebe3cd'}]
-      },
-      {
-        featureType: 'transit.station',
-        elementType: 'geometry',
-        stylers: [{color: '#dfd2ae'}]
-      },
-      {
-        featureType: 'water',
-        elementType: 'geometry.fill',
-        stylers: [{color: '#b9d3c2'}]
-      },
-      {
-        featureType: 'water',
-        elementType: 'labels.text.fill',
-        stylers: [{color: '#92998d'}]
-      }
+        { elementType: 'geometry', stylers: [{ color: '#ebe3cd' }] },
+        { elementType: 'labels.text.fill', stylers: [{ color: '#523735' }] },
+        { elementType: 'labels.text.stroke', stylers: [{ color: '#f5f1e6' }] },
+        {
+            featureType: 'administrative',
+            elementType: 'geometry.stroke',
+            stylers: [{ color: '#c9b2a6' }]
+        },
+        {
+            featureType: 'administrative.land_parcel',
+            elementType: 'geometry.stroke',
+            stylers: [{ color: '#dcd2be' }]
+        },
+        {
+            featureType: 'administrative.land_parcel',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#ae9e90' }]
+        },
+        {
+            featureType: 'landscape.natural',
+            elementType: 'geometry',
+            stylers: [{ color: '#dfd2ae' }]
+        },
+        {
+            featureType: 'poi',
+            elementType: 'geometry',
+            stylers: [{ color: '#dfd2ae' }]
+        },
+        {
+            featureType: 'poi',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#93817c' }]
+        },
+        {
+            featureType: 'poi.park',
+            elementType: 'geometry.fill',
+            stylers: [{ color: '#a5b076' }]
+        },
+        {
+            featureType: 'poi.park',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#447530' }]
+        },
+        {
+            featureType: 'road',
+            elementType: 'geometry',
+            stylers: [{ color: '#f5f1e6' }]
+        },
+        {
+            featureType: 'road.arterial',
+            elementType: 'geometry',
+            stylers: [{ color: '#fdfcf8' }]
+        },
+        {
+            featureType: 'road.highway',
+            elementType: 'geometry',
+            stylers: [{ color: '#f8c967' }]
+        },
+        {
+            featureType: 'road.highway',
+            elementType: 'geometry.stroke',
+            stylers: [{ color: '#e9bc62' }]
+        },
+        {
+            featureType: 'road.highway.controlled_access',
+            elementType: 'geometry',
+            stylers: [{ color: '#e98d58' }]
+        },
+        {
+            featureType: 'road.highway.controlled_access',
+            elementType: 'geometry.stroke',
+            stylers: [{ color: '#db8555' }]
+        },
+        {
+            featureType: 'road.local',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#806b63' }]
+        },
+        {
+            featureType: 'transit.line',
+            elementType: 'geometry',
+            stylers: [{ color: '#dfd2ae' }]
+        },
+        {
+            featureType: 'transit.line',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#8f7d77' }]
+        },
+        {
+            featureType: 'transit.line',
+            elementType: 'labels.text.stroke',
+            stylers: [{ color: '#ebe3cd' }]
+        },
+        {
+            featureType: 'transit.station',
+            elementType: 'geometry',
+            stylers: [{ color: '#dfd2ae' }]
+        },
+        {
+            featureType: 'water',
+            elementType: 'geometry.fill',
+            stylers: [{ color: '#b9d3c2' }]
+        },
+        {
+            featureType: 'water',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#92998d' }]
+        }
     ]
-  };
+};
