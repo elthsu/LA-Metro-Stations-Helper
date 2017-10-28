@@ -11,7 +11,7 @@ A useful tool for any traveller or new transplant of a city. The app takes multi
    * Save events you like.
    * Come back to them later!
 
-![AMAZING](/images/Metro.jpg)
+![AMAZING](/images/metro.jpg)
 >Save the planet! Use Transit!
 
 [GitHub Repo](https://github.com/elthsu/LA-Metro-Stations-Helper)
